@@ -2,8 +2,6 @@ package cf.android666.wanandroid
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentPagerAdapter
 import android.support.v4.view.ViewPager
 import android.support.v7.widget.SearchView
 import android.view.Menu
@@ -21,7 +19,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         setSupportActionBar(toolbar)
-
 
         val fragments = arrayListOf<BaseFragment>()
 
