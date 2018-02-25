@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="cf.android666.wanandroid.MainActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/nav_height"
+        app:title="@string/app_name"
+        app:titleTextColor="#fff"
+        android:background="@color/colorPrimary"
+        >
+
+    </android.support.v7.widget.Toolbar>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbar">
+
+    </android.support.v4.view.ViewPager>
+
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/bottom_nav"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/nav_height"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorBottomNav"
+        app:menu="@menu/menu_nav"
+        app:itemIconTint="#fff"
+        app:itemTextColor="#fff"/>
+
+</RelativeLayout>
