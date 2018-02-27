@@ -3,7 +3,7 @@ package cf.android666.wanandroid.bean
 /**
  * Created by jixiaoyong on 2018/2/25.
  */
-class IndexArticleBean{
+class IndexArticleBean {
 
 
     /**
@@ -12,9 +12,9 @@ class IndexArticleBean{
      * errorMsg :
      */
 
-    private var data: DataBean? = null
-    private var errorCode: Int = 0
-    private var errorMsg: String? = null
+    var data = DataBean()
+    var errorCode: Int = 0
+    var errorMsg: String? = ""
 
     class DataBean {
         /**
@@ -33,7 +33,7 @@ class IndexArticleBean{
         var pageCount: Int = 0
         var size: Int = 0
         var total: Int = 0
-        var datas: List<DatasBean>? = null
+        var datas: List<DatasBean>? = arrayListOf()
 
         class DatasBean {
             /**
