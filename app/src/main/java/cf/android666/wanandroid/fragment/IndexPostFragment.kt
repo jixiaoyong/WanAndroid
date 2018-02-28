@@ -9,12 +9,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import cf.android666.wanandroid.R
+import cf.android666.wanandroid.activity.ContentActivity
 import cf.android666.wanandroid.adapter.IndexPostArticleAdapter
 import cf.android666.wanandroid.api.ApiUrl
 import cf.android666.wanandroid.base.BaseFragment
 import cf.android666.wanandroid.bean.IndexArticleBean
 import cf.android666.wanandroid.utils.DownloadUtil
 import cf.android666.wanandroid.utils.LogTools
+import cf.android666.wanandroid.utils.SuperUtil
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_index_post.view.*
 
@@ -27,7 +29,7 @@ class IndexPostFragment : BaseFragment() {
 
     //todo 内存泄漏风险
     private var handler = @SuppressLint("HandlerLeak")
-    object :android.os.Handler(){
+    object : android.os.Handler() {
 
         override fun handleMessage(msg: Message?) {
             if (msg!!.what == MSG_WHAT_ARTICLE) {
@@ -42,11 +44,9 @@ class IndexPostFragment : BaseFragment() {
 
                     view!!.recycler_view.adapter.notifyDataSetChanged()
 
-                    LogTools.logd("update")
-
                 } else {
 
-                    Toast.makeText(context,article.errorMsg,Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, article.errorMsg, Toast.LENGTH_SHORT).show()
 
                 }
 
@@ -59,9 +59,9 @@ class IndexPostFragment : BaseFragment() {
 
     companion object {
 
-         val MSG_WHAT_ARTICLE = 0
+        val MSG_WHAT_ARTICLE = 0
 
-         val MSG_WHAT_BANNER = 1
+        val MSG_WHAT_BANNER = 1
 
     }
 
@@ -69,9 +69,17 @@ class IndexPostFragment : BaseFragment() {
 
         val view = inflater!!.inflate(R.layout.fragment_index_post, container, false)
 
-        view.recycler_view.layoutManager = LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
+        view.recycler_view.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
-        view.recycler_view.adapter = IndexPostArticleAdapter(context,article.data)
+        view.recycler_view.adapter = IndexPostArticleAdapter(context, article.data, {
+
+            SuperUtil.startActivity(context, ContentActivity::class.java, it)
+
+        }, {
+
+            it.isSelected = !it.isSelected
+
+        })
 
         DownloadUtil.downloadJson(ApiUrl.atricleUrl, handler, MSG_WHAT_ARTICLE)
 

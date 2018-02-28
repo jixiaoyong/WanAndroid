@@ -1,6 +1,8 @@
 package cf.android666.wanandroid.utils
 
 import android.content.Context
+import android.content.Intent
+import android.support.v7.app.AppCompatActivity
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Toast
@@ -26,5 +28,14 @@ object SuperUtil{
         webView.settings.javaScriptEnabled = true
 
         webView.loadUrl(url)
+    }
+
+    fun <T> startActivity(context: Context,clazz:Class<T>,url: String){
+
+        var intent = Intent(context,clazz)
+
+        intent.putExtra("url", url)
+
+        context.startActivity(intent)
     }
 }

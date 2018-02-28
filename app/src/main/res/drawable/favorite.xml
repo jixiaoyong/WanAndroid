@@ -3,10 +3,10 @@
 
     <item
         android:drawable="@drawable/favorite0"
-        android:state_selected="true"/>
+        android:state_selected="false"/>
 
     <item
         android:drawable="@drawable/favorite1"
-        android:state_selected="false"/>
+        android:state_selected="true"/>
 
 </selector>

@@ -12,17 +12,29 @@ import kotlinx.android.synthetic.main.item_index_post.view.*
 /**
  * Created by jixiaoyong on 2018/2/27.
  */
-class IndexPostArticleAdapter(context :Context,data: IndexArticleBean.DataBean) : RecyclerView.Adapter<IndexPostArticleAdapter.MViewHolder>(){
+class IndexPostArticleAdapter(context :Context, data: IndexArticleBean.DataBean,
+                              itemListener: ((url: String) -> Unit),
+                              imgBtnListener: ((view: View) -> Unit))
+    : RecyclerView.Adapter<IndexPostArticleAdapter.MViewHolder>(){
 
     private var mData = IndexArticleBean.DataBean()
 
     private var mContext : Context? = null
+
+    private var mItemListener: ((url: String) -> Unit)? = null
+
+    private var mImgBtnListener: ((view: View) -> Unit)? = null
+
 
     init {
 
         mData = data
 
         mContext = context
+
+        mItemListener = itemListener
+
+        mImgBtnListener = imgBtnListener
 
     }
 
@@ -47,6 +59,17 @@ class IndexPostArticleAdapter(context :Context,data: IndexArticleBean.DataBean) 
         holder!!.itemView.time.text = "时间：${mData.datas!![position].niceDate}"
 
         holder!!.itemView.chapter.text = "分类：${mData.datas!![position].chapterName}"
+
+        holder.itemView.setOnClickListener{
+
+            mItemListener!!.invoke(mData.datas!![position].link!!)
+
+        }
+
+        holder.itemView.imageButton.setOnClickListener{
+
+            mImgBtnListener!!.invoke(it)
+        }
 
     }
 
