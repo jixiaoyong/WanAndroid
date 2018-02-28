@@ -76,7 +76,6 @@ class IndexPostArticleAdapter(context :Context, data: IndexArticleBean.DataBean,
 
     class MViewHolder(view:View) : RecyclerView.ViewHolder(view){
          init {
-             LogTools.logd("ddd")
          }
     }
 }

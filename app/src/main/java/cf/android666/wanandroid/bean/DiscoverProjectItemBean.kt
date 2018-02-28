@@ -11,9 +11,9 @@ package cf.android666.wanandroid.bean
      * errorMsg :
      */
 
-    private var data: DataBean = DataBean()
-    private var errorCode: Int = 0
-    private var errorMsg: String = ""
+     var data: DataBean = DataBean()
+     var errorCode: Int = 0
+     var errorMsg: String = ""
 
     class DataBean {
         /**

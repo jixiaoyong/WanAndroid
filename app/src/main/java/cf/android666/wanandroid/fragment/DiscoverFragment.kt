@@ -29,8 +29,8 @@ class DiscoverFragment : BaseFragment() {
         var tablayout = view.tab_layout
         //设置该方法后会删除tab标题，因此在后面手动加上
         tablayout.setupWithViewPager(view.viewpager)
-        tablayout.getTabAt(0)!!.text = "项目"
-        tablayout.getTabAt(1)!!.text = "体系"
+        tablayout.getTabAt(0)!!.text = "体系"
+        tablayout.getTabAt(1)!!.text = "项目"
         tablayout.getTabAt(2)!!.text = "导航"
 
         return view

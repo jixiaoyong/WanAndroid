@@ -13,11 +13,11 @@ class DiscoverProjectTreeBean{
      * errorMsg :
      */
 
-    private var errorCode: Int = 0
+     var errorCode: Int = 0
 
-    private var errorMsg: String = ""
+     var errorMsg: String = ""
 
-    private var data :List<DataBean> = arrayListOf()
+     var data :List<DataBean> = arrayListOf()
 
 
     class DataBean {

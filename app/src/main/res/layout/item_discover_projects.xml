@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="5dp">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorTextBackground"
+        android:layout_alignParentTop="true"
+        android:maxLines="2"
+        android:text="title"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/summary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorTextBackground"
+        android:layout_below="@id/title"
+        android:maxLines="5"
+        android:text="title"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/colorTextBackground"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:maxLines="1"
+        android:text="2018-1-1 jixiaoyong"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/author"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/colorTextBackground"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:maxLines="1"
+        android:text="2018-1-1 jixiaoyong"
+        android:textSize="14sp" />
+
+    <ImageButton
+        android:id="@+id/install_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:visibility="gone"/>
+
+    <ImageButton
+        android:id="@+id/collect_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:visibility="gone"/>
+
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/nothing" />
+
+</RelativeLayout>
