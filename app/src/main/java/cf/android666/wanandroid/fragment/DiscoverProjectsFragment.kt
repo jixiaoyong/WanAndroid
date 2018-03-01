@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.Message
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.StaggeredGridLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +17,9 @@ import cf.android666.wanandroid.bean.DiscoverProjectItemBean
 import cf.android666.wanandroid.utils.DownloadUtil
 import cf.android666.wanandroid.utils.SuperUtil
 import com.google.gson.Gson
+import com.orhanobut.logger.Logger
 import kotlinx.android.synthetic.main.fragment_discover_projects.view.*
+import java.util.ArrayList
 
 /**
  * Created by jixiaoyong on 2018/2/25.
@@ -44,6 +47,10 @@ class DiscoverProjectsFragment : BaseFragment() {
 
                     view!!.recycler_view.adapter.notifyDataSetChanged()
 
+                    Logger.d("start view!!.recycler_view.adapter.notifyDataSetChanged()")
+
+                    Logger.d(mData.data.datas[0])
+
                 } else {
 
                     Toast.makeText(context, mData.errorMsg, Toast.LENGTH_SHORT).show()
@@ -68,11 +75,26 @@ class DiscoverProjectsFragment : BaseFragment() {
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater!!.inflate(R.layout.fragment_discover_projects, container, false)
 
-//        view.recycler_view.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+        view.recycler_view.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
 
-        view.recycler_view.layoutManager = LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
+//        view.recycler_view.layoutManager = LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
 
-        view.recycler_view.adapter = DiscoverProjectsAdapter(context, mData.data, {
+        var mData  = ArrayList<DiscoverProjectItemBean.DataBean.DatasBean>()
+
+        for (x in 0..20){
+
+            var temp = DiscoverProjectItemBean.DataBean.DatasBean()
+            temp.apkLink = "ddede" + x
+            temp.author = "ddede" + x
+            temp.title = "ddede" + x
+            temp.desc = "ddede" + x
+            temp.envelopePic = "ddede" + x
+
+            mData.add(temp)
+        }
+
+//        view.recycler_view.adapter = DiscoverProjectsAdapter(context, mData.data.datas, {
+        view.recycler_view.adapter = DiscoverProjectsAdapter(context, mData, {
 
             SuperUtil.startActivity(context, ContentActivity::class.java, it)
 

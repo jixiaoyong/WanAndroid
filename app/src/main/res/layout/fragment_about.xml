@@ -5,8 +5,13 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:background="#ff0000"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:text="设置页面
+        1.用户头像（默认）
+        2.用户邮箱
+        3.收藏统计
+        4.夜间模式
+        5.登录/注销/注册"/>
 
 </LinearLayout>

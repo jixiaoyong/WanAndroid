@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import cf.android666.wanandroid.R
 import cf.android666.wanandroid.bean.DiscoverProjectItemBean
 import com.bumptech.glide.Glide
+import com.orhanobut.logger.Logger
 import kotlinx.android.synthetic.main.item_discover_projects.view.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -14,12 +15,12 @@ import java.util.*
 /**
  * Created by jixiaoyong on 2018/2/28.
  */
-class DiscoverProjectsAdapter(context :Context, data: DiscoverProjectItemBean.DataBean,
+class DiscoverProjectsAdapter(context :Context, data: List<DiscoverProjectItemBean.DataBean.DatasBean>,
                               itemListener: ((url: String) -> Unit),
                               imgBtnListener: ((view: View) -> Unit))
     : RecyclerView.Adapter<DiscoverProjectsAdapter.MViewHolder>(){
 
-    private var mData = DiscoverProjectItemBean.DataBean()
+    private var mData : List<DiscoverProjectItemBean.DataBean.DatasBean> = arrayListOf()
 
     private var mContext : Context? = null
 
@@ -47,22 +48,28 @@ class DiscoverProjectsAdapter(context :Context, data: DiscoverProjectItemBean.Da
 
     override fun getItemCount(): Int {
 
-        return mData.datas.size
+        return mData.size
 
     }
 
     override fun onBindViewHolder(holder: MViewHolder?, position: Int) {
 
-        holder!!.itemView.title.text = mData.datas[position].title
+        Logger.d("start bind view ")
+        if (position == 0) {
 
-        holder!!.itemView.summary.text = mData.datas[position].desc
+            Logger.d(mData[position])
+        }
+
+        holder!!.itemView.title.text = mData[position].title
+
+        holder!!.itemView.summary.text = mData[position].desc
 
         holder!!.itemView.time.text = SimpleDateFormat("yyyy-MM-dd")
-                .format(Date(mData.datas[position].publishTime))
+                .format(Date(mData[position].publishTime))
 
-        holder!!.itemView.author.text = mData.datas[position].author
+        holder!!.itemView.author.text = mData[position].author
 
-        Glide.with(mContext!!).load(mData.datas[position].envelopePic).into(holder.itemView.image)
+        Glide.with(mContext!!).load(mData[position].envelopePic).into(holder.itemView.image)
 
     }
 
