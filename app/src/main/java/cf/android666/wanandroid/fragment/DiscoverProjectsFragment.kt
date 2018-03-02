@@ -47,9 +47,6 @@ class DiscoverProjectsFragment : BaseFragment() {
 
                     view!!.recycler_view.adapter.notifyDataSetChanged()
 
-                    Logger.d("start view!!.recycler_view.adapter.notifyDataSetChanged()")
-
-                    Logger.d(mData.data.datas[0])
 
                 } else {
 

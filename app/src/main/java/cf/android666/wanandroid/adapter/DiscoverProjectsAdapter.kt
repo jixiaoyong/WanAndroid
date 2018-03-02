@@ -54,12 +54,6 @@ class DiscoverProjectsAdapter(context :Context, data: List<DiscoverProjectItemBe
 
     override fun onBindViewHolder(holder: MViewHolder?, position: Int) {
 
-        Logger.d("start bind view ")
-        if (position == 0) {
-
-            Logger.d(mData[position])
-        }
-
         holder!!.itemView.title.text = mData[position].title
 
         holder!!.itemView.summary.text = mData[position].desc

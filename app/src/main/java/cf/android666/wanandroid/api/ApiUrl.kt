@@ -8,6 +8,8 @@ class ApiUrl{
 
     companion object {
 
+        val baseUrl = "http://wanandroid.com/"
+
         //首页文章列表
         val atricleUrl = "http://www.wanandroid.com/article/list/0/json"
 
