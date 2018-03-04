@@ -2,26 +2,4 @@
 <resources>
     <dimen name="nav_height">56dp</dimen>
 
-    <declare-styleable name="LetterIndex">
-        <attr name="color_text" format="color" />
-        <attr name="color_index_bg" format="color" />
-        <attr name="color_choose_text" format="color" />
-        <attr name="color_choose_text_bg" format="color" />
-        <attr name="color_dialog_text" format="color" />
-        <attr name="color_dialog_bg" format="color" />
-        <attr name="width_index" format="dimension" />
-        <attr name="size_text" format="dimension" />
-        <attr name="padding_top" format="dimension" />
-    </declare-styleable>
-
-    <declare-styleable name="MyRecyclerDecoration">
-
-        <attr name="color_letter_text" format="color"/>
-        <attr name="color_letter_background" format="color"/>
-        <attr name="color_background" format="color"/>
-        <attr name="color_top_background" format="color"/>
-        <attr name="size_title_text" format="dimension" />
-        <attr name="title_height" format="dimension" />
-    </declare-styleable>
-
 </resources>

@@ -1,17 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+   >
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="设置页面
-        1.用户头像（默认）
-        2.用户邮箱
-        3.收藏统计
-        4.夜间模式
-        5.登录/注销/注册"/>
+        android:gravity="center_horizontal"
+        android:padding="20dp"
+        android:orientation="vertical">
 
-</LinearLayout>
+
+        <ImageView
+            android:id="@+id/user_icon_img"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/nothing" />
+
+        <TextView
+            android:id="@+id/email_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="jixiaoyong1995@gmail.com" />
+
+        <LinearLayout
+            android:id="@+id/power_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"
+            android:orientation="vertical">
+
+            <ViewStub
+                android:id="@+id/login_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout="@layout/fragment_about_login" />
+
+            <ImageView
+                android:id="@+id/arrow_img"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/arrow_down"/>
+
+            <TextView
+                android:id="@+id/power_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:padding="5dp"
+                android:gravity="center"
+                android:background="@color/colorBottomNav"
+                android:text="登录/注册" />
+
+        </LinearLayout>
+
+        <ViewStub
+            android:id="@+id/settings_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout="@layout/fragment_about_settings" />
+
+    </LinearLayout>
+</ScrollView>

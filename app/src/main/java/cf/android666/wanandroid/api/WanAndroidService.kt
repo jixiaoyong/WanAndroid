@@ -1,11 +1,11 @@
 package cf.android666.wanandroid.api
 
+import android.text.Editable
 import cf.android666.wanandroid.bean.*
 import io.reactivex.Observable
+import okhttp3.Cookie
 import retrofit2.Call
-import retrofit2.http.GET
-import retrofit2.http.Path
-import retrofit2.http.Query
+import retrofit2.http.*
 
 /**
  * Created by jixiaoyong on 2018/3/2.
@@ -35,6 +35,14 @@ interface WanAndroidService{
     @GET("project/tree/json")
     fun getProjectTree() :Observable<DiscoverProjectTreeBean>
 
-    @GET("users/{user}/repos")
-    fun listRepos(@Path("user") user: String): Call<List<DiscoverTreeBean>>
+
+    @POST("user/login")
+    fun login(@Field("username") userName: String,
+              @Field("password") userPwd: String): Observable<Cookie>
+
+    @POST("user/login")
+    fun register(@Field("username") userName: String,
+                 @Field("password") userPwd: String,
+                 @Field("repassword")userRePwd: String) : Observable<Cookie>
+
 }
