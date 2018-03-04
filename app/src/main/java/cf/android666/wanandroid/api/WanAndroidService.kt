@@ -23,6 +23,9 @@ interface WanAndroidService{
     @GET("navi/json")
     fun getNavi() :Observable<DiscoverNaviBean>
 
+    @GET("banner/json")
+    fun getBanner() :Observable<IndexBannerBean>
+
     @GET("article/list/{page}/json")
     fun getArticles(@Path("page") page: Int): Observable<IndexArticleBean>
 

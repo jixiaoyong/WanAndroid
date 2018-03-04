@@ -50,4 +50,6 @@ dependencies {
     compile "com.squareup.retrofit2:adapter-rxjava2:2.3.0"
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'//解析返回数据
+
+    compile 'com.github.pinguo-zhouwei:MZBannerView:v2.0.0'
 }
