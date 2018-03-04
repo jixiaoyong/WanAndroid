@@ -66,6 +66,11 @@ class DiscoverProjectsAdapter(context :Context, data: List<DiscoverProjectItemBe
 
         Glide.with(mContext!!).load(mData[position].envelopePic).into(holder.itemView.image)
 
+        holder!!.itemView.setOnClickListener{
+
+            mItemListener!!.invoke(mData[position].link!!)
+        }
+
     }
 
 
