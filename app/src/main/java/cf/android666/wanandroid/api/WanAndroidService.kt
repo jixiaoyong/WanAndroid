@@ -1,9 +1,6 @@
 package cf.android666.wanandroid.api
 
-import cf.android666.wanandroid.bean.DiscoverProjectItemBean
-import cf.android666.wanandroid.bean.DiscoverProjectTreeBean
-import cf.android666.wanandroid.bean.DiscoverTreeBean
-import cf.android666.wanandroid.bean.IndexArticleBean
+import cf.android666.wanandroid.bean.*
 import io.reactivex.Observable
 import retrofit2.Call
 import retrofit2.http.GET
@@ -22,6 +19,9 @@ interface WanAndroidService{
 
     @GET("tree/json")
     fun getTree() :Observable<DiscoverTreeBean>
+
+    @GET("navi/json")
+    fun getNavi() :Observable<DiscoverNaviBean>
 
     @GET("article/list/{page}/json")
     fun getArticles(@Path("page") page: Int): Observable<IndexArticleBean>
