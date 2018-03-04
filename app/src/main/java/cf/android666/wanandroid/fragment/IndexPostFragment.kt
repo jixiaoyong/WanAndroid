@@ -12,12 +12,16 @@ import cf.android666.wanandroid.R
 import cf.android666.wanandroid.activity.ContentActivity
 import cf.android666.wanandroid.adapter.IndexPostArticleAdapter
 import cf.android666.wanandroid.api.ApiUrl
+import cf.android666.wanandroid.api.WanAndroidApiHelper
 import cf.android666.wanandroid.base.BaseFragment
 import cf.android666.wanandroid.bean.IndexArticleBean
 import cf.android666.wanandroid.utils.DownloadUtil
 import cf.android666.wanandroid.utils.LogTools
 import cf.android666.wanandroid.utils.SuperUtil
 import com.google.gson.Gson
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_index_post.view.*
 
 /**
@@ -25,45 +29,8 @@ import kotlinx.android.synthetic.main.fragment_index_post.view.*
  */
 class IndexPostFragment : BaseFragment() {
 
-    private var article = IndexArticleBean()
 
-    //todo 内存泄漏风险
-    private var handler = @SuppressLint("HandlerLeak")
-    object : android.os.Handler() {
-
-        override fun handleMessage(msg: Message?) {
-            if (msg!!.what == MSG_WHAT_ARTICLE) {
-
-                if (msg.obj == null) {
-                    return
-                }
-
-                article = Gson().fromJson<IndexArticleBean>(msg.obj as String)
-
-                if (article.errorCode >= 0) {
-
-                    view!!.recycler_view.adapter.notifyDataSetChanged()
-
-                } else {
-
-                    Toast.makeText(context, article.errorMsg, Toast.LENGTH_SHORT).show()
-
-                }
-
-
-            } else if (msg!!.what == MSG_WHAT_BANNER) {
-
-            }
-        }
-    }
-
-    companion object {
-
-        val MSG_WHAT_ARTICLE = 0
-
-        val MSG_WHAT_BANNER = 1
-
-    }
+    private var mData = IndexArticleBean.DataBean().datas
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -71,7 +38,7 @@ class IndexPostFragment : BaseFragment() {
 
         view.recycler_view.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
-        view.recycler_view.adapter = IndexPostArticleAdapter(context, article.data, {
+        view.recycler_view.adapter = IndexPostArticleAdapter(context, mData, {
 
             SuperUtil.startActivity(context, ContentActivity::class.java, it)
 
@@ -81,15 +48,36 @@ class IndexPostFragment : BaseFragment() {
 
         })
 
-        DownloadUtil.downloadJson(ApiUrl.atricleUrl, handler, MSG_WHAT_ARTICLE)
+        downloadData()
 
 
         return view
     }
 
-    inline fun <reified T : Any> Gson.fromJson(json: String): T {
+    private fun downloadData() {
 
-        return Gson().fromJson(json, T::class.java)
+        downloadData(0)
+
+    }
+
+    private fun downloadData(page: Int) {
+
+        val observable = WanAndroidApiHelper.getInstance().getArticles(page)
+
+        observable.subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+
+                    when(page){
+
+                        0 -> {mData.clear();mData.addAll(it.data.datas)}
+
+                        else -> mData.addAll(it.data.datas)
+                    }
+
+                    view!!.recycler_view.adapter.notifyDataSetChanged()
+
+                }
 
     }
 

@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import cf.android666.wanandroid.R
 import cf.android666.wanandroid.bean.DiscoverProjectItemBean
+import cf.android666.wanandroid.utils.SuperUtil
 import com.bumptech.glide.Glide
 import com.orhanobut.logger.Logger
 import kotlinx.android.synthetic.main.item_discover_projects.view.*
@@ -69,7 +70,6 @@ class DiscoverProjectsAdapter(context :Context, data: List<DiscoverProjectItemBe
 
 
 
-    class MViewHolder(view:View) : RecyclerView.ViewHolder(view){
+    class MViewHolder(view:View) : RecyclerView.ViewHolder(view)
 
-    }
 }

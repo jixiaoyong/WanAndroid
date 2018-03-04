@@ -13,7 +13,7 @@ import kotlinx.android.synthetic.main.fragment_discover_navi.view.*
 /**
  * Created by jixiaoyong on 2018/2/25.
  */
-class DiscoverNaviFragment() : BaseFragment() {
+class DiscoverNaviFragment : BaseFragment() {
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater!!.inflate(R.layout.fragment_discover_navi, container, false)

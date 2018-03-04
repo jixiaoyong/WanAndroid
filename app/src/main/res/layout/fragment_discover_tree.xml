@@ -3,10 +3,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <cf.android666.wanandroid.view.ContactsRecyclerview
-        android:id="@+id/recycler_view"
+    <ExpandableListView
+        android:id="@+id/expandable_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/colorPrimary"/>
+        android:layout_height="match_parent">
+
+    </ExpandableListView>
 
 </LinearLayout>

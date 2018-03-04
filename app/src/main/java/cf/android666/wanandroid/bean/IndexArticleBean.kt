@@ -33,7 +33,7 @@ class IndexArticleBean {
         var pageCount: Int = 0
         var size: Int = 0
         var total: Int = 0
-        var datas: List<DatasBean>? = arrayListOf()
+        var datas: ArrayList<DatasBean> = arrayListOf()
 
         class DatasBean {
             /**
@@ -56,21 +56,21 @@ class IndexArticleBean {
              * zan : 0
              */
 
-            var apkLink: String? = null
-            var author: String? = null
+            var apkLink: String? = ""
+            var author: String? = ""
             var chapterId: Int = 0
-            var chapterName: String? = null
+            var chapterName: String? = ""
             var isCollect: Boolean = false
             var courseId: Int = 0
-            var desc: String? = null
-            var envelopePic: String? = null
+            var desc: String? = ""
+            var envelopePic: String? = ""
             var id: Int = 0
-            var link: String? = null
-            var niceDate: String? = null
-            var origin: String? = null
-            var projectLink: String? = null
+            var link: String? = ""
+            var niceDate: String? = ""
+            var origin: String? = ""
+            var projectLink: String? = ""
             var publishTime: Long = 0
-            var title: String? = null
+            var title: String? = ""
             var visible: Int = 0
             var zan: Int = 0
         }

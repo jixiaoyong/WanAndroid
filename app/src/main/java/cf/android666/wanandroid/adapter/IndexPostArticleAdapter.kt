@@ -12,12 +12,12 @@ import kotlinx.android.synthetic.main.item_index_post.view.*
 /**
  * Created by jixiaoyong on 2018/2/27.
  */
-class IndexPostArticleAdapter(context :Context, data: IndexArticleBean.DataBean,
+class IndexPostArticleAdapter(context :Context, data: ArrayList<IndexArticleBean.DataBean.DatasBean>,
                               itemListener: ((url: String) -> Unit),
                               imgBtnListener: ((view: View) -> Unit))
     : RecyclerView.Adapter<IndexPostArticleAdapter.MViewHolder>(){
 
-    private var mData = IndexArticleBean.DataBean()
+    private var mData = IndexArticleBean.DataBean().datas
 
     private var mContext : Context? = null
 
@@ -47,22 +47,22 @@ class IndexPostArticleAdapter(context :Context, data: IndexArticleBean.DataBean,
 
     override fun getItemCount(): Int {
 
-        return mData.size
+        return mData!!.size
     }
 
     override fun onBindViewHolder(holder: MViewHolder?, position: Int) {
 
-        holder!!.itemView.title.text = mData.datas!![position].title
+        holder!!.itemView.title.text = mData!![position].title
 
-        holder!!.itemView.author.text = "作者：${mData.datas!![position].author}"
+        holder!!.itemView.author.text = "作者：${mData!![position].author}"
 
-        holder!!.itemView.time.text = "时间：${mData.datas!![position].niceDate}"
+        holder!!.itemView.time.text = "时间：${mData!![position].niceDate}"
 
-        holder!!.itemView.chapter.text = "分类：${mData.datas!![position].chapterName}"
+        holder!!.itemView.chapter.text = "分类：${mData!![position].chapterName}"
 
         holder.itemView.setOnClickListener{
 
-            mItemListener!!.invoke(mData.datas!![position].link!!)
+            mItemListener!!.invoke(mData!![position].link!!)
 
         }
 

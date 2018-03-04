@@ -18,7 +18,6 @@ class ContentActivity : AppCompatActivity() {
 
         setSupportActionBar(toolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-//        supportActionBar!!.setDisplayShowHomeEnabled(true)
 
         SuperUtil.loadUrl(web_view,intent.getStringExtra("url"))
 

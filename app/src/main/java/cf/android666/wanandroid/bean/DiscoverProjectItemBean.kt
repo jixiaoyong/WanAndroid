@@ -32,7 +32,7 @@ package cf.android666.wanandroid.bean
         var pageCount: Int = 0
         var size: Int = 0
         var total: Int = 0
-        var datas: List<DatasBean> = arrayListOf()
+        var datas: ArrayList<DatasBean> = arrayListOf()
 
         class DatasBean {
             /**

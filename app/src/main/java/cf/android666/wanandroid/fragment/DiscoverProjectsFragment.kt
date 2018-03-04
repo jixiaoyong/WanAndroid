@@ -1,23 +1,22 @@
 package cf.android666.wanandroid.fragment
 
-import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
-import android.os.Message
-import android.support.v7.widget.LinearLayoutManager
+import android.support.design.widget.TabLayout
 import android.support.v7.widget.StaggeredGridLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import cf.android666.wanandroid.R
 import cf.android666.wanandroid.activity.ContentActivity
 import cf.android666.wanandroid.adapter.DiscoverProjectsAdapter
+import cf.android666.wanandroid.api.WanAndroidApiHelper
 import cf.android666.wanandroid.base.BaseFragment
 import cf.android666.wanandroid.bean.DiscoverProjectItemBean
-import cf.android666.wanandroid.utils.DownloadUtil
+import cf.android666.wanandroid.bean.DiscoverProjectTreeBean
 import cf.android666.wanandroid.utils.SuperUtil
-import com.google.gson.Gson
-import com.orhanobut.logger.Logger
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_discover_projects.view.*
 import java.util.ArrayList
 
@@ -26,71 +25,47 @@ import java.util.ArrayList
  */
 class DiscoverProjectsFragment : BaseFragment() {
 
-    private var mData = DiscoverProjectItemBean()
+    private var mData  = ArrayList<DiscoverProjectItemBean.DataBean.DatasBean>()
 
+    private var mTreeData = ArrayList<DiscoverProjectTreeBean.DataBean>()
 
-    private var handler = @SuppressLint("HandlerLeak")
-    object : android.os.Handler() {
+    private var mTabId = 0
 
-        override fun handleMessage(msg: Message?) {
-            if (msg!!.what == MSG_WHAT_PROJECTS) {
-
-                view!!.swipe_refresh.isRefreshing = false
-
-                if (msg.obj == null) {
-                    return
-                }
-
-                mData = Gson().fromJson<DiscoverProjectItemBean>(msg.obj as String)
-
-                if (mData.errorCode >= 0) {
-
-                    view!!.recycler_view.adapter.notifyDataSetChanged()
-
-
-                } else {
-
-                    Toast.makeText(context, mData.errorMsg, Toast.LENGTH_SHORT).show()
-
-                }
-
-
-            } else if (msg!!.what == MSG_WHAT_TREE) {
-
-            }
-        }
-    }
-
-    companion object {
-
-        val MSG_WHAT_PROJECTS = 0
-
-        val MSG_WHAT_TREE = 1
-
-    }
+    private var mPage = 0
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater!!.inflate(R.layout.fragment_discover_projects, container, false)
 
-        view.recycler_view.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+        for (x in mTreeData.indices) {
 
-//        view.recycler_view.layoutManager = LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
-
-        var mData  = ArrayList<DiscoverProjectItemBean.DataBean.DatasBean>()
-
-        for (x in 0..20){
-
-            var temp = DiscoverProjectItemBean.DataBean.DatasBean()
-            temp.apkLink = "ddede" + x
-            temp.author = "ddede" + x
-            temp.title = "ddede" + x
-            temp.desc = "ddede" + x
-            temp.envelopePic = "ddede" + x
-
-            mData.add(temp)
+            view!!.tab_layout.addTab(view!!.tab_layout.newTab(),x)
+            view!!.tab_layout.getTabAt(x)!!.text = mTreeData[x].name
         }
 
-//        view.recycler_view.adapter = DiscoverProjectsAdapter(context, mData.data.datas, {
+        view!!.tab_layout.tabMode = TabLayout.MODE_SCROLLABLE
+
+        view.tab_layout.setOnTabSelectedListener(object :TabLayout.OnTabSelectedListener{
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+
+            }
+
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+
+                mTabId = tab!!.position
+
+                mPage = 0
+
+                downloadData(1,mTreeData[tab!!.position].id)
+            }
+        })
+
+
+        view.recycler_view.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+
         view.recycler_view.adapter = DiscoverProjectsAdapter(context, mData, {
 
             SuperUtil.startActivity(context, ContentActivity::class.java, it)
@@ -99,24 +74,67 @@ class DiscoverProjectsFragment : BaseFragment() {
 
         })
 
-        val url = "http://www.wanandroid.com/project/list/1/json?cid=294"
-
-        DownloadUtil.downloadJson(url,handler, MSG_WHAT_PROJECTS)
 
         view.swipe_refresh.setOnRefreshListener{
 
-            DownloadUtil.downloadJson(url,handler, MSG_WHAT_PROJECTS)
+            downloadData(1,316)
 
+            downloadTree()
         }
 
         return view
     }
 
-    inline fun <reified T : Any> Gson.fromJson(json: String): T {
 
-        return Gson().fromJson(json, T::class.java)
+    private fun downloadTree() {
+
+        val observable = WanAndroidApiHelper.getInstance().getProjectTree()
+
+        observable.subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+
+                    mTreeData.clear()
+
+                    mTreeData.addAll(it.data)
+
+                    for (x in mTreeData.indices) {
+
+                        view!!.tab_layout.addTab(view!!.tab_layout.newTab(),x)
+                        view!!.tab_layout.getTabAt(x)!!.text = mTreeData[x].name
+                    }
+
+                }
+    }
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+
+        downloadData(1,294)
+        downloadTree()
 
     }
+
+    private fun downloadData(page:Int,cid:Int) {
+
+        val observable = WanAndroidApiHelper.getInstance().getProjectItems(page, cid)
+
+        observable.subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+
+                    mData.clear()
+
+                    mData.addAll(it.data.datas)
+
+                    view!!.recycler_view.adapter.notifyDataSetChanged()
+
+                    view!!.swipe_refresh.isRefreshing = false
+
+                }
+
+    }
+
 }
 
 
