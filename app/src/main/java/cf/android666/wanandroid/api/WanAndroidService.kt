@@ -40,12 +40,18 @@ interface WanAndroidService{
 
 
     @POST("user/login")
+    @FormUrlEncoded
     fun login(@Field("username") userName: String,
               @Field("password") userPwd: String): Observable<Cookie>
+
+
 
     @POST("user/login")
     fun register(@Field("username") userName: String,
                  @Field("password") userPwd: String,
                  @Field("repassword")userRePwd: String) : Observable<Cookie>
+
+    @GET("lg/collect/list/{page}/json")
+    fun getCollect(@Path("page") page: Int):Observable<IndexCollectBean>
 
 }

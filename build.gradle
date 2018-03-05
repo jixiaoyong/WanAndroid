@@ -5,7 +5,7 @@ buildscript {
     repositories {
         google()
         jcenter()
-        maven { url 'https://jitpack.io' }//for MZBannerView
+        maven { url 'https://jitpack.io' }//for MZBannerView,PersistentCookieJar
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.0.1'

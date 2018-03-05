@@ -9,6 +9,7 @@
         android:id="@+id/user_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:maxLines="1"
         android:hint="用户名"
         />
 
@@ -16,6 +17,7 @@
         android:id="@+id/user_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:maxLines="1"
         android:hint="密码"
         android:inputType="textPassword"/>
 
@@ -23,6 +25,7 @@
         android:id="@+id/user_password_re"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:maxLines="1"
         android:hint="再输一次密码"
         android:inputType="textPassword"
         android:visibility="gone"/>
