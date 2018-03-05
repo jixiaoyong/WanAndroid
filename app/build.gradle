@@ -49,7 +49,7 @@ dependencies {
     //解析返回数据
     compile 'com.github.pinguo-zhouwei:MZBannerView:v2.0.0'
 
-    compile 'com.github.franmontiel:PersistentCookieJar:v1.0.1'
+//    compile 'com.github.franmontiel:PersistentCookieJar:v1.0.1'
 
     implementation "com.squareup.okhttp3:logging-interceptor:3.6.0"
 
