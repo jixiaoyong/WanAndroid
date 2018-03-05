@@ -1,9 +1,9 @@
 # WanAndroid
 一个用kotlin语言编写的www.wanandroid.com的客户端
 
-目前还在持续编写中。。。
+本项目还在持续编写中。。。
 
-我的邮箱: jixiaoyong1995@gmail.com ,有任何问题都可以email我或者在[issues](https://github.com/jixiaoyong/WanAndroid/issues) 提出。
+**我的邮箱: jixiaoyong1995@gmail.com ,有任何问题都可以email我或者在[issues](https://github.com/jixiaoyong/WanAndroid/issues) 提出。**
 
 # 界面预览
 
@@ -49,8 +49,10 @@
 * com.squareup.okhttp3:logging-interceptor 3.6.0
 * [WanAndroidClient](https://github.com/wangzailfm/WanAndroidClient) 使用了他的登录模块
 
+此外，应用中部分图标来自[Iconfont-阿里巴巴矢量图标库](http://www.iconfont.cn/)
+
 感谢以上开源作者和机构，致敬！
 
 
 
-我的邮箱: jixiaoyong1995@gmail.com ,有任何问题都可以email我或者在[issues](https://github.com/jixiaoyong/WanAndroid/issues) 提出。
+**我的邮箱: jixiaoyong1995@gmail.com ,有任何问题都可以email我或者在[issues](https://github.com/jixiaoyong/WanAndroid/issues) 提出。**
