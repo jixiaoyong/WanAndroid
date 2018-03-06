@@ -53,4 +53,7 @@ dependencies {
 
     implementation "com.squareup.okhttp3:logging-interceptor:3.6.0"
 
+    //事件处理
+    compile 'org.greenrobot:eventbus:3.1.1'
+
 }
