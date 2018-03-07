@@ -13,11 +13,22 @@ import cf.android666.wanandroid.adapter.IndexFavoriteAdapter
 import cf.android666.wanandroid.base.BaseFragment
 import cf.android666.wanandroid.bean.IndexCollectBean
 import cf.android666.wanandroid.cookie.CookieTools
+import cf.android666.wanandroid.cookie.Preference
+import cf.android666.wanandroid.utils.MessageEvent
+import cf.android666.wanandroid.utils.SharePreference
 import cf.android666.wanandroid.utils.SuperUtil
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.fragment_index_favorite.*
 import kotlinx.android.synthetic.main.fragment_index_favorite.view.*
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
+import kotlin.concurrent.thread
+import android.R.id.edit
+import android.content.SharedPreferences
+
+
+
 
 /**
  * Created by jixiaoyong on 2018/2/25.
@@ -26,25 +37,52 @@ class IndexFavoriteFragment() : BaseFragment() {
 
     private var mData = IndexCollectBean.DataBean().datas
 
+    var mView: View? = null
+
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater!!.inflate(R.layout.fragment_index_favorite, container, false)
 
-        view.noting_img.visibility = View.VISIBLE
+        mView = view
 
-        view.recycler_view.visibility = View.GONE
 
-        view.recycler_view.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        var isLogin = false
+//        val isLogin = SharePreference.getInstance().getBoolean(SharePreference.IS_LOGIN, false)
 
-        view.recycler_view.adapter = IndexFavoriteAdapter(context, mData, {
+        if (isLogin) {
 
-            SuperUtil.startActivity(context, ContentActivity::class.java, it)
+            view.recycler_view.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
-        }, {
+            view.recycler_view.adapter = IndexFavoriteAdapter(context, mData, {
 
-            it.isSelected = !it.isSelected
+                SuperUtil.startActivity(context, ContentActivity::class.java, it)
 
-        })
+            }, {
+
+                it.isSelected = !it.isSelected
+
+            })
+
+            loadData(view)
+
+            view.noting_img.visibility = View.GONE
+
+            view.recycler_view.visibility = View.VISIBLE
+
+        } else {
+
+            view.noting_img.visibility = View.VISIBLE
+
+            view.recycler_view.visibility = View.GONE
+
+            Toast.makeText(context,"请先登录",Toast.LENGTH_SHORT).show()
+        }
+
+        return view
+    }
+
+
+    fun loadData(view: View) {
 
         CookieTools.getCookieService()!!
                 .getCollect(0)
@@ -52,21 +90,29 @@ class IndexFavoriteFragment() : BaseFragment() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
 
-                    view.noting_img.visibility = View.GONE
-
-                    view.recycler_view.visibility = View.VISIBLE
-
                     mData.clear()
 
                     mData.addAll(it.data.datas)
 
                     view.recycler_view.adapter.notifyDataSetChanged()
 
-                }
+//                    SharePreference.saveKV(SharePreference.FAVORITE_COUNT,it.data.total)
 
-        return view
+                }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun update(event: MessageEvent) {
+        loadData(view!!)
+    }
 
+    override fun onDetach() {
+        super.onDetach()
+        EventBus.getDefault().unregister(context)
+    }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        EventBus.getDefault().register(this)
+    }
 }

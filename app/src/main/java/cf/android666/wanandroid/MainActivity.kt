@@ -5,18 +5,24 @@ import android.os.Bundle
 import android.support.v4.view.ViewPager
 import android.support.v7.widget.SearchView
 import android.view.Menu
+import android.widget.Toast
 import cf.android666.wanandroid.adapter.MFragmentViewPagerAdapter
 import cf.android666.wanandroid.base.BaseFragment
 import cf.android666.wanandroid.fragment.AboutFragment
 import cf.android666.wanandroid.fragment.DiscoverFragment
 import cf.android666.wanandroid.fragment.IndexFragment
+import cf.android666.wanandroid.utils.SharePreference
+import com.bumptech.glide.Glide.init
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        initss()
 
         setSupportActionBar(toolbar)
 
@@ -61,8 +67,15 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+
+        Toast.makeText(this,SharePreference.getInstance().getString("dede","fail"),
+                Toast.LENGTH_SHORT).show()
     }
 
+    private fun initss() {
+
+        SharePreference.saveKV("dede","de533rfe")
+    }
 
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

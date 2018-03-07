@@ -8,14 +8,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import cf.android666.wanandroid.R
-import cf.android666.wanandroid.api.WanAndroidApiHelper
 import cf.android666.wanandroid.base.BaseFragment
 import cf.android666.wanandroid.cookie.CookieTools
+import cf.android666.wanandroid.cookie.Preference
+import cf.android666.wanandroid.utils.MessageEvent
+import cf.android666.wanandroid.utils.SharePreference
 import kotlinx.android.synthetic.main.fragment_about.view.*
 import kotlinx.android.synthetic.main.fragment_about_login.view.*
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-
+import org.greenrobot.eventbus.EventBus
 
 
 /**
@@ -23,19 +25,16 @@ import io.reactivex.schedulers.Schedulers
  */
 class AboutFragment : BaseFragment() {
 
+
+
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         var view = inflater!!.inflate(R.layout.fragment_about, container, false)
 
-        val sharePf = context.getSharedPreferences("settings", Context.MODE_PRIVATE)
 
-        val edit = sharePf.edit()
+        var isLogin = false
 
-        var isLogin = sharePf.getBoolean("is_login", false)
-
-        var isNightMode = sharePf.getBoolean("night_mode", false)
-
-        var favoriteCount = sharePf.getInt("favorite_count", 0)
+//        var isLogin = SharePreference.getInstance().getBoolean(SharePreference.IS_LOGIN, false)
 
         view.power_btn.text = if (isLogin) "注销" else "登录/注册"
 
@@ -51,9 +50,8 @@ class AboutFragment : BaseFragment() {
 
                 isLogin = false
 
-                edit.putBoolean("is_login", false)
+//                SharePreference.saveKV(SharePreference.IS_LOGIN, false)
 
-                edit.commit()
 
             } else {
 
@@ -100,7 +98,6 @@ class AboutFragment : BaseFragment() {
 
                 var userRePwdEt = view.user_password_re
 
-                val service = WanAndroidApiHelper.getInstance()
 
                 view.login_btn.setOnClickListener {
 
@@ -120,18 +117,15 @@ class AboutFragment : BaseFragment() {
 
                         Toast.makeText(context,"登录成功",Toast.LENGTH_SHORT).show()
                         isLogin = true
-//                    service.login(userName, userPwd)
+
                     } else {
                         Toast.makeText(context,"账号或密码错误，请重试",Toast.LENGTH_SHORT).show()
                         isLogin = false
                     }
 
-                    edit.putBoolean("is_login", isLogin)
-
-                    edit.commit()
+//                   SharePreference.saveKV(SharePreference.IS_LOGIN,isLogin)
 
                     login(userName,userPwd)
-
 
                 }
 
@@ -181,6 +175,14 @@ class AboutFragment : BaseFragment() {
                         Toast.makeText(context,"login success!",Toast.LENGTH_SHORT).show()
 
                         refreashUi()
+
+                        var event = MessageEvent()
+
+                        event.isLogin = true
+
+//                        SharePreference.saveKV(SharePreference.IS_LOGIN,true)
+
+                        EventBus.getDefault().post(event)
                     }
                 }
 
