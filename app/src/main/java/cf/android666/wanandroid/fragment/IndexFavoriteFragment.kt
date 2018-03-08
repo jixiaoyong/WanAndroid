@@ -46,8 +46,8 @@ class IndexFavoriteFragment() : BaseFragment() {
         mView = view
 
 
-        var isLogin = false
-//        val isLogin = SharePreference.getInstance().getBoolean(SharePreference.IS_LOGIN, false)
+        var isLogin = SharePreference.getV<Boolean>(SharePreference.IS_LOGIN,false)
+
 
         if (isLogin) {
 
@@ -90,16 +90,29 @@ class IndexFavoriteFragment() : BaseFragment() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
 
-                    mData.clear()
+                    if (it.errorCode < 0) {
 
-                    mData.addAll(it.data.datas)
+                        Toast.makeText(context, it.errorMsg, Toast.LENGTH_SHORT).show()
 
-                    view.recycler_view.adapter.notifyDataSetChanged()
+                        SharePreference.saveKV(SharePreference.IS_LOGIN, false)
 
-//                    SharePreference.saveKV(SharePreference.FAVORITE_COUNT,it.data.total)
+                    } else {
+
+                        mData.clear()
+
+                        mData.addAll(it.data.datas)
+
+                        view.recycler_view.adapter.notifyDataSetChanged()
+
+                        Toast.makeText(context,mData[0].chapterName,Toast.LENGTH_SHORT).show()
+
+                        SharePreference.saveKV(SharePreference.FAVORITE_COUNT,it.data.total.toString())
+                    }
+
 
                 }
     }
+
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun update(event: MessageEvent) {

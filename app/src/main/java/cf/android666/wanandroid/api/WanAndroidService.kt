@@ -42,7 +42,7 @@ interface WanAndroidService{
     @POST("user/login")
     @FormUrlEncoded
     fun login(@Field("username") userName: String,
-              @Field("password") userPwd: String): Observable<Cookie>
+              @Field("password") userPwd: String): Observable<CookieBean>
 
 
 

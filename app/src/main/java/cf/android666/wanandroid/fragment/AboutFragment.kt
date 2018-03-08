@@ -1,6 +1,5 @@
 package cf.android666.wanandroid.fragment
 
-import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,13 +9,13 @@ import android.widget.Toast
 import cf.android666.wanandroid.R
 import cf.android666.wanandroid.base.BaseFragment
 import cf.android666.wanandroid.cookie.CookieTools
-import cf.android666.wanandroid.cookie.Preference
 import cf.android666.wanandroid.utils.MessageEvent
 import cf.android666.wanandroid.utils.SharePreference
 import kotlinx.android.synthetic.main.fragment_about.view.*
 import kotlinx.android.synthetic.main.fragment_about_login.view.*
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import kotlinx.android.synthetic.main.fragment_about_settings.view.*
 import org.greenrobot.eventbus.EventBus
 
 
@@ -25,79 +24,39 @@ import org.greenrobot.eventbus.EventBus
  */
 class AboutFragment : BaseFragment() {
 
-
+    var mView:View? = null
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         var view = inflater!!.inflate(R.layout.fragment_about, container, false)
 
+        mView = view
 
-        var isLogin = false
-
-//        var isLogin = SharePreference.getInstance().getBoolean(SharePreference.IS_LOGIN, false)
-
-        view.power_btn.text = if (isLogin) "注销" else "登录/注册"
-
-        if (isLogin) {
-            view.settings_layout.inflate()
-        }
+        refreashUi()
 
         view.power_btn.setOnClickListener {
+
+            var isLogin = SharePreference.getV<Boolean>(SharePreference.IS_LOGIN,false)
 
             if (isLogin) {
 
                 Toast.makeText(context, "注销啦", Toast.LENGTH_SHORT).show()
 
-                isLogin = false
+                SharePreference.saveKV(SharePreference.IS_LOGIN, false)
 
-//                SharePreference.saveKV(SharePreference.IS_LOGIN, false)
+                var msg = MessageEvent()
 
+                msg.isLogin = false
+
+                EventBus.getDefault().post(msg)
 
             } else {
-
-
-                if (view.login_layout != null) {
-
-                    view.login_layout.inflate()//此后view stub被删除
-
-                    view.power_btn.setBackgroundColor(Color.TRANSPARENT)
-
-                    view.register_btn.setBackgroundColor(Color.TRANSPARENT)
-
-                    view.login_btn.setBackgroundColor(resources.getColor(R.color.colorBottomNav))
-
-                } else {
-
-                    if (view.about_login_layout.visibility == View.VISIBLE) {
-
-                        view.about_login_layout.visibility = View.GONE
-
-                        view.power_btn.setBackgroundColor(resources.getColor(R.color.colorBottomNav))
-
-                        view.power_layout.setBackgroundColor(Color.TRANSPARENT)
-
-                        view.arrow_img.background = resources.getDrawable(R.drawable.arrow_down)
-
-                    } else {
-
-                        view.about_login_layout.visibility = View.VISIBLE
-
-                        view.power_btn.setBackgroundColor(Color.TRANSPARENT)
-
-                        view.power_layout.background = resources.getDrawable(R.drawable.bg_border)
-
-                        view.arrow_img.background = resources.getDrawable(R.drawable.arrow_up)
-
-                    }
-                }
-
 
                 var userNameEt = view.user_name
 
                 var userPwdEt = view.user_password
 
                 var userRePwdEt = view.user_password_re
-
 
                 view.login_btn.setOnClickListener {
 
@@ -111,19 +70,7 @@ class AboutFragment : BaseFragment() {
 
                     val userPwd = userPwdEt.text.toString()
 
-                    var  isPass = checkNameAndPassWord(userName, userPwd)
-
-                    if (isPass) {
-
-                        Toast.makeText(context,"登录成功",Toast.LENGTH_SHORT).show()
-                        isLogin = true
-
-                    } else {
-                        Toast.makeText(context,"账号或密码错误，请重试",Toast.LENGTH_SHORT).show()
-                        isLogin = false
-                    }
-
-//                   SharePreference.saveKV(SharePreference.IS_LOGIN,isLogin)
+                    checkNameAndPassWord(userName, userPwd)
 
                     login(userName,userPwd)
 
@@ -137,12 +84,19 @@ class AboutFragment : BaseFragment() {
 
                     userRePwdEt.visibility = View.VISIBLE
 
+                    register(userNameEt.text.toString(),userPwdEt.text.toString(),userRePwdEt.text.toString())
 
                 }
             }
         }
 
         return view
+    }
+
+    private fun register(username: String, password1: String, password2: String) {
+
+        Toast.makeText(context,"注册~~",Toast.LENGTH_SHORT).show()
+
     }
 
     private fun checkNameAndPassWord(userName: String, userPwd: String): Boolean {
@@ -170,29 +124,89 @@ class AboutFragment : BaseFragment() {
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
-                    if (it != null) {
+                    if (it.errorCode < 0) {
 
-                        Toast.makeText(context,"login success!",Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, it.errorMsg, Toast.LENGTH_SHORT).show()
 
-                        refreashUi()
+                    } else{
 
                         var event = MessageEvent()
 
                         event.isLogin = true
 
-//                        SharePreference.saveKV(SharePreference.IS_LOGIN,true)
+                        SharePreference.saveKV(SharePreference.IS_LOGIN, true)
 
                         EventBus.getDefault().post(event)
+
+                        Toast.makeText(context, "success", Toast.LENGTH_SHORT).show()
+
+
+                        refreashUi()
                     }
                 }
 
     }
 
-    private fun refreashUi() {
+    fun refreashUi(){
+
+        if (mView == null) {
+            return
+        }
+
+        var isLogin = SharePreference.getV<Boolean>(SharePreference.IS_LOGIN, false)
+
+        if (isLogin) {
+
+            mView!!.power_btn.text = "注销"
+
+            mView!!.power_btn.tag = true
+
+            mView!!.settings_layout.inflate()
+
+            mView!!.fr_text.text = "收藏：" + SharePreference.getV(SharePreference.FAVORITE_COUNT,"")
+
+//            if (mView!!.login_layout != null) {
+//
+//                mView!!.login_layout.inflate()//此后view stub被删除
+//
+//                mView!!.power_btn.setBackgroundColor(Color.TRANSPARENT)
+//
+//                mView!!.register_btn.setBackgroundColor(Color.TRANSPARENT)
+//
+//                mView!!.login_btn.setBackgroundColor(resources.getColor(R.color.colorBottomNav))
+//
+//            } else {
 
 
+//                if (mView!!.about_login_layout.visibility == View.VISIBLE) {
+//
+//                    mView!!.about_login_layout.visibility = View.GONE
+//
+//                    mView!!.power_btn.setBackgroundColor(resources.getColor(R.color.colorBottomNav))
+//
+//                    mView!!.power_layout.setBackgroundColor(Color.TRANSPARENT)
+//
+//                    mView!!.arrow_img.background = resources.getDrawable(R.drawable.arrow_down)
+//                }
+//                 else {
+//
+//                    mView!!.about_login_layout.visibility = View.VISIBLE
+//
+//                    mView!!.power_btn.setBackgroundColor(Color.TRANSPARENT)
+//
+//                    mView!!.power_layout.background = resources.getDrawable(R.drawable.bg_border)
+//
+//                    mView!!.arrow_img.background = resources.getDrawable(R.drawable.arrow_up)
+//
+//                }
+//            }
+
+
+        } else {
+            mView!!.power_btn.text = "登录/注册"
+
+        }
 
     }
-
 
 }

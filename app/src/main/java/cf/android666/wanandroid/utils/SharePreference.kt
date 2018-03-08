@@ -61,5 +61,21 @@ object SharePreference {
 
     }
 
+     fun <T> getV(key: String ,value: Any) :T{
+
+        val result = when (value) {
+
+            is String -> sharePreference!!.getString(key,"")
+
+            is Int -> sharePreference!!.getInt(key,0)
+
+            is Boolean -> sharePreference!!.getBoolean(key,false)
+
+            else -> throw Exception("not support type of class!")
+        }
+
+        return result as T
+    }
+
 
 }
