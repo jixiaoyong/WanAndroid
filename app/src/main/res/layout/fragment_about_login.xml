@@ -1,53 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/about_login_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+    <!--android:id="@+id/about_login_layout"-->
 
-    <android.support.design.widget.TextInputEditText
-        android:id="@+id/user_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:maxLines="1"
-        android:hint="用户名"
-        />
+    <!--<android.support.design.widget.TextInputEditText-->
+        <!--android:id="@+id/user_name"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:maxLines="1"-->
+        <!--android:hint="用户名"-->
+        <!--/>-->
 
-    <android.support.design.widget.TextInputEditText
-        android:id="@+id/user_password"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:maxLines="1"
-        android:hint="密码"
-        android:inputType="textPassword"/>
+    <!--<android.support.design.widget.TextInputEditText-->
+        <!--android:id="@+id/user_password"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:maxLines="1"-->
+        <!--android:hint="密码"-->
+        <!--android:inputType="textPassword"/>-->
 
-    <android.support.design.widget.TextInputEditText
-        android:id="@+id/user_password_re"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:maxLines="1"
-        android:hint="再输一次密码"
-        android:inputType="textPassword"
-        android:visibility="gone"/>
+    <!--<android.support.design.widget.TextInputEditText-->
+        <!--android:id="@+id/user_password_re"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:maxLines="1"-->
+        <!--android:hint="再输一次密码"-->
+        <!--android:inputType="textPassword"-->
+        <!--android:visibility="gone"/>-->
 
-    <TextView
-        android:id="@+id/login_btn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="登录"
-        android:gravity="center"
-        android:background="@color/colorBottomNav"
-        android:padding="5dp"
-        android:layout_margin="5dp"/>
+    <!--<TextView-->
+        <!--android:id="@+id/login_btn"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="登录"-->
+        <!--android:gravity="center"-->
+        <!--android:background="@color/colorBottomNav"-->
+        <!--android:padding="5dp"-->
+        <!--android:layout_margin="5dp"/>-->
 
-    <TextView
-        android:id="@+id/register_btn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:padding="5dp"
-        android:layout_margin="5dp"
-        android:text="注册"/>
+    <!--<TextView-->
+        <!--android:id="@+id/register_btn"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:gravity="center"-->
+        <!--android:padding="5dp"-->
+        <!--android:layout_margin="5dp"-->
+        <!--android:text="注册"/>-->
 
 
 </LinearLayout>

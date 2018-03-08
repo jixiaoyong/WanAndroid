@@ -5,18 +5,22 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Switch
 import android.widget.Toast
 import cf.android666.wanandroid.R
 import cf.android666.wanandroid.base.BaseFragment
 import cf.android666.wanandroid.cookie.CookieTools
 import cf.android666.wanandroid.utils.MessageEvent
 import cf.android666.wanandroid.utils.SharePreference
+import com.orhanobut.logger.Logger
 import kotlinx.android.synthetic.main.fragment_about.view.*
 import kotlinx.android.synthetic.main.fragment_about_login.view.*
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_about_settings.view.*
 import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 
 /**
@@ -34,63 +38,74 @@ class AboutFragment : BaseFragment() {
 
         refreashUi()
 
-        view.power_btn.setOnClickListener {
-
-            var isLogin = SharePreference.getV<Boolean>(SharePreference.IS_LOGIN,false)
-
-            if (isLogin) {
-
-                Toast.makeText(context, "注销啦", Toast.LENGTH_SHORT).show()
-
-                SharePreference.saveKV(SharePreference.IS_LOGIN, false)
-
-                var msg = MessageEvent()
-
-                msg.isLogin = false
-
-                EventBus.getDefault().post(msg)
-
-            } else {
-
-                var userNameEt = view.user_name
-
-                var userPwdEt = view.user_password
-
-                var userRePwdEt = view.user_password_re
-
-                view.login_btn.setOnClickListener {
-
-                    view.register_btn.setBackgroundColor(Color.TRANSPARENT)
-
-                    view.login_btn.setBackgroundColor(resources.getColor(R.color.colorBottomNav))
-
-                    userRePwdEt.visibility = View.GONE
-
-                    val userName = userNameEt.text.toString()
-
-                    val userPwd = userPwdEt.text.toString()
-
-                    checkNameAndPassWord(userName, userPwd)
-
-                    login(userName,userPwd)
-
-                }
-
-                view.register_btn.setOnClickListener {
-
-                    view.register_btn.setBackgroundColor(resources.getColor(R.color.colorBottomNav))
-
-                    view.login_btn.setBackgroundColor(Color.TRANSPARENT)
-
-                    userRePwdEt.visibility = View.VISIBLE
-
-                    register(userNameEt.text.toString(),userPwdEt.text.toString(),userRePwdEt.text.toString())
-
-                }
-            }
-        }
+        setOnClick(view)
 
         return view
+    }
+
+    private fun setOnClick(view: View) {
+
+        var isLogin = SharePreference.getV<Boolean>(SharePreference.IS_LOGIN, false)
+
+//        view.power_btn.setOnClickListener {
+//
+//            if (isLogin) {
+//
+//                view.about_login_layout.visibility = View.VISIBLE
+//
+//                Toast.makeText(context, "注销啦", Toast.LENGTH_SHORT).show()
+//
+//                SharePreference.saveKV(SharePreference.IS_LOGIN, false)
+//
+//                var msg = MessageEvent
+//
+//                msg.isLogin = false
+//
+//                EventBus.getDefault().post(msg)
+//
+//            } else {
+//
+//                view.about_login_layout.visibility = View.GONE
+//
+//            }
+//
+//        }
+
+        var userNameEt = view.user_name
+
+        var userPwdEt = view.user_password
+
+        var userRePwdEt = view.user_password_re
+
+        view.login_btn.setOnClickListener {
+
+            view.register_btn.setBackgroundColor(Color.TRANSPARENT)
+
+            view.login_btn.setBackgroundColor(resources.getColor(R.color.colorBottomNav))
+
+            userRePwdEt.visibility = View.GONE
+
+            val userName = userNameEt.text.toString()
+
+            val userPwd = userPwdEt.text.toString()
+
+            checkNameAndPassWord(userName, userPwd)
+
+            login(userName,userPwd)
+
+        }
+
+        view.register_btn.setOnClickListener {
+
+            view.register_btn.setBackgroundColor(resources.getColor(R.color.colorBottomNav))
+
+            view.login_btn.setBackgroundColor(Color.TRANSPARENT)
+
+            userRePwdEt.visibility = View.VISIBLE
+
+            register(userNameEt.text.toString(),userPwdEt.text.toString(),userRePwdEt.text.toString())
+
+        }
     }
 
     private fun register(username: String, password1: String, password2: String) {
@@ -130,7 +145,7 @@ class AboutFragment : BaseFragment() {
 
                     } else{
 
-                        var event = MessageEvent()
+                        var event = MessageEvent
 
                         event.isLogin = true
 
@@ -140,13 +155,13 @@ class AboutFragment : BaseFragment() {
 
                         Toast.makeText(context, "success", Toast.LENGTH_SHORT).show()
 
-
                         refreashUi()
                     }
                 }
 
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     fun refreashUi(){
 
         if (mView == null) {
@@ -155,55 +170,91 @@ class AboutFragment : BaseFragment() {
 
         var isLogin = SharePreference.getV<Boolean>(SharePreference.IS_LOGIN, false)
 
+        Logger.wtf("is login $isLogin")
+
         if (isLogin) {
+
+            mView!!.about_login_layout.visibility = View.GONE
+
+            mView!!.about_settings_layout.visibility = View.VISIBLE
 
             mView!!.power_btn.text = "注销"
 
-            mView!!.power_btn.tag = true
+            mView!!.power_btn.setOnClickListener {
 
-            mView!!.settings_layout.inflate()
+               Toast.makeText(context,"注销啦",Toast.LENGTH_SHORT).show()
+
+                mView!!.about_settings_layout.visibility = View.GONE
+
+                mView!!.power_btn.text = "登录/注册"
+
+                isLogin = false
+
+                SharePreference.saveKV(SharePreference.IS_LOGIN,false)
+
+                MessageEvent.isLogin = false
+
+                EventBus.getDefault().post(MessageEvent)
+
+                refreashUi()
+            }
 
             mView!!.fr_text.text = "收藏：" + SharePreference.getV(SharePreference.FAVORITE_COUNT,"")
 
-//            if (mView!!.login_layout != null) {
-//
-//                mView!!.login_layout.inflate()//此后view stub被删除
-//
-//                mView!!.power_btn.setBackgroundColor(Color.TRANSPARENT)
-//
-//                mView!!.register_btn.setBackgroundColor(Color.TRANSPARENT)
-//
-//                mView!!.login_btn.setBackgroundColor(resources.getColor(R.color.colorBottomNav))
-//
-//            } else {
+            var isNightMode = SharePreference.getV<Boolean>(SharePreference.IS_LOGIN,false)
 
+            mView!!.night_mode.isChecked = isNightMode
 
-//                if (mView!!.about_login_layout.visibility == View.VISIBLE) {
-//
-//                    mView!!.about_login_layout.visibility = View.GONE
-//
-//                    mView!!.power_btn.setBackgroundColor(resources.getColor(R.color.colorBottomNav))
-//
-//                    mView!!.power_layout.setBackgroundColor(Color.TRANSPARENT)
-//
-//                    mView!!.arrow_img.background = resources.getDrawable(R.drawable.arrow_down)
-//                }
-//                 else {
-//
-//                    mView!!.about_login_layout.visibility = View.VISIBLE
-//
-//                    mView!!.power_btn.setBackgroundColor(Color.TRANSPARENT)
-//
-//                    mView!!.power_layout.background = resources.getDrawable(R.drawable.bg_border)
-//
-//                    mView!!.arrow_img.background = resources.getDrawable(R.drawable.arrow_up)
-//
-//                }
-//            }
+            mView!!.night_mode.setOnClickListener {
 
+                SharePreference.saveKV(SharePreference.IS_NIGHT_MODE,(it as Switch).isChecked)
+
+                var msg = MessageEvent
+
+                msg.isNightMode = it.isChecked
+
+                EventBus.getDefault().post(msg)
+            }
 
         } else {
+
             mView!!.power_btn.text = "登录/注册"
+
+            mView!!.power_btn.setOnClickListener {
+
+                mView!!.about_login_layout.visibility =
+                        if (mView!!.about_login_layout.visibility == View.VISIBLE) View.GONE
+                        else View.VISIBLE
+
+            }
+
+            mView!!.about_login_layout.visibility = View.VISIBLE
+
+            mView!!.about_settings_layout.visibility = View.GONE
+
+
+                if (mView!!.about_login_layout.visibility == View.VISIBLE) {
+
+                    mView!!.about_login_layout.visibility = View.GONE
+
+                    mView!!.power_btn.setBackgroundColor(resources.getColor(R.color.colorBottomNav))
+
+                    mView!!.power_layout.setBackgroundColor(Color.TRANSPARENT)
+
+                    mView!!.arrow_img.background = resources.getDrawable(R.drawable.arrow_down)
+                }
+                 else {
+
+                    mView!!.about_login_layout.visibility = View.VISIBLE
+
+                    mView!!.power_btn.setBackgroundColor(Color.TRANSPARENT)
+
+                    mView!!.power_layout.background = resources.getDrawable(R.drawable.bg_border)
+
+                    mView!!.arrow_img.background = resources.getDrawable(R.drawable.arrow_up)
+
+                }
+
 
         }
 

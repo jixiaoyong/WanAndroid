@@ -21,7 +21,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
         setSupportActionBar(toolbar)
 
         val fragments = arrayListOf<BaseFragment>()
@@ -67,8 +66,6 @@ class MainActivity : AppCompatActivity() {
 
 
     }
-
-
 
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

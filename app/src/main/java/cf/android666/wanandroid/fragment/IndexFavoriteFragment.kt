@@ -1,6 +1,5 @@
 package cf.android666.wanandroid.fragment
 
-import android.content.Context
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
@@ -13,7 +12,6 @@ import cf.android666.wanandroid.adapter.IndexFavoriteAdapter
 import cf.android666.wanandroid.base.BaseFragment
 import cf.android666.wanandroid.bean.IndexCollectBean
 import cf.android666.wanandroid.cookie.CookieTools
-import cf.android666.wanandroid.cookie.Preference
 import cf.android666.wanandroid.utils.MessageEvent
 import cf.android666.wanandroid.utils.SharePreference
 import cf.android666.wanandroid.utils.SuperUtil
@@ -23,10 +21,6 @@ import kotlinx.android.synthetic.main.fragment_index_favorite.view.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import kotlin.concurrent.thread
-import android.R.id.edit
-import android.content.SharedPreferences
-
 
 
 
@@ -104,8 +98,6 @@ class IndexFavoriteFragment() : BaseFragment() {
 
                         view.recycler_view.adapter.notifyDataSetChanged()
 
-                        Toast.makeText(context,mData[0].chapterName,Toast.LENGTH_SHORT).show()
-
                         SharePreference.saveKV(SharePreference.FAVORITE_COUNT,it.data.total.toString())
                     }
 
@@ -116,7 +108,11 @@ class IndexFavoriteFragment() : BaseFragment() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun update(event: MessageEvent) {
-        loadData(view!!)
+
+        if (view != null) {
+            loadData(view!!)
+        }
+
     }
 
     override fun onDetach() {
