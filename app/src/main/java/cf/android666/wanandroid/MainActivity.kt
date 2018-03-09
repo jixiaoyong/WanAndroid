@@ -1,11 +1,17 @@
 package cf.android666.wanandroid
 
+import android.content.Intent
 import android.content.SharedPreferences
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v4.view.MenuItemCompat
 import android.support.v4.view.ViewPager
 import android.support.v7.widget.SearchView
 import android.view.Menu
+import android.view.MenuItem
+import android.view.View
+import android.widget.Toast
+import cf.android666.wanandroid.activity.SearchActivity
 import cf.android666.wanandroid.adapter.MFragmentViewPagerAdapter
 import cf.android666.wanandroid.base.BaseFragment
 import cf.android666.wanandroid.fragment.AboutFragment
@@ -72,7 +78,21 @@ class MainActivity : AppCompatActivity() {
 
         var menuItem = menu!!.findItem(R.id.app_bar_search)
 
-        val searchView:SearchView = menuItem.actionView as SearchView
+        var searchView: SearchView = MenuItemCompat.getActionView(menuItem) as SearchView
+
+        MenuItemCompat.setOnActionExpandListener(menuItem,object :MenuItemCompat.OnActionExpandListener{
+            override fun onMenuItemActionExpand(item: MenuItem?): Boolean {
+                Toast.makeText(baseContext,"onMenuItemActionExpand",Toast.LENGTH_SHORT).show()
+
+                return true
+            }
+
+            override fun onMenuItemActionCollapse(item: MenuItem?): Boolean {
+                Toast.makeText(baseContext,"onMenuItemActionCollapse",Toast.LENGTH_SHORT).show()
+                return true
+            }
+
+        })
 
         return super.onCreateOptionsMenu(menu)
     }

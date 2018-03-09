@@ -25,6 +25,16 @@
 
     </android.support.v4.view.ViewPager>
 
+    <!--<android.support.v7.widget.RecyclerView-->
+        <!--android:id="@+id/recycler_view"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:background="#ff0000"-->
+        <!--android:layout_below="@id/toolbar"-->
+     <!--&gt;-->
+
+    <!--</android.support.v7.widget.RecyclerView>-->
+
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bottom_nav"
         android:layout_width="match_parent"
