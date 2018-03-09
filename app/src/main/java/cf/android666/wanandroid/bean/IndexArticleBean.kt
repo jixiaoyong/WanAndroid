@@ -29,7 +29,7 @@ class IndexArticleBean {
 
         var curPage: Int = 0
         var offset: Int = 0
-        var isOver: Boolean = false
+        var over: Boolean = false
         var pageCount: Int = 0
         var size: Int = 0
         var total: Int = 0
@@ -60,7 +60,7 @@ class IndexArticleBean {
             var author: String? = ""
             var chapterId: Int = 0
             var chapterName: String? = ""
-            var isCollect: Boolean = false
+            var collect: Boolean = false
             var courseId: Int = 0
             var desc: String? = ""
             var envelopePic: String? = ""

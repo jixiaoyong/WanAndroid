@@ -11,7 +11,6 @@ import cf.android666.wanandroid.base.BaseFragment
 import cf.android666.wanandroid.fragment.AboutFragment
 import cf.android666.wanandroid.fragment.DiscoverFragment
 import cf.android666.wanandroid.fragment.IndexFragment
-import cf.android666.wanandroid.utils.SharePreference
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {

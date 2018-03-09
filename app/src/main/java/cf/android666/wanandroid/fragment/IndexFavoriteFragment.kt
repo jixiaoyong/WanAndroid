@@ -22,8 +22,6 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
-
-
 /**
  * Created by jixiaoyong on 2018/2/25.
  */
@@ -39,6 +37,11 @@ class IndexFavoriteFragment() : BaseFragment() {
 
         mView = view
 
+        view.swipe_refresh.setOnRefreshListener {
+            view.swipe_refresh.isRefreshing = true
+
+            loadData(view)
+        }
 
         var isLogin = SharePreference.getV<Boolean>(SharePreference.IS_LOGIN,false)
 
@@ -53,7 +56,11 @@ class IndexFavoriteFragment() : BaseFragment() {
 
             }, {
 
-                it.isSelected = !it.isSelected
+                unCollectPost(mData[it].id)
+
+                mData.removeAt(it)
+
+                view.recycler_view.adapter.notifyDataSetChanged()
 
             })
 
@@ -75,6 +82,22 @@ class IndexFavoriteFragment() : BaseFragment() {
         return view
     }
 
+    private fun unCollectPost(id: Int) {
+
+        CookieTools.getCookieService()!!
+                .uncollectById(id,-1)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.newThread())
+                .subscribe {
+                    if (it.errorCode < 0) {
+                        Toast.makeText(context, it.errorMsg, Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(context, "取消收藏成功", Toast.LENGTH_SHORT).show()
+                        //todo 更新状态
+                    }
+                }
+    }
+
 
     fun loadData(view: View) {
 
@@ -84,11 +107,14 @@ class IndexFavoriteFragment() : BaseFragment() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
 
+                    view.swipe_refresh.isRefreshing = false
+
                     if (it.errorCode < 0) {
 
                         Toast.makeText(context, it.errorMsg, Toast.LENGTH_SHORT).show()
 
                         SharePreference.saveKV(SharePreference.IS_LOGIN, false)
+
 
                     } else {
 

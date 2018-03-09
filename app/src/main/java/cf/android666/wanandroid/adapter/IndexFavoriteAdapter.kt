@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.item_index_post.view.*
  */
 class IndexFavoriteAdapter(context :Context, data: ArrayList<IndexCollectBean.DataBean.DatasBean>,
                            itemListener: ((url: String) -> Unit),
-                           imgBtnListener: ((view: View) -> Unit))
+                           imgBtnListener: ((position:Int) -> Unit))
     : RecyclerView.Adapter<IndexFavoriteAdapter.MViewHolder>(){
 
     private var mData = IndexCollectBean.DataBean().datas
@@ -24,7 +24,7 @@ class IndexFavoriteAdapter(context :Context, data: ArrayList<IndexCollectBean.Da
 
     private var mItemListener: ((url: String) -> Unit)? = null
 
-    private var mImgBtnListener: ((view: View) -> Unit)? = null
+    private var mImgBtnListener: ((position:Int) -> Unit)? = null
 
 
     init {
@@ -59,6 +59,9 @@ class IndexFavoriteAdapter(context :Context, data: ArrayList<IndexCollectBean.Da
 
         holder!!.itemView.time.text = "时间：${mData!![position].niceDate}"
 
+        holder.itemView.imageButton.isSelected = true
+
+
         holder.itemView.setOnClickListener{
 
             mItemListener!!.invoke(mData!![position].link!!)
@@ -67,7 +70,9 @@ class IndexFavoriteAdapter(context :Context, data: ArrayList<IndexCollectBean.Da
 
         holder.itemView.imageButton.setOnClickListener{
 
-            mImgBtnListener!!.invoke(it)
+            holder.itemView.imageButton.isSelected = !holder.itemView.imageButton.isSelected
+
+            mImgBtnListener!!.invoke(position)
         }
 
     }

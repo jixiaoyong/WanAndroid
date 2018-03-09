@@ -59,7 +59,7 @@ package cf.android666.wanandroid.bean
             var author: String? = ""
             var chapterId: Int = 0
             var chapterName: String? = ""
-            var isCollect: Boolean = false
+            var collect: Boolean = false
             var courseId: Int = 0
             var desc: String? = ""
             var envelopePic: String? = ""

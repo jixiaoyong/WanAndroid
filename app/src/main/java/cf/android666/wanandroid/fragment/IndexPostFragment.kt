@@ -5,13 +5,14 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import cf.android666.wanandroid.R
 import cf.android666.wanandroid.activity.ContentActivity
 import cf.android666.wanandroid.adapter.IndexPostArticleAdapter
 import cf.android666.wanandroid.api.WanAndroidApiHelper
 import cf.android666.wanandroid.base.BaseFragment
 import cf.android666.wanandroid.bean.IndexArticleBean
-import cf.android666.wanandroid.bean.IndexBannerBean
+import cf.android666.wanandroid.cookie.CookieTools
 import cf.android666.wanandroid.utils.SuperUtil
 import cf.android666.wanandroid.utils.TempTools
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -28,23 +29,34 @@ class IndexPostFragment : BaseFragment() {
     private var mData = IndexArticleBean.DataBean().datas
 
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
 
         val view = inflater!!.inflate(R.layout.fragment_index_post, container, false)
-
 
         //banner
         var mMZBanner = view.banner
 
-        view.recycler_view.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        view.recycler_view.layoutManager = LinearLayoutManager(context,
+                LinearLayoutManager.VERTICAL, false)
 
         view.recycler_view.adapter = IndexPostArticleAdapter(context, mData, {
 
             SuperUtil.startActivity(context, ContentActivity::class.java, it)
 
         }, {
+            position, isSelected ->
 
-            it.isSelected = !it.isSelected
+            var postId = mData[position].id
+
+            if (isSelected) {
+
+                collectPost(postId)
+
+            } else {
+
+                unCollectPost(postId)
+            }
 
         })
 
@@ -52,6 +64,39 @@ class IndexPostFragment : BaseFragment() {
         downloadBanner(mMZBanner)
 
         return view
+    }
+
+    private fun unCollectPost(postId: Int) {
+
+        CookieTools.getCookieService()!!
+                .uncollectByOriginId(postId)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.newThread())
+                .subscribe {
+                    if (it.errorCode < 0) {
+                        Toast.makeText(context, it.errorMsg, Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(context, "取消收藏成功", Toast.LENGTH_SHORT).show()
+                        //todo 更新状态
+                    }
+                }
+    }
+
+    private fun collectPost(postId: Int) {
+
+        CookieTools.getCookieService()!!
+                .collectPostById(postId)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.newThread())
+                .subscribe {
+                    if (it.errorCode < 0) {
+                        Toast.makeText(context, it.errorMsg, Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(context, "收藏成功", Toast.LENGTH_SHORT).show()
+                        //todo 更新状态
+                    }
+                }
+
     }
 
     private fun downloadData() {

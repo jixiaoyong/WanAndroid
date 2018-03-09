@@ -14,10 +14,8 @@ import cf.android666.wanandroid.utils.MessageEvent
 import cf.android666.wanandroid.utils.SharePreference
 import com.orhanobut.logger.Logger
 import kotlinx.android.synthetic.main.fragment_about.view.*
-import kotlinx.android.synthetic.main.fragment_about_login.view.*
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.fragment_about_settings.view.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -45,32 +43,6 @@ class AboutFragment : BaseFragment() {
 
     private fun setOnClick(view: View) {
 
-        var isLogin = SharePreference.getV<Boolean>(SharePreference.IS_LOGIN, false)
-
-//        view.power_btn.setOnClickListener {
-//
-//            if (isLogin) {
-//
-//                view.about_login_layout.visibility = View.VISIBLE
-//
-//                Toast.makeText(context, "注销啦", Toast.LENGTH_SHORT).show()
-//
-//                SharePreference.saveKV(SharePreference.IS_LOGIN, false)
-//
-//                var msg = MessageEvent
-//
-//                msg.isLogin = false
-//
-//                EventBus.getDefault().post(msg)
-//
-//            } else {
-//
-//                view.about_login_layout.visibility = View.GONE
-//
-//            }
-//
-//        }
-
         var userNameEt = view.user_name
 
         var userPwdEt = view.user_password
@@ -89,7 +61,10 @@ class AboutFragment : BaseFragment() {
 
             val userPwd = userPwdEt.text.toString()
 
-            checkNameAndPassWord(userName, userPwd)
+            if (userName.isEmpty()  || userPwd.isEmpty()) {
+                Toast.makeText(context,"账号或密码为空",Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
 
             login(userName,userPwd)
 
@@ -101,16 +76,50 @@ class AboutFragment : BaseFragment() {
 
             view.login_btn.setBackgroundColor(Color.TRANSPARENT)
 
-            userRePwdEt.visibility = View.VISIBLE
+            if (view.user_password_re.visibility == View.VISIBLE) {
 
-            register(userNameEt.text.toString(),userPwdEt.text.toString(),userRePwdEt.text.toString())
+                userRePwdEt.visibility = View.VISIBLE
+
+                register(userNameEt.text.toString(), userPwdEt.text.toString(), userRePwdEt.text.toString())
+
+            } else {
+                view.user_password_re.visibility = View.VISIBLE
+
+            }
+
+
 
         }
     }
 
     private fun register(username: String, password1: String, password2: String) {
 
-        Toast.makeText(context,"注册~~",Toast.LENGTH_SHORT).show()
+        CookieTools.getCookieService()!!
+                .register(username, password1, password2)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    if (it.errorCode < 0) {
+
+                        Toast.makeText(context, it.errorMsg, Toast.LENGTH_SHORT).show()
+
+                    } else{
+
+                        var event = MessageEvent
+
+                        event.isLogin = true
+
+                        SharePreference.saveKV(SharePreference.IS_LOGIN, true)
+
+                        SharePreference.saveKV(SharePreference.USER_NAME, username)
+
+                        EventBus.getDefault().post(event)
+
+                        Toast.makeText(context, "success", Toast.LENGTH_SHORT).show()
+
+                        refreashUi()
+                    }
+                }
 
     }
 
@@ -151,6 +160,8 @@ class AboutFragment : BaseFragment() {
 
                         SharePreference.saveKV(SharePreference.IS_LOGIN, true)
 
+                        SharePreference.saveKV(SharePreference.USER_NAME, userName)
+
                         EventBus.getDefault().post(event)
 
                         Toast.makeText(context, "success", Toast.LENGTH_SHORT).show()
@@ -169,6 +180,10 @@ class AboutFragment : BaseFragment() {
         }
 
         var isLogin = SharePreference.getV<Boolean>(SharePreference.IS_LOGIN, false)
+
+        var username = SharePreference.getV<String>(SharePreference.USER_NAME, "未登录")
+
+        mView!!.about_user_name.text = username
 
         Logger.wtf("is login $isLogin")
 
@@ -191,6 +206,8 @@ class AboutFragment : BaseFragment() {
                 isLogin = false
 
                 SharePreference.saveKV(SharePreference.IS_LOGIN,false)
+
+                SharePreference.saveKV(SharePreference.USER_NAME,"未登录")
 
                 MessageEvent.isLogin = false
 

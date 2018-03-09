@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.item_index_post.view.*
  */
 class IndexPostArticleAdapter(context :Context, data: ArrayList<IndexArticleBean.DataBean.DatasBean>,
                               itemListener: ((url: String) -> Unit),
-                              imgBtnListener: ((view: View) -> Unit))
+                              imgBtnListener: ((position:Int,isSelected:Boolean) -> Unit))
     : RecyclerView.Adapter<IndexPostArticleAdapter.MViewHolder>(){
 
     private var mData = IndexArticleBean.DataBean().datas
@@ -23,7 +23,7 @@ class IndexPostArticleAdapter(context :Context, data: ArrayList<IndexArticleBean
 
     private var mItemListener: ((url: String) -> Unit)? = null
 
-    private var mImgBtnListener: ((view: View) -> Unit)? = null
+    private var mImgBtnListener: ((position:Int,isSelected:Boolean) -> Unit)? = null
 
 
     init {
@@ -66,9 +66,13 @@ class IndexPostArticleAdapter(context :Context, data: ArrayList<IndexArticleBean
 
         }
 
+        holder.itemView.imageButton.isSelected = mData[position].collect
+
         holder.itemView.imageButton.setOnClickListener{
 
-            mImgBtnListener!!.invoke(it)
+            it.isSelected = !it.isSelected
+
+            mImgBtnListener!!.invoke(position,it.isSelected)
         }
 
     }

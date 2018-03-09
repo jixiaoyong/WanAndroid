@@ -45,13 +45,31 @@ interface WanAndroidService{
               @Field("password") userPwd: String): Observable<CookieBean>
 
 
-
-    @POST("user/login")
+    @POST("user/register")
+    @FormUrlEncoded //for @Field parameters can only be used with form encoding.
     fun register(@Field("username") userName: String,
                  @Field("password") userPwd: String,
-                 @Field("repassword")userRePwd: String) : Observable<Cookie>
+                 @Field("repassword")userRePwd: String) : Observable<CookieBean>
 
     @GET("lg/collect/list/{page}/json")
     fun getCollect(@Path("page") page: Int):Observable<IndexCollectBean>
 
+    @POST("lg/collect/{id}/json")
+    fun collectPostById(@Path("id") id: Int):Observable<CollectBean>
+
+    @POST("lg/collect/add/json")
+    @FormUrlEncoded
+    fun collectPostByInfo(@Field("title") title: String,
+                          @Field("author") author: String,
+                          @Field("link")link: String):Observable<CollectOutBean>
+
+    @POST("lg/uncollect_originId/{id}/json")
+    fun uncollectByOriginId(@Path("id") id: Int):Observable<UnCollectBean>
+
+
+
+    //originId = -1
+    @POST("lg/uncollect/{id}/json")
+    @FormUrlEncoded
+    fun uncollectById(@Path("id") id: Int,@Field("originId")originId:Int):Observable<UnCollectBean>
 }
