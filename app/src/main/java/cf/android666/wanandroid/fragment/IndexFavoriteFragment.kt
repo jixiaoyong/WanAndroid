@@ -27,7 +27,9 @@ import org.greenrobot.eventbus.ThreadMode
  */
 class IndexFavoriteFragment() : BaseFragment() {
 
-    private var mData = IndexCollectBean.DataBean().datas
+//    private var mData = IndexCollectBean.DataBean().datas
+
+    private var mData :ArrayList<IndexCollectBean.DataBean.DatasBean> = arrayListOf()
 
     var mView: View? = null
 

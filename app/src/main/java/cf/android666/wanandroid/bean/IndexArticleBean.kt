@@ -12,9 +12,9 @@ class IndexArticleBean {
      * errorMsg :
      */
 
-    var data = DataBean()
+    var data : DataBean = DataBean()
     var errorCode: Int = 0
-    var errorMsg: String? = ""
+    var errorMsg: String = ""
 
     class DataBean {
         /**
@@ -56,21 +56,21 @@ class IndexArticleBean {
              * zan : 0
              */
 
-            var apkLink: String? = ""
-            var author: String? = ""
+            var apkLink: String = ""
+            var author: String = ""
             var chapterId: Int = 0
-            var chapterName: String? = ""
+            var chapterName: String = ""
             var collect: Boolean = false
             var courseId: Int = 0
-            var desc: String? = ""
-            var envelopePic: String? = ""
+            var desc: String = ""
+            var envelopePic: String = ""
             var id: Int = 0
-            var link: String? = ""
-            var niceDate: String? = ""
-            var origin: String? = ""
-            var projectLink: String? = ""
+            var link: String = ""
+            var niceDate: String = ""
+            var origin: String = ""
+            var projectLink: String = ""
             var publishTime: Long = 0
-            var title: String? = ""
+            var title: String = ""
             var visible: Int = 0
             var zan: Int = 0
         }

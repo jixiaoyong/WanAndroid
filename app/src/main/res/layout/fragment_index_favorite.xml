@@ -20,7 +20,8 @@
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone">
+            android:visibility="gone"
+            android:paddingBottom="@dimen/nav_height">
 
         </android.support.v7.widget.RecyclerView>
 

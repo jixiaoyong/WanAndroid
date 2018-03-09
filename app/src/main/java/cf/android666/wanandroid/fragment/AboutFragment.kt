@@ -185,8 +185,6 @@ class AboutFragment : BaseFragment() {
 
         mView!!.about_user_name.text = username
 
-        Logger.wtf("is login $isLogin")
-
         if (isLogin) {
 
             mView!!.about_login_layout.visibility = View.GONE
