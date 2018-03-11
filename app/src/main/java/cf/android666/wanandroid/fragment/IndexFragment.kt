@@ -27,17 +27,13 @@ class IndexFragment : BaseFragment() {
         fragments.add(IndexPostFragment())
         fragments.add(IndexFavoriteFragment())
 
-//        view.viewpager.adapter = MFragmentViewPagerAdapter(activity.supportFragmentManager, fragments)
         view.viewpager.adapter = MFragmentViewPagerAdapter(childFragmentManager, fragments)
-
 
         var tablayout = view.tab_layout
         //设置该方法后会删除tab标题，因此在后面手动加上
         tablayout.setupWithViewPager(view.viewpager)
         tablayout.getTabAt(0)!!.text = "主页"
         tablayout.getTabAt(1)!!.text = "收藏"
-
-
 
         return view
     }

@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import cf.android666.wanandroid.R
 import cf.android666.wanandroid.activity.ContentActivity
-import cf.android666.wanandroid.adapter.IndexFavoriteAdapter
+import cf.android666.wanandroid.adapter.PostArticleAdapter
 import cf.android666.wanandroid.base.BaseFragment
 import cf.android666.wanandroid.bean.BaseArticlesBean
 import cf.android666.wanandroid.api.cookie.CookieTools
@@ -25,9 +25,9 @@ import org.greenrobot.eventbus.ThreadMode
 /**
  * Created by jixiaoyong on 2018/2/25.
  */
-class IndexFavoriteFragment() : BaseFragment() {
+class IndexFavoriteFragment : BaseFragment() {
 
-    private var mData :ArrayList<BaseArticlesBean> = arrayListOf()
+    private var mData: ArrayList<BaseArticlesBean> = arrayListOf()
 
     var mView: View? = null
 
@@ -42,22 +42,26 @@ class IndexFavoriteFragment() : BaseFragment() {
             loadData(view)
         }
 
-        var isLogin = SharePreference.getV<Boolean>(SharePreference.IS_LOGIN,false)
-
+        var isLogin = SharePreference.getV<Boolean>(SharePreference.IS_LOGIN, false)
 
         if (isLogin) {
 
-            view.recycler_view.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            view.recycler_view.layoutManager = LinearLayoutManager(context,
+                    LinearLayoutManager.VERTICAL, false)
 
-            view.recycler_view.adapter = IndexFavoriteAdapter(context, mData, {
+            view.recycler_view.adapter = PostArticleAdapter(mData,
+                    true,
+                    {
 
-                SuperUtil.startActivity(context, ContentActivity::class.java, it)
+                        SuperUtil.startActivity(context, ContentActivity::class.java, it)
 
-            }, {
+                    }, { it, position ->
 
-                unCollectPost(mData[it].id)
+                it.isSelected = false
 
-                mData.removeAt(it)
+                unCollectPost(mData[position].id)
+
+                mData.removeAt(position)
 
                 view.recycler_view.adapter.notifyDataSetChanged()
 
@@ -75,7 +79,7 @@ class IndexFavoriteFragment() : BaseFragment() {
 
             view.recycler_view.visibility = View.GONE
 
-            Toast.makeText(context,"请登录",Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "请登录", Toast.LENGTH_SHORT).show()
         }
 
         return view
@@ -84,7 +88,7 @@ class IndexFavoriteFragment() : BaseFragment() {
     private fun unCollectPost(id: Int) {
 
         CookieTools.getCookieService()!!
-                .uncollectById(id,-1)
+                .uncollectById(id, -1)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
                 .subscribe {
@@ -123,7 +127,7 @@ class IndexFavoriteFragment() : BaseFragment() {
 
                         view.recycler_view.adapter.notifyDataSetChanged()
 
-                        SharePreference.saveKV(SharePreference.FAVORITE_COUNT,it.data.total.toString())
+                        SharePreference.saveKV(SharePreference.FAVORITE_COUNT, it.data.total.toString())
                     }
 
 

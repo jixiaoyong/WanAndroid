@@ -14,29 +14,32 @@
         android:layout_weight="1"
         android:minHeight="300dp"
         android:scaleType="centerCrop"
+        android:background="?attr/color_post_item_background"
         android:src="@drawable/nothing" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="110dp"
-        android:padding="5dp">
+        android:padding="3dp">
 
         <TextView
             android:id="@+id/title"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="36dp"
             android:layout_alignParentTop="true"
             android:maxLines="2"
             android:text="title"
+            android:ellipsize="marquee"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/summary"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:layout_below="@id/title"
             android:maxLines="3"
             android:text="summary"
+            android:ellipsize="end"
             android:textSize="12sp" />
 
         <TextView

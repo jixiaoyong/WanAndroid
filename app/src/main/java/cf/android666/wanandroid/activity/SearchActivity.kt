@@ -42,7 +42,7 @@ class SearchActivity : BaseActivity() {
 
         recycler_view.layoutManager = LinearLayoutManager(baseContext, LinearLayoutManager.VERTICAL, false)
 
-        recycler_view.adapter = PostArticleAdapter(baseContext,mData,
+        recycler_view.adapter = PostArticleAdapter(mData,false,
                 {
                     SuperUtil.startActivity(baseContext,ContentActivity::class.java,it)
                 }) {

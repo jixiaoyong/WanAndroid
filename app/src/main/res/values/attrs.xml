@@ -2,4 +2,7 @@
 <resources>
     <dimen name="nav_height">56dp</dimen>
 
+    <attr name="color_post_item_background"
+        format="color"/>
+
 </resources>

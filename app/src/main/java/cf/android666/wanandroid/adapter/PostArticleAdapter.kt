@@ -1,25 +1,26 @@
 package cf.android666.wanandroid.adapter
 
-import android.content.Context
 import android.support.v7.widget.RecyclerView
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import cf.android666.wanandroid.R
 import cf.android666.wanandroid.bean.BaseArticlesBean
-import cf.android666.wanandroid.utils.SharePreference
 import kotlinx.android.synthetic.main.item_index_post.view.*
 
 /**
  * Created by jixiaoyong on 2018/2/27.
  */
-class PostArticleAdapter(private val context :Context, private val data: ArrayList<BaseArticlesBean>,
+class PostArticleAdapter(private val data: ArrayList<BaseArticlesBean>,
+                         private val isImageButtonSelect : Boolean,
                          private val itemListener: ((url: String) -> Unit),
-                         private val imgBtnListener: ((position:Int, isSelected:Boolean) -> Unit))
+                         private val imgBtnListener: ((view:View,position:Int) -> Unit))
     : RecyclerView.Adapter<PostArticleAdapter.MViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): MViewHolder {
 
-        var view = View.inflate(this.context, R.layout.item_index_post, null)
+        var view = LayoutInflater.from(parent!!.context)
+                .inflate( R.layout.item_index_post,parent,false)
 
         return MViewHolder(view)
     }
@@ -45,19 +46,18 @@ class PostArticleAdapter(private val context :Context, private val data: ArrayLi
 
         }
 
-        holder.itemView.imageButton.isSelected = data[position].collect
+        if (isImageButtonSelect) {
+
+            holder.itemView.imageButton.isSelected = true
+
+        } else {
+
+            holder.itemView.imageButton.isSelected = data[position].collect
+        }
 
         holder.itemView.imageButton.setOnClickListener{
 
-            var isLogin = SharePreference.getV<Boolean>(SharePreference.IS_LOGIN, false)
-
-            if (isLogin) {
-
-                it.isSelected = !it.isSelected
-
-            }
-
-            this.imgBtnListener!!.invoke(position,it.isSelected)
+            this.imgBtnListener!!.invoke(it,position)
 
         }
 

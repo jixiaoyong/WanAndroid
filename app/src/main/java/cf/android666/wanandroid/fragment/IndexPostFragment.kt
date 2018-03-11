@@ -12,6 +12,7 @@ import cf.android666.wanandroid.adapter.PostArticleAdapter
 import cf.android666.wanandroid.base.BaseFragment
 import cf.android666.wanandroid.bean.BaseArticlesBean
 import cf.android666.wanandroid.api.cookie.CookieTools
+import cf.android666.wanandroid.utils.SharePreference
 import cf.android666.wanandroid.utils.SuperUtil
 import cf.android666.wanandroid.utils.TempTools
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -24,9 +25,7 @@ import com.zhouwei.mzbanner.MZBannerView
  */
 class IndexPostFragment : BaseFragment() {
 
-
-    private var mData : ArrayList<BaseArticlesBean> = arrayListOf()
-
+    private var mData: ArrayList<BaseArticlesBean> = arrayListOf()
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -39,29 +38,40 @@ class IndexPostFragment : BaseFragment() {
         view.recycler_view.layoutManager = LinearLayoutManager(context,
                 LinearLayoutManager.VERTICAL, false)
 
-        view.recycler_view.adapter = PostArticleAdapter(context, mData, {
+        view.recycler_view.adapter = PostArticleAdapter(mData,false, {
 
             SuperUtil.startActivity(context, ContentActivity::class.java, it)
 
-        }, { position, isSelected ->
+        }, { view, position ->
+
+            var isLogin = SharePreference.getV<Boolean>(SharePreference.IS_LOGIN, false)
+
+            if (isLogin) {
+
+                view.isSelected = !view.isSelected
+
+            }
 
             var postId = mData[position].id
 
-                if (isSelected) {
+            if (view.isSelected) {
 
-                    collectPost(postId)
+                collectPost(postId)
 
-                } else {
+            } else {
 
-                    unCollectPost(postId)
-                }
-
-
+                unCollectPost(postId)
+            }
 
         })
 
         downloadData()
         downloadBanner(mMZBanner)
+
+        view.swipe_refresh.setOnRefreshListener {
+            downloadData()
+            downloadBanner(mMZBanner)
+        }
 
         return view
     }
@@ -124,6 +134,7 @@ class IndexPostFragment : BaseFragment() {
 
                     view!!.recycler_view.adapter.notifyDataSetChanged()
 
+                    view!!.swipe_refresh.isRefreshing = false
                 }
     }
 

@@ -13,6 +13,8 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimary</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="color_post_item_background">#f2f2f2</item>
+
     </style>
 
     <style name="AppTheme.NoActionBar.Night" parent="Theme.AppCompat.NoActionBar">
@@ -20,6 +22,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimary</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="color_post_item_background">#262626</item>
     </style>
 
 </resources>
