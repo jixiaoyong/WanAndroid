@@ -49,10 +49,10 @@ class BannerViewHolder : MZViewHolder<IndexBannerBean.DataBean> {
 
         mImageView!!.setOnClickListener {
 
-            SuperUtil.startActivity(p0!!,ContentActivity::class.java,p2.url!!)
+            SuperUtil.startActivity(p0!!,ContentActivity::class.java,p2.url)
         }
 
-        mTextView!!.text = p2!!.title
+        mTextView!!.text = p2.title
 
     }
 }

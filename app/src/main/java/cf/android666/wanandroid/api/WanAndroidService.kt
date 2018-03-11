@@ -14,7 +14,7 @@ import retrofit2.http.*
 interface WanAndroidService{
 
     companion object {
-        val BASE_URL = "http://www.wanandroid.com/"
+        const val BASE_URL = "http://www.wanandroid.com/"
     }
 
     @GET("tree/json")

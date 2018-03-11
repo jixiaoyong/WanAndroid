@@ -8,21 +8,16 @@ import cf.android666.wanandroid.base.BaseFragment
 /**
  * Created by jixiaoyong on 2018/2/25.
  */
-class MFragmentViewPagerAdapter(frgamentManager:FragmentManager,fragments:ArrayList<BaseFragment>)
-    : FragmentPagerAdapter(frgamentManager) {
-
-    private var list = arrayListOf<BaseFragment>()
-
-    init {
-        list = fragments
-    }
+class MFragmentViewPagerAdapter(fragmentManager:FragmentManager,
+                                private val fragments:ArrayList<BaseFragment>)
+    : FragmentPagerAdapter(fragmentManager) {
 
     override fun getItem(position: Int): Fragment {
-        return list[position]
+        return fragments[position]
     }
 
     override fun getCount(): Int {
-        return list.size
+        return fragments.size
     }
 
 }

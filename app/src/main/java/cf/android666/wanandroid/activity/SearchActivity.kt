@@ -4,18 +4,15 @@ import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.SearchView
 import android.view.Menu
 import android.widget.Toast
 import cf.android666.wanandroid.R
-import cf.android666.wanandroid.R.id.recycler_view
-import cf.android666.wanandroid.R.id.toolbar
 import cf.android666.wanandroid.adapter.PostArticleAdapter
 import cf.android666.wanandroid.base.BaseActivity
 import cf.android666.wanandroid.bean.BaseArticlesBean
-import cf.android666.wanandroid.cookie.CookieTools
+import cf.android666.wanandroid.api.cookie.CookieTools
 import cf.android666.wanandroid.utils.SuperUtil
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -48,10 +45,10 @@ class SearchActivity : BaseActivity() {
         recycler_view.adapter = PostArticleAdapter(baseContext,mData,
                 {
                     SuperUtil.startActivity(baseContext,ContentActivity::class.java,it)
-                },{
-            position, isSelected ->
+                }) {
+                    _, _ ->
 
-        })
+                }
 
         key = intent.getStringExtra(SearchManager.QUERY)
 

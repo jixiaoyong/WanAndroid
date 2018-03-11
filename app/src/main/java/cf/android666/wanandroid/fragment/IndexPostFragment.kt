@@ -9,10 +9,9 @@ import android.widget.Toast
 import cf.android666.wanandroid.R
 import cf.android666.wanandroid.activity.ContentActivity
 import cf.android666.wanandroid.adapter.PostArticleAdapter
-import cf.android666.wanandroid.api.WanAndroidApiHelper
 import cf.android666.wanandroid.base.BaseFragment
 import cf.android666.wanandroid.bean.BaseArticlesBean
-import cf.android666.wanandroid.cookie.CookieTools
+import cf.android666.wanandroid.api.cookie.CookieTools
 import cf.android666.wanandroid.utils.SuperUtil
 import cf.android666.wanandroid.utils.TempTools
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -130,9 +129,9 @@ class IndexPostFragment : BaseFragment() {
 
     private fun downloadBanner(mMZBanner: MZBannerView<*>) {
 
-        val observable2 = WanAndroidApiHelper.getInstance().getBanner()
-
-        observable2.subscribeOn(Schedulers.newThread())
+        CookieTools.getCookieService()!!
+                .getBanner()
+                .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
 

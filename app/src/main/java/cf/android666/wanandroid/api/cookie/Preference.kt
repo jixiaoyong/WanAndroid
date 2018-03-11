@@ -1,4 +1,4 @@
-package cf.android666.wanandroid.cookie
+package cf.android666.wanandroid.api.cookie
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -8,6 +8,7 @@ import kotlin.reflect.KProperty
 
 /**
  * SharedPreferences operation, you need application to invoke setContext
+ * 以下代码来自https://github.com/wangzailfm/WanAndroidClient,致以谢意。
  * @param name sp key name
  * @param default default value
  */

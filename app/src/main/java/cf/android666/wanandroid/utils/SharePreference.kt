@@ -2,7 +2,7 @@ package cf.android666.wanandroid.utils
 
 import android.content.Context
 import android.content.SharedPreferences
-import cf.android666.wanandroid.cookie.Preference
+import cf.android666.wanandroid.api.cookie.Preference
 
 
 /**

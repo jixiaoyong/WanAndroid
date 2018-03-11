@@ -5,15 +5,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Switch
 import android.widget.Toast
 import cf.android666.wanandroid.R
 import cf.android666.wanandroid.base.BaseFragment
-import cf.android666.wanandroid.cookie.CookieTools
-import cf.android666.wanandroid.cookie.Preference
+import cf.android666.wanandroid.api.cookie.CookieTools
 import cf.android666.wanandroid.utils.MessageEvent
 import cf.android666.wanandroid.utils.SharePreference
-import com.orhanobut.logger.Logger
 import kotlinx.android.synthetic.main.fragment_about.view.*
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -21,9 +18,6 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import android.content.Intent
-import android.content.Intent.getIntent
-
-
 
 
 /**

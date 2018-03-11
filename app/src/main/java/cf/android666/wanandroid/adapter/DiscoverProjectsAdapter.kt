@@ -20,29 +20,11 @@ import java.util.*
 /**
  * Created by jixiaoyong on 2018/2/28.
  */
-class DiscoverProjectsAdapter(context: Context, data: List<BaseArticlesBean>,
-                              itemListener: ((url: String) -> Unit),
-                              imgBtnListener: ((view: View) -> Unit))
+class DiscoverProjectsAdapter(private val context: Context,
+                              private val data: List<BaseArticlesBean>,
+                              private val itemListener: ((url: String) -> Unit),
+                              private val imgBtnListener: ((view: View) -> Unit))
     : RecyclerView.Adapter<DiscoverProjectsAdapter.MViewHolder>() {
-
-    private var mData: List<BaseArticlesBean> = arrayListOf()
-
-    private var mContext: Context? = null
-
-    private var mItemListener: ((url: String) -> Unit)? = null
-
-    private var mImgBtnListener: ((view: View) -> Unit)? = null
-
-    init {
-
-        mData = data
-
-        mContext = context
-
-        mItemListener = itemListener
-
-        mImgBtnListener = imgBtnListener
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): MViewHolder {
 
@@ -54,31 +36,31 @@ class DiscoverProjectsAdapter(context: Context, data: List<BaseArticlesBean>,
 
     override fun getItemCount(): Int {
 
-        return mData.size
+        return data.size
 
     }
 
     override fun onBindViewHolder(holder: MViewHolder?, position: Int) {
 
-        holder!!.itemView.title.text = mData[position].title
+        holder!!.itemView.title.text = data[position].title
 
-        holder!!.itemView.summary.text = mData[position].desc
+        holder!!.itemView.summary.text = data[position].desc
 
         holder!!.itemView.time.text = SimpleDateFormat("yyyy-MM-dd")
-                .format(Date(mData[position].publishTime))
+                .format(Date(data[position].publishTime))
 
-        holder!!.itemView.author.text = mData[position].author
+        holder!!.itemView.author.text = data[position].author
 
         var request = RequestOptions().placeholder(R.drawable.nothing)
 
-        Glide.with(mContext!!)
-                .load(mData[position].envelopePic)
+        Glide.with(context)
+                .load(data[position].envelopePic)
                 .apply(request)
                 .into(holder.itemView.image)
 
         holder!!.itemView.setOnClickListener {
 
-            mItemListener!!.invoke(mData[position].link!!)
+            itemListener!!.invoke(data[position].link!!)
         }
 
     }

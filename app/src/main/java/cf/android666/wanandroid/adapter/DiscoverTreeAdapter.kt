@@ -11,24 +11,13 @@ import cf.android666.wanandroid.bean.DiscoverTreeBean
 import cf.android666.wanandroid.utils.SuperUtil
 import kotlinx.android.synthetic.main.item_discover_tree_group.view.*
 
-class DiscoverTreeAdapter(context: Context,data:ArrayList<DiscoverTreeBean.DataBean>)
+class DiscoverTreeAdapter(private val context: Context,
+                          private val data:ArrayList<DiscoverTreeBean.DataBean>)
     : BaseExpandableListAdapter() {
-
-    private var mContext :Context? = null
-
-    private var mData : ArrayList<DiscoverTreeBean.DataBean> = arrayListOf()
-
-    init {
-
-        mContext = context
-
-        mData = data
-
-    }
 
     override fun getGroup(groupPosition: Int): Any {
 
-        return mData[groupPosition]
+        return this.data[groupPosition]
     }
 
     //child可点击
@@ -42,35 +31,31 @@ class DiscoverTreeAdapter(context: Context,data:ArrayList<DiscoverTreeBean.DataB
 
     override fun getGroupView(groupPosition: Int, isExpanded: Boolean, convertView: View?, parent: ViewGroup?): View {
 
-        val name = mData[groupPosition].name
+        val name = this.data[groupPosition].name
 
         if (convertView == null) {
 
-            var view = LayoutInflater.from(mContext).inflate(R.layout.item_discover_tree_group, null)
+            var view = LayoutInflater.from(this.context).inflate(R.layout.item_discover_tree_group, null)
 
             view.title.text = name
-
-//            setClickListener(view)
 
             return view
         }
 
-        convertView!!.title.text = name
-
-//        setClickListener(convertView)
+        convertView.title.text = name
 
         return convertView
     }
 
     override fun getChildView(groupPosition: Int, childPosition: Int, isLastChild: Boolean, convertView: View?, parent: ViewGroup?): View {
 
-        val name = mData[groupPosition].children[childPosition].name
+        val name = data[groupPosition].children[childPosition].name
 
-        val id = mData[groupPosition].children[childPosition].id
+        val id = data[groupPosition].children[childPosition].id
 
         if (convertView == null) {
 
-            var view = LayoutInflater.from(mContext).inflate(R.layout.item_discover_tree_child, null)
+            var view = LayoutInflater.from(this.context).inflate(R.layout.item_discover_tree_child, null)
 
             view.title.text = name
 
@@ -79,7 +64,7 @@ class DiscoverTreeAdapter(context: Context,data:ArrayList<DiscoverTreeBean.DataB
             return view
         }
 
-        convertView!!.title.text = name
+        convertView.title.text = name
 
         setClickListener(convertView, id)
 
@@ -87,11 +72,11 @@ class DiscoverTreeAdapter(context: Context,data:ArrayList<DiscoverTreeBean.DataB
     }
 
     override fun getChildrenCount(groupPosition: Int): Int {
-        return mData[groupPosition].children.size
+        return data[groupPosition].children.size
     }
 
     override fun getChild(groupPosition: Int, childPosition: Int): Any {
-        return mData[groupPosition].children[childPosition]
+        return data[groupPosition].children[childPosition]
     }
 
     override fun getGroupId(groupPosition: Int): Long {
@@ -103,7 +88,7 @@ class DiscoverTreeAdapter(context: Context,data:ArrayList<DiscoverTreeBean.DataB
     }
 
     override fun getGroupCount(): Int {
-        return mData.size
+        return data.size
     }
 
     private fun setClickListener(view: View,id:Int) {
@@ -112,7 +97,7 @@ class DiscoverTreeAdapter(context: Context,data:ArrayList<DiscoverTreeBean.DataB
 
         view.setOnClickListener {
 
-            SuperUtil.startActivity(mContext!!,ContentActivity::class.java,url)
+            SuperUtil.startActivity(context,ContentActivity::class.java,url)
 
         }
     }

@@ -6,11 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import cf.android666.wanandroid.R
 import cf.android666.wanandroid.adapter.DiscoverTreeAdapter
-import cf.android666.wanandroid.api.WanAndroidApiHelper
-import cf.android666.wanandroid.api.WanAndroidService
 import cf.android666.wanandroid.base.BaseFragment
 import cf.android666.wanandroid.bean.DiscoverTreeBean
-import io.reactivex.Observable
+import cf.android666.wanandroid.api.cookie.CookieTools
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_discover_tree.view.*
@@ -28,11 +26,9 @@ class DiscoverTreeFragment : BaseFragment() {
 
         view.expandable_layout.setAdapter(DiscoverTreeAdapter(context,mData))
 
-        var service: WanAndroidService = WanAndroidApiHelper.getInstance()
-
-        var observable :Observable<DiscoverTreeBean> = service.getTree()
-
-        observable.subscribeOn(Schedulers.newThread())
+        CookieTools.getCookieService()!!
+                .getTree()
+                .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe{
 

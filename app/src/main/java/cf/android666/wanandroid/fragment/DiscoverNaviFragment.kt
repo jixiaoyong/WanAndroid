@@ -6,13 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import cf.android666.wanandroid.R
 import cf.android666.wanandroid.adapter.DiscoverNaviAdapter
-import cf.android666.wanandroid.api.WanAndroidApiHelper
-import cf.android666.wanandroid.api.WanAndroidService
 import cf.android666.wanandroid.base.BaseFragment
-import cf.android666.wanandroid.bean.CookieBean
 import cf.android666.wanandroid.bean.DiscoverNaviBean
-import cf.android666.wanandroid.cookie.CookieTools
-import io.reactivex.Observable
+import cf.android666.wanandroid.api.cookie.CookieTools
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_discover_tree.view.*

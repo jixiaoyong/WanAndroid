@@ -10,11 +10,10 @@ import android.view.ViewGroup
 import cf.android666.wanandroid.R
 import cf.android666.wanandroid.activity.ContentActivity
 import cf.android666.wanandroid.adapter.DiscoverProjectsAdapter
-import cf.android666.wanandroid.api.WanAndroidApiHelper
 import cf.android666.wanandroid.base.BaseFragment
 import cf.android666.wanandroid.bean.BaseArticlesBean
-import cf.android666.wanandroid.bean.DiscoverProjectItemBean
 import cf.android666.wanandroid.bean.DiscoverProjectTreeBean
+import cf.android666.wanandroid.api.cookie.CookieTools
 import cf.android666.wanandroid.utils.SuperUtil
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -89,9 +88,9 @@ class DiscoverProjectsFragment : BaseFragment() {
 
     private fun downloadTree() {
 
-        val observable = WanAndroidApiHelper.getInstance().getProjectTree()
-
-        observable.subscribeOn(Schedulers.newThread())
+        CookieTools.getCookieService()!!
+                .getProjectTree()
+                .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
 
@@ -118,9 +117,9 @@ class DiscoverProjectsFragment : BaseFragment() {
 
     private fun downloadData(page:Int,cid:Int) {
 
-        val observable = WanAndroidApiHelper.getInstance().getProjectItems(page, cid)
-
-        observable.subscribeOn(Schedulers.newThread())
+        CookieTools.getCookieService()!!
+                .getProjectItems(page, cid)
+                .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
 

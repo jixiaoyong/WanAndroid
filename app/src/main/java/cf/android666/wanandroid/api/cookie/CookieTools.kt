@@ -1,6 +1,5 @@
-package cf.android666.wanandroid.cookie
+package cf.android666.wanandroid.api.cookie
 
-import cf.android666.wanandroid.api.ApiUrl
 import cf.android666.wanandroid.api.WanAndroidService
 import com.google.gson.GsonBuilder
 import com.orhanobut.logger.Logger
@@ -14,7 +13,7 @@ import java.util.concurrent.TimeUnit
 /**
  * Created by jixiaoyong on 2018/3/5.
  * email:jixiaoyong1995@gmail.com
- * 这个代码来自https://github.com/wangzailfm/WanAndroidClient
+ * 以下代码来自https://github.com/wangzailfm/WanAndroidClient,致以谢意。
  */
 object CookieTools{
 
@@ -80,7 +79,7 @@ object CookieTools{
         }
 
         return   Retrofit.Builder()
-                .baseUrl(ApiUrl.baseUrl)
+                .baseUrl(WanAndroidService.BASE_URL)
                 .client(okHttpClientBuilder.build())
                 .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())

@@ -11,58 +11,38 @@ import kotlinx.android.synthetic.main.item_index_post.view.*
 /**
  * Created by jixiaoyong on 2018/2/27.
  */
-class IndexFavoriteAdapter(context :Context, data: ArrayList<BaseArticlesBean>,
-                           itemListener: ((url: String) -> Unit),
-                           imgBtnListener: ((position:Int) -> Unit))
+class IndexFavoriteAdapter(private val context :Context,
+                           private val  data: ArrayList<BaseArticlesBean>,
+                           private val itemListener: ((url: String) -> Unit),
+                           private val  imgBtnListener: ((position:Int) -> Unit))
     : RecyclerView.Adapter<IndexFavoriteAdapter.MViewHolder>(){
-
-    private var mData : ArrayList<BaseArticlesBean> = arrayListOf()
-
-    private var mContext : Context? = null
-
-    private var mItemListener: ((url: String) -> Unit)? = null
-
-    private var mImgBtnListener: ((position:Int) -> Unit)? = null
-
-
-    init {
-
-        mData = data
-
-        mContext = context
-
-        mItemListener = itemListener
-
-        mImgBtnListener = imgBtnListener
-
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): MViewHolder {
 
-        var view = View.inflate(mContext, R.layout.item_index_favorite, null)
+        var view = View.inflate(this.context, R.layout.item_index_favorite, null)
 
         return MViewHolder(view)
     }
 
     override fun getItemCount(): Int {
 
-        return mData!!.size
+        return this.data.size
     }
 
     override fun onBindViewHolder(holder: MViewHolder?, position: Int) {
 
-        holder!!.itemView.title.text = mData!![position].title
+        holder!!.itemView.title.text = this.data[position].title
 
-        holder!!.itemView.author.text = "作者：${mData!![position].author}"
+        holder.itemView.author.text = "作者：${this.data!![position].author}"
 
-        holder!!.itemView.time.text = "时间：${mData!![position].niceDate}"
+        holder.itemView.time.text = "时间：${this.data!![position].niceDate}"
 
         holder.itemView.imageButton.isSelected = true
 
 
         holder.itemView.setOnClickListener{
 
-            mItemListener!!.invoke(mData!![position].link!!)
+            this.itemListener.invoke(this.data[position].link)
 
         }
 
@@ -70,7 +50,7 @@ class IndexFavoriteAdapter(context :Context, data: ArrayList<BaseArticlesBean>,
 
             holder.itemView.imageButton.isSelected = !holder.itemView.imageButton.isSelected
 
-            mImgBtnListener!!.invoke(position)
+            this.imgBtnListener.invoke(position)
         }
 
     }

@@ -11,7 +11,7 @@ import cf.android666.wanandroid.activity.ContentActivity
 import cf.android666.wanandroid.adapter.IndexFavoriteAdapter
 import cf.android666.wanandroid.base.BaseFragment
 import cf.android666.wanandroid.bean.BaseArticlesBean
-import cf.android666.wanandroid.cookie.CookieTools
+import cf.android666.wanandroid.api.cookie.CookieTools
 import cf.android666.wanandroid.utils.MessageEvent
 import cf.android666.wanandroid.utils.SharePreference
 import cf.android666.wanandroid.utils.SuperUtil
