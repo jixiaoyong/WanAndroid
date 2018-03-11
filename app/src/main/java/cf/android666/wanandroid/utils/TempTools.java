@@ -1,6 +1,5 @@
 package cf.android666.wanandroid.utils;
 
-import android.graphics.Movie;
 
 import com.zhouwei.mzbanner.MZBannerView;
 import com.zhouwei.mzbanner.holder.MZHolderCreator;
@@ -16,7 +15,6 @@ import cf.android666.wanandroid.bean.IndexBannerBean;
  */
 
 public class TempTools {
-
 
     public static void setBanner(List<IndexBannerBean.DataBean> data, MZBannerView mMZBannerView){
 

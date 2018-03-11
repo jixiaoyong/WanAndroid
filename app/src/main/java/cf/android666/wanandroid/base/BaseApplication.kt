@@ -1,6 +1,7 @@
 package cf.android666.wanandroid.base
 
 import android.app.Application
+import cf.android666.wanandroid.R
 import cf.android666.wanandroid.cookie.Preference
 import cf.android666.wanandroid.utils.SharePreference
 import com.orhanobut.logger.AndroidLogAdapter
@@ -12,6 +13,8 @@ import com.orhanobut.logger.Logger
 class BaseApplication:Application(){
 
     override fun onCreate() {
+
+
         super.onCreate()
 
         Logger.addLogAdapter(AndroidLogAdapter())

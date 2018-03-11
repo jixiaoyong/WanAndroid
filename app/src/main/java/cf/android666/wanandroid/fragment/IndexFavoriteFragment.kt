@@ -10,7 +10,7 @@ import cf.android666.wanandroid.R
 import cf.android666.wanandroid.activity.ContentActivity
 import cf.android666.wanandroid.adapter.IndexFavoriteAdapter
 import cf.android666.wanandroid.base.BaseFragment
-import cf.android666.wanandroid.bean.IndexCollectBean
+import cf.android666.wanandroid.bean.BaseArticlesBean
 import cf.android666.wanandroid.cookie.CookieTools
 import cf.android666.wanandroid.utils.MessageEvent
 import cf.android666.wanandroid.utils.SharePreference
@@ -27,12 +27,9 @@ import org.greenrobot.eventbus.ThreadMode
  */
 class IndexFavoriteFragment() : BaseFragment() {
 
-//    private var mData = IndexCollectBean.DataBean().datas
-
-    private var mData :ArrayList<IndexCollectBean.DataBean.DatasBean> = arrayListOf()
+    private var mData :ArrayList<BaseArticlesBean> = arrayListOf()
 
     var mView: View? = null
-
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater!!.inflate(R.layout.fragment_index_favorite, container, false)

@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import cf.android666.wanandroid.R
+import cf.android666.wanandroid.bean.BaseArticlesBean
 import cf.android666.wanandroid.bean.DiscoverProjectItemBean
 import cf.android666.wanandroid.utils.SuperUtil
 import com.bumptech.glide.Glide
@@ -19,12 +20,12 @@ import java.util.*
 /**
  * Created by jixiaoyong on 2018/2/28.
  */
-class DiscoverProjectsAdapter(context: Context, data: List<DiscoverProjectItemBean.DataBean.DatasBean>,
+class DiscoverProjectsAdapter(context: Context, data: List<BaseArticlesBean>,
                               itemListener: ((url: String) -> Unit),
                               imgBtnListener: ((view: View) -> Unit))
     : RecyclerView.Adapter<DiscoverProjectsAdapter.MViewHolder>() {
 
-    private var mData: List<DiscoverProjectItemBean.DataBean.DatasBean> = arrayListOf()
+    private var mData: List<BaseArticlesBean> = arrayListOf()
 
     private var mContext: Context? = null
 

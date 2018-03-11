@@ -5,20 +5,18 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import cf.android666.wanandroid.R
-import cf.android666.wanandroid.bean.IndexArticleBean
-import cf.android666.wanandroid.bean.IndexCollectBean
-import cf.android666.wanandroid.utils.LogTools
+import cf.android666.wanandroid.bean.BaseArticlesBean
 import kotlinx.android.synthetic.main.item_index_post.view.*
 
 /**
  * Created by jixiaoyong on 2018/2/27.
  */
-class IndexFavoriteAdapter(context :Context, data: ArrayList<IndexCollectBean.DataBean.DatasBean>,
+class IndexFavoriteAdapter(context :Context, data: ArrayList<BaseArticlesBean>,
                            itemListener: ((url: String) -> Unit),
                            imgBtnListener: ((position:Int) -> Unit))
     : RecyclerView.Adapter<IndexFavoriteAdapter.MViewHolder>(){
 
-    private var mData = IndexCollectBean.DataBean().datas
+    private var mData : ArrayList<BaseArticlesBean> = arrayListOf()
 
     private var mContext : Context? = null
 

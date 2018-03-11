@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Toast
+import cf.android666.wanandroid.R
 
 /**
  * Created by jixiaoyong on 2018/2/7.
@@ -37,5 +38,14 @@ object SuperUtil{
         intent.putExtra("url", url)
 
         context.startActivity(intent)
+    }
+
+    fun updateTheme(context: Context) {
+
+        var isNightMode = SharePreference.getV<Boolean>(SharePreference.IS_LOGIN, false)
+
+        if (isNightMode) {
+            context.setTheme(R.style.AppTheme_NoActionBar_Night)
+        }
     }
 }

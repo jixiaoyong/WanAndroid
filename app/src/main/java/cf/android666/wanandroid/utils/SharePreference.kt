@@ -2,6 +2,7 @@ package cf.android666.wanandroid.utils
 
 import android.content.Context
 import android.content.SharedPreferences
+import cf.android666.wanandroid.cookie.Preference
 
 
 /**
@@ -24,19 +25,6 @@ object SharePreference {
     fun setContext(context: Context) {
 
         sharePreference = context.getSharedPreferences("setdddtings", Context.MODE_PRIVATE)
-
-    }
-
-    fun getInstance(): SharedPreferences {
-
-        if (sharePreference == null) {
-
-            throw Exception("must invoke function setContext(context: Context) first !")
-
-        }
-
-        return sharePreference!!
-
 
     }
 
@@ -75,6 +63,11 @@ object SharePreference {
         }
 
         return result as T
+    }
+
+    fun clear(){
+        sharePreference!!.edit().clear().apply()
+        Preference.clear()
     }
 
 

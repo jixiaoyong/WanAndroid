@@ -5,18 +5,19 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import cf.android666.wanandroid.R
-import cf.android666.wanandroid.bean.SearchBean
+import cf.android666.wanandroid.bean.BaseArticlesBean
+import cf.android666.wanandroid.utils.SharePreference
 import kotlinx.android.synthetic.main.item_index_post.view.*
 
 /**
  * Created by jixiaoyong on 2018/2/27.
  */
-class SearchAdapter(context :Context, data: ArrayList<SearchBean.DataBean.DatasBean>,
-                    itemListener: ((url: String) -> Unit),
-                    imgBtnListener: ((position:Int,isSelected:Boolean) -> Unit))
-    : RecyclerView.Adapter<SearchAdapter.MViewHolder>(){
+class PostArticleAdapter(context :Context, data: ArrayList<BaseArticlesBean>,
+                         itemListener: ((url: String) -> Unit),
+                         imgBtnListener: ((position:Int,isSelected:Boolean) -> Unit))
+    : RecyclerView.Adapter<PostArticleAdapter.MViewHolder>(){
 
-    private var mData = SearchBean.DataBean().datas
+    private var mData : ArrayList<BaseArticlesBean> = arrayListOf()
 
     private var mContext : Context? = null
 
@@ -69,9 +70,16 @@ class SearchAdapter(context :Context, data: ArrayList<SearchBean.DataBean.DatasB
 
         holder.itemView.imageButton.setOnClickListener{
 
-            it.isSelected = !it.isSelected
+            var isLogin = SharePreference.getV<Boolean>(SharePreference.IS_LOGIN, false)
+
+            if (isLogin) {
+
+                it.isSelected = !it.isSelected
+
+            }
 
             mImgBtnListener!!.invoke(position,it.isSelected)
+
         }
 
     }

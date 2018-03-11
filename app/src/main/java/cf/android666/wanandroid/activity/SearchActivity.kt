@@ -10,9 +10,12 @@ import android.support.v7.widget.SearchView
 import android.view.Menu
 import android.widget.Toast
 import cf.android666.wanandroid.R
-import cf.android666.wanandroid.adapter.SearchAdapter
-import cf.android666.wanandroid.api.WanAndroidApiHelper
-import cf.android666.wanandroid.bean.SearchBean
+import cf.android666.wanandroid.R.id.recycler_view
+import cf.android666.wanandroid.R.id.toolbar
+import cf.android666.wanandroid.adapter.PostArticleAdapter
+import cf.android666.wanandroid.base.BaseActivity
+import cf.android666.wanandroid.bean.BaseArticlesBean
+import cf.android666.wanandroid.cookie.CookieTools
 import cf.android666.wanandroid.utils.SuperUtil
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -22,9 +25,9 @@ import kotlinx.android.synthetic.main.activity_search.*
  * Created by jixiaoyong on 2018/2/25.
  */
 
-class SearchActivity : AppCompatActivity() {
+class SearchActivity : BaseActivity() {
 
-    var mData : ArrayList<SearchBean.DataBean.DatasBean> = arrayListOf()
+    var mData : ArrayList<BaseArticlesBean> = arrayListOf()
 
     var key :String = ""
 
@@ -42,14 +45,13 @@ class SearchActivity : AppCompatActivity() {
 
         recycler_view.layoutManager = LinearLayoutManager(baseContext, LinearLayoutManager.VERTICAL, false)
 
-        recycler_view.adapter = SearchAdapter(baseContext,mData,
+        recycler_view.adapter = PostArticleAdapter(baseContext,mData,
                 {
                     SuperUtil.startActivity(baseContext,ContentActivity::class.java,it)
                 },{
             position, isSelected ->
 
         })
-
 
         key = intent.getStringExtra(SearchManager.QUERY)
 
@@ -63,7 +65,7 @@ class SearchActivity : AppCompatActivity() {
 
     private fun search(searchKey: String,page:Int) {
 
-        WanAndroidApiHelper.getInstance()
+        CookieTools.getCookieService()!!
                 .search(page,searchKey)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())

@@ -33,48 +33,8 @@ class SearchBean{
         var pageCount: Int = 0
         var size: Int = 0
         var total: Int = 0
-        var datas: List<DatasBean> = arrayListOf()
+        var datas: List<BaseArticlesBean> = arrayListOf()
 
-        class DatasBean {
-            /**
-             * apkLink :
-             * author : JsonChao
-             * chapterId : 294
-             * chapterName : 完整项目
-             * collect : false
-             * courseId : 13
-             * desc : 致力于打造一款极致体验的 http://www.wanandroid.com/ 客户端，知识和美是可以并存的哦QAQn(*≧▽≦*)n
-             *
-             * envelopePic : http://www.wanandroid.com/blogimgs/1bd103e3-cf54-4e88-a396-0343bdc2d4e9.png
-             * id : 2464
-             * link : http://www.wanandroid.com/blog/show/2075
-             * niceDate : 19小时前
-             * origin :
-             * projectLink : https://github.com/JsonChao/Awesome-WanAndroid
-             * publishTime : 1520662485000
-             * title : 打造一款极致体验的wanandroid客户端 Awesome-WanAndroid
-             * visible : 1
-             * zan : 0
-             */
-
-            var apkLink: String = ""
-            var author: String = ""
-            var chapterId: Int = 0
-            var chapterName: String = ""
-            var collect: Boolean = false
-            var courseId: Int = 0
-            var desc: String = ""
-            var envelopePic: String = ""
-            var id: Int = 0
-            var link: String = ""
-            var niceDate: String = ""
-            var origin: String = ""
-            var projectLink: String = ""
-            var publishTime: Long = 0
-            var title: String = ""
-            var visible: Int = 0
-            var zan: Int = 0
-        }
     }
 
 }

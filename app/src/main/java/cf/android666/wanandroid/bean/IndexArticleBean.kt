@@ -1,6 +1,5 @@
 package cf.android666.wanandroid.bean
 
-import com.google.gson.annotations.SerializedName
 
 /**
  * Created by jixiaoyong on 2018/2/25.
@@ -35,46 +34,7 @@ class IndexArticleBean {
         var pageCount: Int = 0
         var size: Int = 0
         var total: Int = 0
-        var datas: ArrayList<DatasBean> = arrayListOf()
+        var datas: ArrayList<BaseArticlesBean> = arrayListOf()
 
-        class DatasBean {
-            /**
-             * apkLink :
-             * author : 亦枫
-             * chapterId : 169
-             * chapterName : gradle
-             * collect : false
-             * courseId : 13
-             * desc :
-             * envelopePic :
-             * id : 2408
-             * link : http://www.wanandroid.com/blog/show/2048
-             * niceDate : 4小时前
-             * origin :
-             * projectLink :
-             * publishTime : 1519548205000
-             * title : 有关 Android Studio 重复引入包的问题和解决方案
-             * visible : 1
-             * zan : 0
-             */
-
-            var apkLink: String = ""
-            var author: String = ""
-            var chapterId: Int = 0
-            var chapterName: String = ""
-            var collect: String = ""
-            var courseId: Int = 0
-            var desc: String = ""
-            var envelopePic: String = ""
-            var id: Int = 0
-            var link: String = ""
-            var niceDate: String = ""
-            var origin: String = ""
-            var projectLink: String = ""
-            var publishTime: Long = 0
-            var title: String = ""
-            var visible: Int = 0
-            var zan: Int = 0
-        }
     }
 }

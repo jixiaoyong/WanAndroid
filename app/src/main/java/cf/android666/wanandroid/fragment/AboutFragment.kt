@@ -10,6 +10,7 @@ import android.widget.Toast
 import cf.android666.wanandroid.R
 import cf.android666.wanandroid.base.BaseFragment
 import cf.android666.wanandroid.cookie.CookieTools
+import cf.android666.wanandroid.cookie.Preference
 import cf.android666.wanandroid.utils.MessageEvent
 import cf.android666.wanandroid.utils.SharePreference
 import com.orhanobut.logger.Logger
@@ -19,6 +20,10 @@ import io.reactivex.schedulers.Schedulers
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import android.content.Intent
+import android.content.Intent.getIntent
+
+
 
 
 /**
@@ -201,6 +206,8 @@ class AboutFragment : BaseFragment() {
 
                 mView!!.power_btn.text = "登录/注册"
 
+                SharePreference.clear()
+
                 isLogin = false
 
                 SharePreference.saveKV(SharePreference.IS_LOGIN,false)
@@ -216,19 +223,16 @@ class AboutFragment : BaseFragment() {
 
             mView!!.fr_text.text = "收藏：" + SharePreference.getV(SharePreference.FAVORITE_COUNT,"")
 
-            var isNightMode = SharePreference.getV<Boolean>(SharePreference.IS_LOGIN,false)
+            var isNightMode = SharePreference.getV<Boolean>(SharePreference.IS_NIGHT_MODE,false)
 
             mView!!.night_mode.isChecked = isNightMode
 
             mView!!.night_mode.setOnClickListener {
 
-                SharePreference.saveKV(SharePreference.IS_NIGHT_MODE,(it as Switch).isChecked)
+                SharePreference.saveKV(SharePreference.IS_NIGHT_MODE,mView!!.night_mode.isChecked)
 
-                var msg = MessageEvent
+                updateTheme()
 
-                msg.isNightMode = it.isChecked
-
-                EventBus.getDefault().post(msg)
             }
 
         } else {
@@ -236,6 +240,9 @@ class AboutFragment : BaseFragment() {
             mView!!.power_btn.text = "登录/注册"
 
             mView!!.power_btn.setOnClickListener {
+
+                mView!!.power_btn.setBackgroundColor(Color.TRANSPARENT)
+
 
                 mView!!.about_login_layout.visibility =
                         if (mView!!.about_login_layout.visibility == View.VISIBLE) View.GONE
@@ -273,6 +280,18 @@ class AboutFragment : BaseFragment() {
 
         }
 
+    }
+
+    private fun updateTheme() {
+
+        //todo 在切换activity的时候做个动画掩饰，可以参考酷软
+
+        val intent = activity.intent
+        activity.overridePendingTransition(0, 0)//不设置进入退出动画
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+        activity.finish()
+        activity.overridePendingTransition(0, 0)
+        startActivity(intent)
     }
 
 }

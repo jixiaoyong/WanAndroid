@@ -12,6 +12,7 @@ import cf.android666.wanandroid.activity.ContentActivity
 import cf.android666.wanandroid.adapter.DiscoverProjectsAdapter
 import cf.android666.wanandroid.api.WanAndroidApiHelper
 import cf.android666.wanandroid.base.BaseFragment
+import cf.android666.wanandroid.bean.BaseArticlesBean
 import cf.android666.wanandroid.bean.DiscoverProjectItemBean
 import cf.android666.wanandroid.bean.DiscoverProjectTreeBean
 import cf.android666.wanandroid.utils.SuperUtil
@@ -25,7 +26,7 @@ import java.util.ArrayList
  */
 class DiscoverProjectsFragment : BaseFragment() {
 
-    private var mData  = ArrayList<DiscoverProjectItemBean.DataBean.DatasBean>()
+    private var mData  = ArrayList<BaseArticlesBean>()
 
     private var mTreeData = ArrayList<DiscoverProjectTreeBean.DataBean>()
 

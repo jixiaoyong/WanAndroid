@@ -13,19 +13,24 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import cf.android666.wanandroid.R.id.bottom_nav
 import cf.android666.wanandroid.activity.SearchActivity
 import cf.android666.wanandroid.adapter.MFragmentViewPagerAdapter
+import cf.android666.wanandroid.base.BaseActivity
 import cf.android666.wanandroid.base.BaseFragment
 import cf.android666.wanandroid.fragment.AboutFragment
 import cf.android666.wanandroid.fragment.DiscoverFragment
 import cf.android666.wanandroid.fragment.IndexFragment
+import cf.android666.wanandroid.utils.SharePreference
+import cf.android666.wanandroid.utils.SuperUtil
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_main)
 
         setSupportActionBar(toolbar)
@@ -40,7 +45,7 @@ class MainActivity : AppCompatActivity() {
 
         val bottomNavIds = arrayListOf(R.id.index, R.id.discover, R.id.about)
 
-        viewpager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener{
+        viewpager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {
             }
 
@@ -52,18 +57,17 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-        bottom_nav.setOnNavigationItemSelectedListener {
-            it ->
-            when(it.itemId) {
-                R.id.index ->{
+        bottom_nav.setOnNavigationItemSelectedListener { it ->
+            when (it.itemId) {
+                R.id.index -> {
                     viewpager.currentItem = 0
                     return@setOnNavigationItemSelectedListener true
                 }
-                R.id.discover ->{
+                R.id.discover -> {
                     viewpager.currentItem = 1
                     return@setOnNavigationItemSelectedListener true
                 }
-                R.id.about ->{
+                R.id.about -> {
                     viewpager.currentItem = 2
                     return@setOnNavigationItemSelectedListener true
                 }
@@ -77,9 +81,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
 
-        menuInflater.inflate(R.menu.menu_main,menu)
+        menuInflater.inflate(R.menu.menu_main, menu)
 
-        var searchManager= getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        var searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
 
         var searchView: SearchView = menu!!.findItem(R.id.app_bar_search).actionView as SearchView
 

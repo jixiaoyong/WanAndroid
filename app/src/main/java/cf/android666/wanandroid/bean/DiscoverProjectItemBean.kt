@@ -32,46 +32,7 @@ package cf.android666.wanandroid.bean
         var pageCount: Int = 0
         var size: Int = 0
         var total: Int = 0
-        var datas: ArrayList<DatasBean> = arrayListOf()
+        var datas: ArrayList<BaseArticlesBean> = arrayListOf()
 
-        class DatasBean {
-            /**
-             * apkLink :
-             * author : salecoding
-             * chapterId : 294
-             * chapterName : 完整项目
-             * collect : false
-             * courseId : 13
-             * desc : Try to build a www.wanandroid.com client。
-             * envelopePic : http://www.wanandroid.com/blogimgs/9f3befc5-562e-4061-804a-45859b233b38.png
-             * id : 2404
-             * link : http://www.wanandroid.com/blog/show/2047
-             * niceDate : 1天前
-             * origin :
-             * projectLink : https://github.com/salecoding/WanAndroid
-             * publishTime : 1519695915000
-             * title : 开源WanAndroid客户端 Java版本
-             * visible : 0
-             * zan : 0
-             */
-
-            var apkLink: String? = ""
-            var author: String? = ""
-            var chapterId: Int = 0
-            var chapterName: String? = ""
-            var collect: Boolean = false
-            var courseId: Int = 0
-            var desc: String? = ""
-            var envelopePic: String? = ""
-            var id: Int = 0
-            var link: String? = ""
-            var niceDate: String? = ""
-            var origin: String? = ""
-            var projectLink: String? = ""
-            var publishTime: Long = 0
-            var title: String? = ""
-            var visible: Int = 0
-            var zan: Int = 0
-        }
     }
 }

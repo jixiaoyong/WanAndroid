@@ -52,7 +52,7 @@ interface WanAndroidService{
                  @Field("repassword")userRePwd: String) : Observable<CookieBean>
 
     @GET("lg/collect/list/{page}/json")
-    fun getCollect(@Path("page") page: Int):Observable<IndexCollectBean>
+    fun getCollect(@Path("page") page: Int):Observable<IndexArticleBean>
 
     @POST("lg/collect/{id}/json")
     fun collectPostById(@Path("id") id: Int):Observable<CollectBean>
@@ -64,12 +64,12 @@ interface WanAndroidService{
                           @Field("link")link: String):Observable<CollectOutBean>
 
     @POST("lg/uncollect_originId/{id}/json")
-    fun uncollectByOriginId(@Path("id") id: Int):Observable<UnCollectBean>
+    fun uncollectByOriginId(@Path("id") id: Int):Observable<CollectBean>
 
     //originId = -1
     @POST("lg/uncollect/{id}/json")
     @FormUrlEncoded
-    fun uncollectById(@Path("id") id: Int,@Field("originId")originId:Int):Observable<UnCollectBean>
+    fun uncollectById(@Path("id") id: Int,@Field("originId")originId:Int):Observable<CollectBean>
 
     @POST("article/query/{page}/json")
     @FormUrlEncoded

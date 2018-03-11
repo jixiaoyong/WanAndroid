@@ -9,7 +9,9 @@ import cf.android666.wanandroid.adapter.DiscoverNaviAdapter
 import cf.android666.wanandroid.api.WanAndroidApiHelper
 import cf.android666.wanandroid.api.WanAndroidService
 import cf.android666.wanandroid.base.BaseFragment
+import cf.android666.wanandroid.bean.CookieBean
 import cf.android666.wanandroid.bean.DiscoverNaviBean
+import cf.android666.wanandroid.cookie.CookieTools
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -25,11 +27,9 @@ class DiscoverNaviFragment : BaseFragment() {
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater!!.inflate(R.layout.fragment_discover_tree, container, false)
 
-        var service: WanAndroidService = WanAndroidApiHelper.getInstance()
 
-        var observable : Observable<DiscoverNaviBean> = service.getNavi()
-
-        observable.subscribeOn(Schedulers.newThread())
+        CookieTools.getCookieService()!!.getNavi()
+                .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe{
 

@@ -6,15 +6,14 @@ import android.view.View
 import cf.android666.wanandroid.R
 import cf.android666.wanandroid.utils.SuperUtil
 import kotlinx.android.synthetic.main.activity_content.*
-import cf.android666.wanandroid.R.id.toolbar
-
+import cf.android666.wanandroid.base.BaseActivity
 
 
 /**
  * Created by jixiaoyong on 2018/2/25.
  */
 
-class ContentActivity : AppCompatActivity() {
+class ContentActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,7 +23,9 @@ class ContentActivity : AppCompatActivity() {
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         toolbar.setNavigationOnClickListener { finish() }
 
+
         SuperUtil.loadUrl(web_view,intent.getStringExtra("url"))
+
 
     }
 

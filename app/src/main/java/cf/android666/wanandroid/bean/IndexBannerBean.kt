@@ -29,13 +29,13 @@ class IndexBannerBean{
          * url : http://www.wanandroid.com/blog/show/2
          */
 
-        var desc: String? = ""
+        var desc: String = ""
         var id: Int = 0
-        var imagePath: String? = ""
+        var imagePath: String = ""
         var isVisible: Int = 0
         var order: Int = 0
-        var title: String? = ""
+        var title: String = ""
         var type: Int = 0
-        var url: String? = ""
+        var url: String = ""
     }
 }

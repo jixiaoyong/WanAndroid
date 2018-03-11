@@ -8,15 +8,13 @@ import android.view.ViewGroup
 import android.widget.Toast
 import cf.android666.wanandroid.R
 import cf.android666.wanandroid.activity.ContentActivity
-import cf.android666.wanandroid.adapter.IndexPostArticleAdapter
+import cf.android666.wanandroid.adapter.PostArticleAdapter
 import cf.android666.wanandroid.api.WanAndroidApiHelper
 import cf.android666.wanandroid.base.BaseFragment
-import cf.android666.wanandroid.bean.IndexArticleBean
+import cf.android666.wanandroid.bean.BaseArticlesBean
 import cf.android666.wanandroid.cookie.CookieTools
-import cf.android666.wanandroid.utils.SharePreference
 import cf.android666.wanandroid.utils.SuperUtil
 import cf.android666.wanandroid.utils.TempTools
-import com.orhanobut.logger.Logger
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_index_post.view.*
@@ -28,7 +26,7 @@ import com.zhouwei.mzbanner.MZBannerView
 class IndexPostFragment : BaseFragment() {
 
 
-    private var mData = IndexArticleBean.DataBean().datas
+    private var mData : ArrayList<BaseArticlesBean> = arrayListOf()
 
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
@@ -42,7 +40,7 @@ class IndexPostFragment : BaseFragment() {
         view.recycler_view.layoutManager = LinearLayoutManager(context,
                 LinearLayoutManager.VERTICAL, false)
 
-        view.recycler_view.adapter = IndexPostArticleAdapter(context, mData, {
+        view.recycler_view.adapter = PostArticleAdapter(context, mData, {
 
             SuperUtil.startActivity(context, ContentActivity::class.java, it)
 
@@ -50,21 +48,16 @@ class IndexPostFragment : BaseFragment() {
 
             var postId = mData[position].id
 
-            var isLogin = SharePreference.getV<Boolean>(SharePreference.IS_LOGIN, false)
+                if (isSelected) {
 
-            if (!isLogin) {
-                Toast.makeText(context, "请登录", Toast.LENGTH_SHORT).show()
-                return@IndexPostArticleAdapter
-            }
+                    collectPost(postId)
 
-            if (isSelected) {
+                } else {
 
-                collectPost(postId)
+                    unCollectPost(postId)
+                }
 
-            } else {
 
-                unCollectPost(postId)
-            }
 
         })
 

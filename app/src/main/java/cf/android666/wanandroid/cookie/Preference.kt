@@ -62,4 +62,5 @@ class Preference<T>(private val name: String, private val default: T) : ReadWrit
             else -> throw IllegalArgumentException("This type can be saved into Preferences")
         }.apply()
     }
+
 }
