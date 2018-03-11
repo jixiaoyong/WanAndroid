@@ -66,7 +66,7 @@ class IndexPostArticleAdapter(context :Context, data: ArrayList<IndexArticleBean
 
         }
 
-        holder.itemView.imageButton.isSelected = mData[position].collect
+        holder.itemView.imageButton.isSelected = mData[position].collect == "true"
 
         holder.itemView.imageButton.setOnClickListener{
 

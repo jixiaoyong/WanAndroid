@@ -16,6 +16,7 @@ import cf.android666.wanandroid.cookie.CookieTools
 import cf.android666.wanandroid.utils.SharePreference
 import cf.android666.wanandroid.utils.SuperUtil
 import cf.android666.wanandroid.utils.TempTools
+import com.orhanobut.logger.Logger
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_index_post.view.*
@@ -45,15 +46,14 @@ class IndexPostFragment : BaseFragment() {
 
             SuperUtil.startActivity(context, ContentActivity::class.java, it)
 
-        }, {
-            position, isSelected ->
+        }, { position, isSelected ->
 
             var postId = mData[position].id
 
             var isLogin = SharePreference.getV<Boolean>(SharePreference.IS_LOGIN, false)
 
-            if (!isLogin){
-                Toast.makeText(context,"请登录",Toast.LENGTH_SHORT).show()
+            if (!isLogin) {
+                Toast.makeText(context, "请登录", Toast.LENGTH_SHORT).show()
                 return@IndexPostArticleAdapter
             }
 
@@ -115,15 +115,17 @@ class IndexPostFragment : BaseFragment() {
 
     private fun downloadData(page: Int) {
 
-        val observable = WanAndroidApiHelper.getInstance().getArticles(page)
+        val observable = CookieTools.getCookieService()!!.getArticles(page)
 
         observable.subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
 
-                    when(page){
+                    when (page) {
 
-                        0 -> {mData.clear();mData.addAll(it.data.datas)}
+                        0 -> {
+                            mData.clear();mData.addAll(it.data.datas)
+                        }
 
                         else -> mData.addAll(it.data.datas)
                     }
@@ -133,7 +135,7 @@ class IndexPostFragment : BaseFragment() {
                 }
     }
 
-    private fun downloadBanner(mMZBanner :MZBannerView<*>){
+    private fun downloadBanner(mMZBanner: MZBannerView<*>) {
 
         val observable2 = WanAndroidApiHelper.getInstance().getBanner()
 
@@ -141,7 +143,7 @@ class IndexPostFragment : BaseFragment() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
 
-                    TempTools.setBanner(it.data,mMZBanner)
+                    TempTools.setBanner(it.data, mMZBanner)
 
                 }
     }

@@ -39,7 +39,6 @@
             android:text="summary"
             android:textSize="12sp" />
 
-
         <TextView
             android:id="@+id/author"
             android:layout_width="wrap_content"
@@ -55,11 +54,11 @@
             android:id="@+id/time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/author"
-            android:layout_alignTop="@id/author"
-            android:paddingLeft="20dp"
             android:layout_alignParentBottom="true"
+            android:layout_alignTop="@id/author"
+            android:layout_toEndOf="@id/author"
             android:maxLines="1"
+            android:paddingLeft="10dp"
             android:text="jixiaoyong"
             android:textSize="14sp" />
 

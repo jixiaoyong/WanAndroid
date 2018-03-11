@@ -91,8 +91,6 @@ class DiscoverProjectsAdapter(context: Context, data: List<DiscoverProjectItemBe
 
             params.height = (Math.random() * 300 + 600).toInt()
 
-            Logger.wtf("params.height is ${params.height}")
-
             view.layoutParams = params
 
         }

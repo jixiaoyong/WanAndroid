@@ -14,7 +14,7 @@ object WanAndroidApiHelper {
 
     private var service = Retrofit.Builder()
             .baseUrl(ApiUrl.baseUrl)
-            .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
+            .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .build()
             .create(WanAndroidService::class.java)

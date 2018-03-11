@@ -1,5 +1,7 @@
 package cf.android666.wanandroid.bean
 
+import com.google.gson.annotations.SerializedName
+
 /**
  * Created by jixiaoyong on 2018/2/25.
  */
@@ -60,7 +62,7 @@ class IndexArticleBean {
             var author: String = ""
             var chapterId: Int = 0
             var chapterName: String = ""
-            var collect: Boolean = false
+            var collect: String = ""
             var courseId: Int = 0
             var desc: String = ""
             var envelopePic: String = ""

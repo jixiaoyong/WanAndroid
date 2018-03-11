@@ -78,7 +78,7 @@ class IndexFavoriteFragment() : BaseFragment() {
 
             view.recycler_view.visibility = View.GONE
 
-            Toast.makeText(context,"请先登录",Toast.LENGTH_SHORT).show()
+            Toast.makeText(context,"请登录",Toast.LENGTH_SHORT).show()
         }
 
         return view
