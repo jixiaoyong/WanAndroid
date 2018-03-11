@@ -1,7 +1,7 @@
 # WanAndroid
 
 
-![WanAndroid Logo](https://github.com/jixiaoyong/WanAndroid/blob/master/images/WanAndroid.png?raw=true)
+![WanAndroid Logo](https://github.com/jixiaoyong/WanAndroid/blob/master/images/WanAndroidLogo.png?raw=true)
 
 
 
