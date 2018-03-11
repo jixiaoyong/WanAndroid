@@ -1,78 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_centerHorizontal="true"
-    android:padding="15dp">
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/bg_border"
+    android:layout_margin="5dp"
+    android:padding="5dp">
 
     <ImageView
         android:id="@+id/image"
-        android:layout_width="170dp"
-        android:layout_height="250dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:minHeight="300dp"
+        android:scaleType="centerCrop"
         android:src="@drawable/nothing" />
 
-
-    <TextView
-        android:id="@+id/title"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorTextBackground"
-        android:layout_alignParentTop="true"
-        android:maxLines="2"
-        android:text="title"
-        android:textSize="18sp"
-        android:textStyle="bold" />
+        android:layout_height="110dp"
+        android:padding="5dp">
 
-    <TextView
-        android:id="@+id/summary"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorTextBackground"
-        android:layout_below="@id/title"
-        android:maxLines="3"
-        android:text="title"
-        android:textSize="12sp" />
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:maxLines="2"
+            android:text="title"
+            android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@color/colorTextBackground"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentBottom="true"
-        android:maxLines="1"
-        android:text="2018-1-1 jixiaoyong"
-        android:textSize="14sp" />
-
-    <TextView
-        android:id="@+id/author"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@color/colorTextBackground"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentBottom="true"
-        android:maxLines="1"
-        android:text="2018-1-1 jixiaoyong"
-        android:textSize="14sp" />
-
-    <ImageButton
-        android:id="@+id/install_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:visibility="gone"/>
-
-    <ImageButton
-        android:id="@+id/collect_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:visibility="gone"/>
+        <TextView
+            android:id="@+id/summary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/title"
+            android:maxLines="3"
+            android:text="summary"
+            android:textSize="12sp" />
 
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/author"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/summary"
+            android:maxLines="1"
+            android:text="ixiaoyong"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/author"
+            android:layout_alignTop="@id/author"
+            android:paddingLeft="20dp"
+            android:layout_alignParentBottom="true"
+            android:maxLines="1"
+            android:text="jixiaoyong"
+            android:textSize="14sp" />
+
+        <ImageButton
+            android:id="@+id/install_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:visibility="gone" />
+
+        <ImageButton
+            android:id="@+id/collect_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+
+</LinearLayout>

@@ -66,10 +66,12 @@ interface WanAndroidService{
     @POST("lg/uncollect_originId/{id}/json")
     fun uncollectByOriginId(@Path("id") id: Int):Observable<UnCollectBean>
 
-
-
     //originId = -1
     @POST("lg/uncollect/{id}/json")
     @FormUrlEncoded
     fun uncollectById(@Path("id") id: Int,@Field("originId")originId:Int):Observable<UnCollectBean>
+
+    @POST("article/query/{page}/json")
+    @FormUrlEncoded
+    fun search(@Path("page") page: Int, @Field("k") key: String):Observable<SearchBean>
 }

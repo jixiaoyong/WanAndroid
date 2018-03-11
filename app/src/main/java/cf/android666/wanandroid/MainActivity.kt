@@ -1,5 +1,7 @@
 package cf.android666.wanandroid
 
+import android.app.SearchManager
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.support.v7.app.AppCompatActivity
@@ -74,26 +76,17 @@ class MainActivity : AppCompatActivity() {
 
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+
         menuInflater.inflate(R.menu.menu_main,menu)
 
-        var menuItem = menu!!.findItem(R.id.app_bar_search)
+        var searchManager= getSystemService(Context.SEARCH_SERVICE) as SearchManager
 
-        var searchView: SearchView = MenuItemCompat.getActionView(menuItem) as SearchView
+        var searchView: SearchView = menu!!.findItem(R.id.app_bar_search).actionView as SearchView
 
-        MenuItemCompat.setOnActionExpandListener(menuItem,object :MenuItemCompat.OnActionExpandListener{
-            override fun onMenuItemActionExpand(item: MenuItem?): Boolean {
-                Toast.makeText(baseContext,"onMenuItemActionExpand",Toast.LENGTH_SHORT).show()
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
 
-                return true
-            }
-
-            override fun onMenuItemActionCollapse(item: MenuItem?): Boolean {
-                Toast.makeText(baseContext,"onMenuItemActionCollapse",Toast.LENGTH_SHORT).show()
-                return true
-            }
-
-        })
-
-        return super.onCreateOptionsMenu(menu)
+        return true
     }
+
+
 }

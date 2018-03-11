@@ -13,6 +13,7 @@ import cf.android666.wanandroid.api.WanAndroidApiHelper
 import cf.android666.wanandroid.base.BaseFragment
 import cf.android666.wanandroid.bean.IndexArticleBean
 import cf.android666.wanandroid.cookie.CookieTools
+import cf.android666.wanandroid.utils.SharePreference
 import cf.android666.wanandroid.utils.SuperUtil
 import cf.android666.wanandroid.utils.TempTools
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -48,6 +49,13 @@ class IndexPostFragment : BaseFragment() {
             position, isSelected ->
 
             var postId = mData[position].id
+
+            var isLogin = SharePreference.getV<Boolean>(SharePreference.IS_LOGIN, false)
+
+            if (!isLogin){
+                Toast.makeText(context,"请登录",Toast.LENGTH_SHORT).show()
+                return@IndexPostArticleAdapter
+            }
 
             if (isSelected) {
 
