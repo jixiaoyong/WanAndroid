@@ -5,6 +5,7 @@
     <color name="colorAccent">#FF4081</color>
 
     <color name="colorBottomNav">#e7276692</color>
+    <color name="colorBottom">#e7ececec</color>
 
     <!--<color name="colorItemBackground">#ffffff</color>-->
 </resources>

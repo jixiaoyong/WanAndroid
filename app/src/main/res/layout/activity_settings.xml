@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:background="@color/colorBottomNav"
+        app:title="设置"
+        app:titleTextColor="#fff"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/nav_height">
+
+    </android.support.v7.widget.Toolbar>
+
+    <fragment
+        android:id="@+id/fragment"
+        android:name="cf.android666.wanandroid.fragment.SettingsFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</LinearLayout>

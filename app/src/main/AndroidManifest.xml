@@ -38,6 +38,8 @@
             </intent-filter>
 
         </activity>
+        <activity android:name=".activity.SettingActivity" />
+        <activity android:name=".activity.LoginActivity" />
     </application>
 
 </manifest>

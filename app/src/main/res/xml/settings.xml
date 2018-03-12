@@ -1,20 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<android.support.v7.preference.PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <SwitchPreference
-        android:defaultValue="false"
-        android:key="switch_preference_1"
-        android:title="Switch preference" />
-    <CheckBoxPreference
-        android:defaultValue="false"
-        android:key="check_box_preference_1"
-        android:title="Check box preference" />
-    <SwitchPreference
-        android:defaultValue="false"
-        android:key="switch_preference_2"
-        android:title="Switch preference" />
-    <SwitchPreference
-        android:defaultValue="false"
-        android:key="switch_preference_3"
-        android:title="Switch preference" />
-</PreferenceScreen>
+    <android.support.v7.preference.PreferenceCategory android:title="版本信息">
+
+        <android.support.v7.preference.SwitchPreferenceCompat
+            android:defaultValue="true"
+            android:key="key1"
+            android:title="检查更新" />
+
+        <Preference
+            android:summary="V 1.0"
+            android:title="当前版本" />
+    </android.support.v7.preference.PreferenceCategory>
+
+    <android.support.v7.preference.PreferenceCategory android:title="其他">
+        <Preference
+            android:summary="https://github.com/jixiaoyong/WanAndroid"
+            android:title="项目地址" />
+
+        <Preference
+            android:summary="http://www.jixiaoyong.github.io/"
+            android:title="作者网站" />
+
+        <Preference
+            android:summary="@string/about_summary"
+            android:title="关于App" />
+    </android.support.v7.preference.PreferenceCategory>
+
+
+</android.support.v7.preference.PreferenceScreen>

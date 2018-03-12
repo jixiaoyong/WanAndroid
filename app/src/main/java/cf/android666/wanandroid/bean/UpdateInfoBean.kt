@@ -18,6 +18,9 @@ data class UpdateInfoBean(@SerializedName("summary")
                           @SerializedName("url")
                           val url: String = "")
 
+// online url
+// http://jixiaoyong.github.io/download/data/wanandroid/updateInfo.json
+
 //{
 //    "errorCode":1,
 //    "appName": "WanAndroid",

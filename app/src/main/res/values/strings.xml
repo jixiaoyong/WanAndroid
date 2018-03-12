@@ -3,4 +3,8 @@
     <string name="index">主页</string>
     <string name="discover">发现</string>
     <string name="about">关于</string>
+
+    <string name="about_summary">一个用kotlin语言编写的www.wanandroid.com的客户端，支持Android 5.0及以上版本。
+        \n本项目还在持续编写中。。。
+        \n我的邮箱: jixiaoyong1995@gmail.com ,有任何问题都可以email我或者在issues 提出。</string>
 </resources>

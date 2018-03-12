@@ -5,4 +5,10 @@
     <attr name="color_post_item_background"
         format="color"/>
 
+    <attr name="color_bottom_background"
+        format="color"/>
+
+    <attr name="color_bottom_tint"
+        format="color"/>
+
 </resources>
