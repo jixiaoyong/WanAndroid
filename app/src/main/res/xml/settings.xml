@@ -30,7 +30,7 @@
         <Preference
             android:key="about_summary"
             android:summary="@string/about_summary"
-            android:title="关于App" />
+            android:title="关于APP" />
     </android.support.v7.preference.PreferenceCategory>
 
 

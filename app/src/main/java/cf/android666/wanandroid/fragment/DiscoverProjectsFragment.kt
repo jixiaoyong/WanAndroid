@@ -33,6 +33,10 @@ class DiscoverProjectsFragment : BaseFragment() {
 
     private var mPage = 0
 
+    private var currentPage = 0
+
+    private var pageCount = 0
+
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater!!.inflate(R.layout.fragment_discover_projects, container, false)
 
@@ -73,7 +77,13 @@ class DiscoverProjectsFragment : BaseFragment() {
         }, {
 
         })
+        view.recycler_view.setOnFootListener {
 
+            if (currentPage < pageCount){
+
+                downloadData(++currentPage,mTreeData[mTabId].id)
+            }
+        }
 
         view.swipe_refresh.setOnRefreshListener{
 
@@ -123,9 +133,19 @@ class DiscoverProjectsFragment : BaseFragment() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
 
-                    mData.clear()
+                    when (page) {
 
-                    mData.addAll(it.data.datas)
+                        1 -> {
+                            mData.clear();mData.addAll(it.data.datas)
+                        }
+
+                        else -> mData.addAll(it.data.datas)
+                    }
+
+
+                    pageCount = it.data.pageCount
+
+                    currentPage = it.data.curPage
 
                     view!!.recycler_view.adapter.notifyDataSetChanged()
 

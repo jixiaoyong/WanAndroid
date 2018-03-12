@@ -31,6 +31,10 @@ class IndexFavoriteFragment : BaseFragment() {
 
     var mView: View? = null
 
+    private var currentPage = 0
+
+    private var pageCount = 0
+
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater!!.inflate(R.layout.fragment_index_favorite, container, false)
 
@@ -82,6 +86,14 @@ class IndexFavoriteFragment : BaseFragment() {
             Toast.makeText(context, "请登录", Toast.LENGTH_SHORT).show()
         }
 
+
+        view.recycler_view.setOnFootListener {
+
+            if (currentPage < pageCount){
+                loadData(view,++currentPage)
+            }
+        }
+
         return view
     }
 
@@ -101,8 +113,11 @@ class IndexFavoriteFragment : BaseFragment() {
                 }
     }
 
+    private fun loadData(view: View){
+        loadData(view,0)
+    }
 
-    fun loadData(view: View) {
+    private fun loadData(view: View, page:Int) {
 
         CookieTools.getCookieService()!!
                 .getCollect(0)
@@ -121,9 +136,19 @@ class IndexFavoriteFragment : BaseFragment() {
 
                     } else {
 
-                        mData.clear()
+                        when (page) {
 
-                        mData.addAll(it.data.datas)
+                            0 -> {
+                                mData.clear();mData.addAll(it.data.datas)
+                            }
+
+                            else -> mData.addAll(it.data.datas)
+                        }
+
+
+                        pageCount = it.data.pageCount
+
+                        currentPage = it.data.curPage
 
                         view.recycler_view.adapter.notifyDataSetChanged()
 

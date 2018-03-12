@@ -18,10 +18,10 @@ import retrofit2.converter.gson.GsonConverterFactory
 /**
  * Created by jixiaoyong on 2018/2/7.
  */
-object SuperUtil{
+object SuperUtil {
 
     fun toast(context: Context, msg: String) {
-        Toast.makeText(context,msg,Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
     }
 
     fun loadUrl(webView: WebView, url: String) {
@@ -38,16 +38,16 @@ object SuperUtil{
         webView.loadUrl(url)
     }
 
-    fun <T> startActivity(context: Context,clazz:Class<T>,url: String){
+    fun <T> startActivity(context: Context, clazz: Class<T>, url: String) {
 
-        var intent = Intent(context,clazz)
+        var intent = Intent(context, clazz)
 
         intent.putExtra("url", url)
 
         context.startActivity(intent)
     }
 
-    fun update(context: Context) {
+    fun update(context: Context, needToast: Boolean) {
         Retrofit.Builder()
                 .baseUrl(UpdateService.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -61,21 +61,27 @@ object SuperUtil{
 
                     var versionCode = SharePreference.getV<Int>(SharePreference.VERSION_CODE, -1)
 
-                    when {
+                    if (needToast) {
 
-                        it.errorCode < 0 -> Toast.makeText(context, "检查更新失败，请稍后重试~"
-                                , Toast.LENGTH_SHORT).show()
+                        when {
 
-                        versionCode > it.versionCode -> updateApp(context,it)
+                            it.errorCode < 0 -> Toast.makeText(context, "检查更新失败，请稍后重试~"
+                                    , Toast.LENGTH_SHORT).show()
 
-                        else -> Toast.makeText(context, "已经是最新啦", Toast.LENGTH_SHORT).show()
+                            versionCode > it.versionCode -> updateApp(context, it)
+
+                            else -> Toast.makeText(context, "已经是最新啦", Toast.LENGTH_SHORT).show()
+                        }
+                    } else if (versionCode > it.versionCode) {
+                        updateApp(context, it)
                     }
+
 
                 }
 
     }
 
-    private fun updateApp(context: Context,it: UpdateInfoBean) {
+    private fun updateApp(context: Context, it: UpdateInfoBean) {
 
         AlertDialog.Builder(context)
                 .setMessage(it.summary)

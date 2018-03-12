@@ -28,6 +28,10 @@ class SearchActivity : BaseActivity() {
 
     var key :String = ""
 
+    private var currentPage = 0
+
+    private var pageCount = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -49,7 +53,12 @@ class SearchActivity : BaseActivity() {
                     _, _ ->
 
                 }
+        recycler_view.setOnFootListener {
 
+            if (currentPage < pageCount){
+                search(key,++currentPage)
+            }
+        }
         key = intent.getStringExtra(SearchManager.QUERY)
 
         search(key)
@@ -75,8 +84,19 @@ class SearchActivity : BaseActivity() {
                         Toast.makeText(baseContext,"未找到$key",Toast.LENGTH_SHORT).show()
                     }
 
-                    mData.clear()
-                    mData.addAll(it.data.datas)
+                    when (page) {
+
+                        0 -> {
+                            mData.clear();mData.addAll(it.data.datas)
+                        }
+
+                        else -> mData.addAll(it.data.datas)
+                    }
+
+                    pageCount = it.data.pageCount
+
+                    currentPage = it.data.curPage
+
                     recycler_view.adapter.notifyDataSetChanged()
                 }
 

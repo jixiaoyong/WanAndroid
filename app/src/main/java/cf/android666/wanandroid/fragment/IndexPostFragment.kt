@@ -2,6 +2,7 @@ package cf.android666.wanandroid.fragment
 
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,10 +16,12 @@ import cf.android666.wanandroid.api.cookie.CookieTools
 import cf.android666.wanandroid.utils.SharePreference
 import cf.android666.wanandroid.utils.SuperUtil
 import cf.android666.wanandroid.utils.TempTools
+import com.orhanobut.logger.Logger
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_index_post.view.*
 import com.zhouwei.mzbanner.MZBannerView
+import kotlinx.android.synthetic.main.activity_search.*
 
 /**
  * Created by jixiaoyong on 2018/2/25.
@@ -26,6 +29,12 @@ import com.zhouwei.mzbanner.MZBannerView
 class IndexPostFragment : BaseFragment() {
 
     private var mData: ArrayList<BaseArticlesBean> = arrayListOf()
+
+    private var currentPage = 0
+
+    private var pageCount = 0
+
+    private var childCount = 0
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -38,7 +47,7 @@ class IndexPostFragment : BaseFragment() {
         view.recycler_view.layoutManager = LinearLayoutManager(context,
                 LinearLayoutManager.VERTICAL, false)
 
-        view.recycler_view.adapter = PostArticleAdapter(mData,false, {
+        view.recycler_view.adapter = PostArticleAdapter(mData, false, {
 
             SuperUtil.startActivity(context, ContentActivity::class.java, it)
 
@@ -63,6 +72,35 @@ class IndexPostFragment : BaseFragment() {
                 unCollectPost(postId)
             }
 
+        })
+
+        //onTouchEvent事件被NestedScrollView拦截，故而不起作用
+        view.recycler_view.setOnFootListener {
+
+            if (currentPage < pageCount) {
+
+                downloadData(++currentPage)
+
+            }
+        }
+
+        view.recycler_view.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+            }
+
+            override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+
+                var lastPosition = (recyclerView!!.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
+
+                if (lastPosition > childCount -2 && currentPage < pageCount) {
+
+                    downloadData(++currentPage)
+
+                }
+
+                super.onScrolled(recyclerView, dx, dy)
+            }
         })
 
         downloadData()
@@ -132,7 +170,13 @@ class IndexPostFragment : BaseFragment() {
                         else -> mData.addAll(it.data.datas)
                     }
 
+                    pageCount = it.data.pageCount
+
+                    currentPage = it.data.curPage
+
                     view!!.recycler_view.adapter.notifyDataSetChanged()
+
+                    childCount = recycler_view.childCount
 
                     view!!.swipe_refresh.isRefreshing = false
                 }

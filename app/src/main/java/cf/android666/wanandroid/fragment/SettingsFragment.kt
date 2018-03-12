@@ -34,7 +34,7 @@ class SettingsFragment:PreferenceFragmentCompat(){
             "update"-> {
 
                 if ((preference as SwitchPreferenceCompat).isChecked) {
-                    SuperUtil.update(context)
+                    SuperUtil.update(context,true)
 
                 }
 

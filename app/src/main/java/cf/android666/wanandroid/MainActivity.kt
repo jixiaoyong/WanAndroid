@@ -26,7 +26,7 @@ class MainActivity : BaseActivity() {
         setSupportActionBar(toolbar)
 
         if (SharePreference.getV(SharePreference.IS_AUTO_UPDATE, false)) {
-            SuperUtil.update(this)
+            SuperUtil.update(this,false)
         }
 
         val fragments = arrayListOf<BaseFragment>()
