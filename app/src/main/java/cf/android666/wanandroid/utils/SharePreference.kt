@@ -12,15 +12,17 @@ import cf.android666.wanandroid.api.cookie.Preference
 
 object SharePreference {
 
-    val IS_LOGIN = "is_login"
+    const val IS_LOGIN = "is_login"
 
-    val IS_NIGHT_MODE = "is_night_mode"
+    const val IS_NIGHT_MODE = "is_night_mode"
 
-    val FAVORITE_COUNT = "favorite_count"
+    const val IS_AUTO_UPDATE = "is_auto_update"
 
-    val USER_NAME = "user_name"
+    const val FAVORITE_COUNT = "favorite_count"
 
-    val VERSION_CODE = "version_code"
+    const val USER_NAME = "user_name"
+
+    const val VERSION_CODE = "version_code"
 
     var sharePreference: SharedPreferences? = null
 

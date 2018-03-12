@@ -6,24 +6,29 @@
 
         <android.support.v7.preference.SwitchPreferenceCompat
             android:defaultValue="true"
-            android:key="key1"
-            android:title="检查更新" />
+            android:key="update"
+            android:title="自动检查更新"
+            />
 
         <Preference
+            android:key="version"
             android:summary="V 1.0"
             android:title="当前版本" />
     </android.support.v7.preference.PreferenceCategory>
 
     <android.support.v7.preference.PreferenceCategory android:title="其他">
         <Preference
+            android:key="project_url"
             android:summary="https://github.com/jixiaoyong/WanAndroid"
             android:title="项目地址" />
 
         <Preference
-            android:summary="http://www.jixiaoyong.github.io/"
+            android:key="author_url"
+            android:summary="http://jixiaoyong.github.io/"
             android:title="作者网站" />
 
         <Preference
+            android:key="about_summary"
             android:summary="@string/about_summary"
             android:title="关于App" />
     </android.support.v7.preference.PreferenceCategory>
