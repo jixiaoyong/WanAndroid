@@ -5,11 +5,19 @@
 
 
 
-一个用kotlin语言编写的www.wanandroid.com的客户端
+一个用kotlin语言编写的www.wanandroid.com的客户端，支持Android 5.0及以上版本。
 
 本项目还在持续编写中。。。
 
 **我的邮箱: jixiaoyong1995@gmail.com ,有任何问题都可以email我或者在[issues](https://github.com/jixiaoyong/WanAndroid/issues) 提出。**
+
+
+
+# 下载体验
+
+beta版本现已放出，欢迎体验。
+
+点击下载 [WanAndroid 0.1-beta.apk](https://raw.githubusercontent.com/jixiaoyong/Notes-Files/master/download/apk/WanAndroid.apk)
 
 # 界面预览
 

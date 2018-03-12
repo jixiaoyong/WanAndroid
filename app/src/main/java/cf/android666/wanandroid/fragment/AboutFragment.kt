@@ -1,5 +1,6 @@
 package cf.android666.wanandroid.fragment
 
+import android.app.AlertDialog
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -18,6 +19,13 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import android.content.Intent
+import android.net.Uri
+import cf.android666.wanandroid.api.UpdateService
+import cf.android666.wanandroid.bean.UpdateInfoBean
+import retrofit2.Retrofit
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
+import retrofit2.converter.gson.GsonConverterFactory
+
 
 
 /**
@@ -87,8 +95,64 @@ class AboutFragment : BaseFragment() {
             }
 
 
+        }
+
+        view.update.setOnClickListener {
+
+            Retrofit.Builder()
+                    .baseUrl(UpdateService.BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                    .build()
+                    .create(UpdateService::class.java)
+                    .getUpdateInfo()
+                    .subscribeOn(Schedulers.newThread())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe {
+
+                        var versionCode = SharePreference.getV<Int>(SharePreference.VERSION_CODE, -1)
+
+                        when {
+
+                            it.errorCode < 0 -> Toast.makeText(context,"检查更新失败，请稍后重试~"
+                                    ,Toast.LENGTH_SHORT).show()
+
+                            versionCode < it.versionCode -> updateApp(it)
+
+                            else -> Toast.makeText(context,"已经是最新啦",Toast.LENGTH_SHORT).show()
+                        }
+
+                    }
 
         }
+
+        view.share.setOnClickListener {
+
+        }
+    }
+
+    private fun updateApp(it: UpdateInfoBean) {
+
+       AlertDialog.Builder(context)
+               .setMessage(it.summary)
+               .setTitle("更新程序")
+               .setPositiveButton("更新") { dialog, which ->
+
+                   var intent = Intent(Intent.ACTION_VIEW, Uri.parse(it.url))
+
+                   intent.addCategory("android.intent.category.DEFAULT")
+
+                   context.startActivity(intent)
+
+                   dialog.dismiss()
+
+               }.setNegativeButton("取消"){dialog, which ->
+
+                   dialog.dismiss()
+
+               }.create().show()
+
+
     }
 
     private fun register(username: String, password1: String, password2: String) {

@@ -1,23 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-   >
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center_horizontal"
-        android:padding="20dp"
         android:layout_marginBottom="@dimen/nav_height"
+        android:gravity="center_horizontal"
         android:orientation="vertical">
-
 
         <ImageView
             android:id="@+id/user_icon_img"
             android:layout_width="130dp"
             android:layout_height="130dp"
-            android:layout_margin="10dp"
+            android:layout_margin="30dp"
             android:background="@drawable/nothing" />
 
         <TextView
@@ -31,87 +28,98 @@
             android:id="@+id/power_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:layout_marginTop="20dp"
+            android:layout_margin="20dp"
             android:layout_marginBottom="20dp"
-            android:paddingTop="20dp"
+            android:layout_marginTop="20dp"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
             android:paddingBottom="20dp"
-            android:orientation="vertical">
+            android:paddingTop="20dp">
 
             <LinearLayout
                 android:id="@+id/about_login_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:visibility="gone"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone">
 
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/user_name"
+                <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:maxLines="1"
-                    android:hint="用户名"
-                    />
+                    android:layout_height="wrap_content">
 
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/user_password"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:maxLines="1"
-                    android:hint="密码"
-                    android:inputType="textPassword"/>
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/user_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="用户名"
+                        android:maxLines="1" />
 
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/user_password_re"
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:maxLines="1"
-                    android:hint="再输一次密码"
-                    android:inputType="textPassword"
-                    android:visibility="gone"/>
+                    android:layout_height="wrap_content">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/user_password"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="密码"
+                        android:inputType="textPassword"
+                        android:maxLines="1" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/user_password_re"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="再输一次密码"
+                        android:inputType="textPassword"
+                        android:maxLines="1"
+                        android:visibility="gone" />
+                </android.support.design.widget.TextInputLayout>
 
                 <TextView
                     android:id="@+id/login_btn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="登录"
-                    android:gravity="center"
+                    android:layout_margin="5dp"
                     android:background="@color/colorBottomNav"
+                    android:gravity="center"
                     android:padding="5dp"
-                    android:layout_margin="5dp"/>
+                    android:text="登录" />
 
                 <TextView
                     android:id="@+id/register_btn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
                     android:gravity="center"
                     android:padding="5dp"
-                    android:layout_margin="5dp"
-                    android:text="注册"/>
+                    android:text="注册" />
 
 
             </LinearLayout>
 
-            <!--<ViewStub-->
-                <!--android:id="@+id/login_layout"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout="@layout/fragment_about_login" />-->
 
             <ImageView
                 android:id="@+id/arrow_img"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:background="@drawable/arrow_down"/>
+                android:background="@drawable/arrow_down" />
 
             <TextView
                 android:id="@+id/power_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:padding="5dp"
-                android:gravity="center"
                 android:background="@color/colorBottomNav"
+                android:gravity="center"
+                android:padding="5dp"
                 android:text="登录/注册" />
 
         </LinearLayout>
@@ -127,7 +135,7 @@
                 android:id="@+id/fr_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="收藏个数： 10"/>
+                android:text="收藏个数： 10" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -135,10 +143,10 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:text="夜间模式"
-                    android:layout_weight="1"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="夜间模式" />
 
                 <Switch
                     android:id="@+id/night_mode"
@@ -150,11 +158,23 @@
 
         </LinearLayout>
 
-        <!--<ViewStub-->
-            <!--android:id="@+id/settings_layout"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout="@layout/fragment_about_settings" />-->
+        <Button
+            android:id="@+id/update"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:background="?attr/color_post_item_background"
+            android:text="更新"
+             />
+
+        <Button
+            android:id="@+id/share"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/color_post_item_background"
+            android:text="分享"
+            android:visibility="gone" />
 
     </LinearLayout>
 </ScrollView>

@@ -22,6 +22,10 @@ class BaseApplication:Application(){
 
         SharePreference.setContext(this)
 
+        val versionCode = applicationContext.packageManager.getPackageInfo(packageName, 0).versionCode
+
+        SharePreference.saveKV(SharePreference.VERSION_CODE,versionCode)
+
     }
 
 }

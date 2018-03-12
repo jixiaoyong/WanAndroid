@@ -20,6 +20,8 @@ object SharePreference {
 
     val USER_NAME = "user_name"
 
+    val VERSION_CODE = "version_code"
+
     var sharePreference: SharedPreferences? = null
 
     fun setContext(context: Context) {
