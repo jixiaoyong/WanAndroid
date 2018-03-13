@@ -4,6 +4,20 @@
 
     <uses-permission android:name="android.permission.INTERNET"/>
 
+    <!--以下是友盟SDK需要的权限-->
+    <!-- 必须的权限 -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <!-- 推荐的权限 -->
+    <!-- 添加如下权限，以便使用更多的第三方SDK和更精准的统计数据 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:name=".base.BaseApplication"
         android:allowBackup="true"
@@ -40,6 +54,10 @@
         </activity>
         <activity android:name=".activity.SettingActivity" />
         <activity android:name=".activity.LoginActivity" />
+
+        <!--友盟初始化appkey和channel-->
+        <meta-data android:value="${APP_KEY}" android:name="UMENG_APPKEY"/>
+        <meta-data android:name="UMENG_CHANNEL" android:value="${UMENG_CHANNEL_VALUE}" />
     </application>
 
 </manifest>

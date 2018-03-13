@@ -1,10 +1,13 @@
 package cf.android666.wanandroid.base
 
 import android.app.Application
+import android.content.Context
 import cf.android666.wanandroid.api.cookie.Preference
 import cf.android666.wanandroid.utils.SharePreference
 import com.orhanobut.logger.AndroidLogAdapter
 import com.orhanobut.logger.Logger
+import com.umeng.analytics.MobclickAgent
+import com.umeng.commonsdk.UMConfigure
 
 /**
  * Created by jixiaoyong on 2018/2/28.
@@ -26,6 +29,27 @@ class BaseApplication:Application(){
 
         SharePreference.saveKV(SharePreference.VERSION_CODE,versionCode)
 
+        /**
+         * 初始化友盟 common库
+         * 参数1:上下文，不能为空
+         * 参数2:设备类型，UMConfigure.DEVICE_TYPE_PHONE为手机、UMConfigure.DEVICE_TYPE_BOX为盒子，默认为手机
+         * 参数3:Push推送业务的secret
+         */
+        UMConfigure.init(this, UMConfigure.DEVICE_TYPE_PHONE, null)
+
+        /**
+         * 设置组件化的Log开关
+         * 参数: boolean 默认为false，如需查看LOG设置为true
+         */
+        UMConfigure.setLogEnabled(true)
+
+        /**
+         * 设置日志加密
+         * 参数：boolean 默认为false（不加密）
+         */
+        UMConfigure.setEncryptEnabled(false)
+
+        MobclickAgent.setScenarioType(applicationContext, MobclickAgent.EScenarioType. E_UM_NORMAL)
     }
 
 }

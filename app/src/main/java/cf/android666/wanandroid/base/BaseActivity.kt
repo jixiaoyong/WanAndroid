@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import cf.android666.wanandroid.R
 import cf.android666.wanandroid.utils.SharePreference
+import com.umeng.analytics.MobclickAgent
 
 /**
  * Created by jixiaoyong on 2018/3/11.
@@ -21,5 +22,15 @@ open class BaseActivity:AppCompatActivity(){
         else R.style.AppTheme_NoActionBar
 
         setTheme(themeId)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        MobclickAgent.onResume(this);
+    }
+
+    override fun onPause() {
+        super.onPause()
+        MobclickAgent.onPause(this);
     }
 }
