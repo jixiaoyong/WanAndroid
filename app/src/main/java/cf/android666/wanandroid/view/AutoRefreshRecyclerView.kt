@@ -31,8 +31,6 @@ class AutoRefreshRecyclerView(context: Context, attributeSet: AttributeSet?, def
 
             MotionEvent.ACTION_UP -> {
 
-                Logger.wtf("onTouchEvent e.y is ${e.y}")
-
                 checkFoot(e.y - oldY)
 
             }
@@ -55,11 +53,9 @@ class AutoRefreshRecyclerView(context: Context, attributeSet: AttributeSet?, def
 
         }
 
-        Logger.wtf("dy is $dy")
 
         if (dy < 0 && lastPosition > childCount - 2 && onFootListener!=null) {
             onFootListener!!.invoke()
-            Logger.wtf("onFootListener!!.invoke() ")
 
         }
 

@@ -174,11 +174,14 @@ class IndexPostFragment : BaseFragment() {
 
                     currentPage = it.data.curPage
 
-                    view!!.recycler_view.adapter.notifyDataSetChanged()
+                    if (view != null) {
 
-                    childCount = recycler_view.childCount
+                        view!!.recycler_view.adapter.notifyDataSetChanged()
+                        childCount = recycler_view.childCount
+                    }
 
-                    view!!.swipe_refresh.isRefreshing = false
+
+                    view?.swipe_refresh?.isRefreshing = false
                 }
     }
 

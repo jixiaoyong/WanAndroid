@@ -10,7 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/nav_height"
         app:titleTextColor="#fff"
-        android:background="@color/colorBottomNav">
+        android:background="@color/colorBottomNav"
+        >
 
     </android.support.v7.widget.Toolbar>
 
