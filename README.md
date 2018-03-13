@@ -19,6 +19,10 @@ beta版本现已放出，欢迎体验。
 
 点击下载 [WanAndroid 0.1-beta.apk](https://raw.githubusercontent.com/jixiaoyong/Notes-Files/master/download/apk/WanAndroid.apk)
 
+扫描二维码下载
+
+![WanAndroid Download](https://github.com/jixiaoyong/WanAndroid/blob/master/images/WanAndroidDownload.png?raw=true)
+
 # 界面预览
 
 部分界面预览如下（非最终效果）：
