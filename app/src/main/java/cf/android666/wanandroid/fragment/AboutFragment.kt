@@ -10,17 +10,17 @@ import cf.android666.wanandroid.R
 import cf.android666.wanandroid.base.BaseFragment
 import cf.android666.wanandroid.utils.SharePreference
 import kotlinx.android.synthetic.main.fragment_about.view.*
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 import android.content.Intent
+import cf.android666.wanandroid.`interface`.RefreshUiInterface
 import cf.android666.wanandroid.activity.LoginActivity
 import cf.android666.wanandroid.activity.SettingActivity
-import kotlinx.android.synthetic.main.activity_login.view.*
-
+import cf.android666.wanandroid.utils.MessageEvent
+import com.orhanobut.logger.Logger
+import org.greenrobot.eventbus.EventBus
 /**
  * Created by jixiaoyong on 2018/2/25.
  */
-class AboutFragment : BaseFragment() {
+class AboutFragment : BaseFragment() ,RefreshUiInterface{
 
     var mView: View? = null
 
@@ -30,74 +30,12 @@ class AboutFragment : BaseFragment() {
 
         mView = view
 
-        refreashUi()
-
-        setOnClick(view)
+        refreshUi()
 
         return view
     }
 
-    private fun setOnClick(view: View) {
-
-        var userNameEt = view.user_name
-
-//        var userPwdEt = view.user_password
-//
-//        var userRePwdEt = view.user_password_re
-//
-//        view.login_btn.setOnClickListener {
-//
-//            view.register_btn.setBackgroundColor(Color.TRANSPARENT)
-//
-//            view.login_btn.setBackgroundColor(resources.getColor(R.color.colorBottomNav))
-//
-//            userRePwdEt.visibility = View.GONE
-//
-//            val userName = userNameEt.text.toString()
-//
-//            val userPwd = userPwdEt.text.toString()
-//
-//            if (userName.isEmpty()  || userPwd.isEmpty()) {
-//                Toast.makeText(context,"账号或密码为空",Toast.LENGTH_SHORT).show()
-//                return@setOnClickListener
-//            }
-//
-//            login(userName,userPwd)
-//
-//        }
-
-//        view.register_btn.setOnClickListener {
-//
-//            view.register_btn.setBackgroundColor(resources.getColor(R.color.colorBottomNav))
-//
-//            view.login_btn.setBackgroundColor(Color.TRANSPARENT)
-//
-//            if (view.user_password_re.visibility == View.VISIBLE) {
-//
-//                userRePwdEt.visibility = View.VISIBLE
-//
-//                register(userNameEt.text.toString(), userPwdEt.text.toString(), userRePwdEt.text.toString())
-//
-//            } else {
-//                view.user_password_re.visibility = View.VISIBLE
-//
-//            }
-//
-//
-//        }
-
-//        view.update.setOnClickListener {
-//
-
-//
-//        view.share.setOnClickListener {
-//
-//        }
-    }
-
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun refreashUi() {
+    override fun refreshUi() {
 
         if (mView == null) {
             return
@@ -123,9 +61,10 @@ class AboutFragment : BaseFragment() {
 
         var username = SharePreference.getV<String>(SharePreference.USER_NAME, "请点击头像登录")
 
-        mView!!.about_user_name.text = username
+        mView!!.about_user_name.text = if (username.isEmpty()) "请点击头像登录" else username
 
         if (isLogin) {
+
 
             mView!!.user_icon.setOnClickListener {
 
@@ -139,7 +78,10 @@ class AboutFragment : BaseFragment() {
 
                             dialog.dismiss()
 
+                            EventBus.getDefault().post(MessageEvent.setIsLogin(false))
+
                             Toast.makeText(context, "注销成功", Toast.LENGTH_SHORT).show()
+
 
                         }.setNegativeButton("再玩会儿") {
 
@@ -151,85 +93,16 @@ class AboutFragment : BaseFragment() {
 
             }
 
-//            mView!!.about_login_layout.visibility = View.GONE
-//
-//
-//            mView!!.power_btn.text = "注销"
-//
-//            mView!!.power_btn.setOnClickListener {
-//
-//               Toast.makeText(context,"注销啦",Toast.LENGTH_SHORT).show()
-//
-//
-//                mView!!.power_btn.text = "登录/注册"
-//
-//                SharePreference.clear()
-//
-//                isLogin = false
-//
-//                SharePreference.saveKV(SharePreference.IS_LOGIN,false)
-//
-//                SharePreference.saveKV(SharePreference.USER_NAME,"未登录")
-//
-//                MessageEvent.isLogin = false
-//
-//                EventBus.getDefault().post(MessageEvent)
-//
-//                refreashUi()
-//            }
-
-//            mView!!.fr_text.text = "收藏：" + SharePreference.getV(SharePreference.FAVORITE_COUNT,"")
-
-
         } else {
             mView!!.user_icon.setOnClickListener {
 
                 context.startActivity(Intent(activity, LoginActivity::class.java))
 
             }
-//
-//            mView!!.power_btn.text = "登录/注册"
-//
-//            mView!!.power_btn.setOnClickListener {
-//
-//                mView!!.power_btn.setBackgroundColor(Color.TRANSPARENT)
-//
-//
-//                mView!!.about_login_layout.visibility =
-//                        if (mView!!.about_login_layout.visibility == View.VISIBLE) View.GONE
-//                        else View.VISIBLE
-//
-//            }
-//
-//            mView!!.about_login_layout.visibility = View.VISIBLE
-//
-//                if (mView!!.about_login_layout.visibility == View.VISIBLE) {
-//
-//                    mView!!.about_login_layout.visibility = View.GONE
-//
-//                    mView!!.power_btn.setBackgroundColor(resources.getColor(R.color.colorBottomNav))
-//
-//                    mView!!.power_layout.setBackgroundColor(Color.TRANSPARENT)
-//
-//                    mView!!.arrow_img.background = resources.getDrawable(R.drawable.arrow_down)
-//                }
-//                 else {
-//
-//                    mView!!.about_login_layout.visibility = View.VISIBLE
-//
-//                    mView!!.power_btn.setBackgroundColor(Color.TRANSPARENT)
-//
-//                    mView!!.power_layout.background = resources.getDrawable(R.drawable.bg_border)
-//
-//                    mView!!.arrow_img.background = resources.getDrawable(R.drawable.arrow_up)
-//
-//                }
-//
 
         }
 
     }
-
     private fun updateTheme() {
 
         //todo 在切换activity的时候做个动画掩饰，可以参考酷软
@@ -240,6 +113,20 @@ class AboutFragment : BaseFragment() {
         activity.finish()
         activity.overridePendingTransition(0, 0)
         startActivity(intent)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this)
+        }
+
+    }
+
+    override fun onPause() {
+        super.onPause()
+        EventBus.getDefault().unregister(this)
+
     }
 
 }

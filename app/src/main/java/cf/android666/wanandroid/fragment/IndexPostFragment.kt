@@ -8,25 +8,31 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import cf.android666.wanandroid.R
+import cf.android666.wanandroid.`interface`.RefreshUiInterface
 import cf.android666.wanandroid.activity.ContentActivity
 import cf.android666.wanandroid.adapter.PostArticleAdapter
 import cf.android666.wanandroid.base.BaseFragment
 import cf.android666.wanandroid.bean.BaseArticlesBean
 import cf.android666.wanandroid.api.cookie.CookieTools
+import cf.android666.wanandroid.utils.MessageEvent
 import cf.android666.wanandroid.utils.SharePreference
 import cf.android666.wanandroid.utils.SuperUtil
 import cf.android666.wanandroid.utils.TempTools
-import com.orhanobut.logger.Logger
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_index_post.view.*
 import com.zhouwei.mzbanner.MZBannerView
 import kotlinx.android.synthetic.main.activity_search.*
+import org.greenrobot.eventbus.EventBus
 
 /**
  * Created by jixiaoyong on 2018/2/25.
  */
-class IndexPostFragment : BaseFragment() {
+class IndexPostFragment : BaseFragment(), RefreshUiInterface {
+
+    override fun refreshUi() {
+        downloadData()
+    }
 
     private var mData: ArrayList<BaseArticlesBean> = arrayListOf()
 
@@ -40,6 +46,7 @@ class IndexPostFragment : BaseFragment() {
                               savedInstanceState: Bundle?): View? {
 
         val view = inflater!!.inflate(R.layout.fragment_index_post, container, false)
+
 
         //banner
         var mMZBanner = view.banner
@@ -125,7 +132,8 @@ class IndexPostFragment : BaseFragment() {
                         Toast.makeText(context, it.errorMsg, Toast.LENGTH_SHORT).show()
                     } else {
                         Toast.makeText(context, "取消收藏成功", Toast.LENGTH_SHORT).show()
-                        //todo 更新状态
+                        EventBus.getDefault().post(MessageEvent.setIsCollectChanged(true))
+
                     }
                 }
     }
@@ -141,7 +149,8 @@ class IndexPostFragment : BaseFragment() {
                         Toast.makeText(context, it.errorMsg, Toast.LENGTH_SHORT).show()
                     } else {
                         Toast.makeText(context, "收藏成功", Toast.LENGTH_SHORT).show()
-                        //todo 更新状态
+
+                        EventBus.getDefault().post(MessageEvent.setIsCollectChanged(true))
                     }
                 }
 
@@ -196,6 +205,19 @@ class IndexPostFragment : BaseFragment() {
                     TempTools.setBanner(it.data, mMZBanner)
 
                 }
+    }
+    override fun onStart() {
+        super.onStart()
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this)
+        }
+
+    }
+
+    override fun onPause() {
+        super.onPause()
+        EventBus.getDefault().unregister(this)
+
     }
 
 }

@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import cf.android666.wanandroid.R
+import cf.android666.wanandroid.`interface`.RefreshUiInterface
 import cf.android666.wanandroid.activity.ContentActivity
 import cf.android666.wanandroid.adapter.PostArticleAdapter
 import cf.android666.wanandroid.base.BaseFragment
@@ -25,7 +26,13 @@ import org.greenrobot.eventbus.ThreadMode
 /**
  * Created by jixiaoyong on 2018/2/25.
  */
-class IndexFavoriteFragment : BaseFragment() {
+class IndexFavoriteFragment : BaseFragment() , RefreshUiInterface {
+
+    override fun refreshUi() {
+
+        view?.let { loadData(it) }
+
+    }
 
     private var mData: ArrayList<BaseArticlesBean> = arrayListOf()
 
@@ -39,6 +46,7 @@ class IndexFavoriteFragment : BaseFragment() {
         val view = inflater!!.inflate(R.layout.fragment_index_favorite, container, false)
 
         mView = view
+
 
         view.swipe_refresh.setOnRefreshListener {
             view.swipe_refresh.isRefreshing = true
@@ -113,11 +121,11 @@ class IndexFavoriteFragment : BaseFragment() {
                 }
     }
 
-    private fun loadData(view: View){
+    private fun loadData(view: View?){
         loadData(view,0)
     }
 
-    private fun loadData(view: View, page:Int) {
+    private fun loadData(view: View?, page:Int) {
 
         CookieTools.getCookieService()!!
                 .getCollect(0)
@@ -125,7 +133,7 @@ class IndexFavoriteFragment : BaseFragment() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
 
-                    view.swipe_refresh.isRefreshing = false
+                    view?.swipe_refresh?.isRefreshing = false
 
                     if (it.errorCode < 0) {
 
@@ -150,7 +158,7 @@ class IndexFavoriteFragment : BaseFragment() {
 
                         currentPage = it.data.curPage
 
-                        view.recycler_view.adapter.notifyDataSetChanged()
+                        view?.recycler_view?.adapter?.notifyDataSetChanged()
 
                         SharePreference.saveKV(SharePreference.FAVORITE_COUNT, it.data.total.toString())
                     }
@@ -159,23 +167,18 @@ class IndexFavoriteFragment : BaseFragment() {
                 }
     }
 
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun update(event: MessageEvent) {
-
-        if (view != null) {
-            loadData(view!!)
+    override fun onStart() {
+        super.onStart()
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this)
         }
 
     }
 
-    override fun onDetach() {
-        super.onDetach()
-        EventBus.getDefault().unregister(context)
+    override fun onPause() {
+        super.onPause()
+        EventBus.getDefault().unregister(this)
+
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        EventBus.getDefault().register(this)
-    }
 }

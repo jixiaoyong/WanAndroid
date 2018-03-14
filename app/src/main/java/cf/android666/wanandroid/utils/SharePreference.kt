@@ -18,9 +18,13 @@ object SharePreference {
 
     const val IS_AUTO_UPDATE = "is_auto_update"
 
+    const val IS_SAVE_NAME_PWD = "is_auto_update"
+
     const val FAVORITE_COUNT = "favorite_count"
 
     const val USER_NAME = "user_name"
+
+    const val USER_PWD = "user_pwd"
 
     const val VERSION_CODE = "version_code"
 

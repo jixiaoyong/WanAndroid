@@ -9,9 +9,12 @@ import android.view.ViewGroup
 /**
  * Created by jixiaoyong on 2018/2/25.
  */
-open class BaseFragment() : Fragment() {
+open class BaseFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+
         return super.onCreateView(inflater, container, savedInstanceState)
+
     }
+
 }

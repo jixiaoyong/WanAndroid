@@ -12,6 +12,24 @@ object MessageEvent{
 
     var favoriteCount = 0
 
+    var isCollectChanged = false
+
     var userName = ""
+
+
+    fun getInstance():MessageEvent{
+        return this
+    }
+
+    fun setIsLogin(isLo: Boolean): MessageEvent {
+        isLogin = isLo
+        return this
+    }
+
+    fun setIsCollectChanged(isLo: Boolean): MessageEvent {
+        this.isCollectChanged = isLo
+        return this
+    }
+
 
 }

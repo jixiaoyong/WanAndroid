@@ -7,17 +7,22 @@ import cf.android666.wanandroid.R
 import cf.android666.wanandroid.api.cookie.CookieTools
 import cf.android666.wanandroid.base.BaseActivity
 import cf.android666.wanandroid.utils.MessageEvent
+import cf.android666.wanandroid.utils.MessageEvent.userName
 import cf.android666.wanandroid.utils.SharePreference
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_login.*
 import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Logger
 
 /**
  * Created by jixiaoyong on 2018/3/12.
  * email:jixiaoyong1995@gmail.com
  */
 class LoginActivity: BaseActivity(){
+
+
+    private var isSaveNamePwd = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +35,28 @@ class LoginActivity: BaseActivity(){
             user_password_re.visibility = if (isChecked) View.VISIBLE else View.GONE
 
             login_btn.text = if (isChecked)"注册" else "登录"
+        }
+
+        isSaveNamePwd = SharePreference.getV(SharePreference.IS_SAVE_NAME_PWD,false)
+
+        if (isSaveNamePwd) {
+
+            user_name.text = SharePreference.getV(SharePreference.USER_NAME,"")
+
+            user_password.text = SharePreference.getV(SharePreference.USER_PWD,"")
+
+        }
+
+        save_name_pwd.isChecked = isSaveNamePwd
+
+        save_name_pwd.setOnCheckedChangeListener{
+
+            _, isChecked ->
+
+            isSaveNamePwd = isChecked
+
+            SharePreference.saveKV(SharePreference.IS_SAVE_NAME_PWD,isSaveNamePwd)
+
         }
 
         login_btn.setOnClickListener {
@@ -56,7 +83,14 @@ class LoginActivity: BaseActivity(){
 
     }
 
+    override fun mainSubscribe(msgEvent: MessageEvent) {
+        super.mainSubscribe(msgEvent)
+        com.orhanobut.logger.Logger.wtf("this is loginActiviyt")
+    }
+
     private fun login(userName: String,userPwd: String) {
+
+        saveNamePwd(userName, userPwd)
 
         CookieTools.getCookieService()!!
                 .login(userName,userPwd)
@@ -73,11 +107,13 @@ class LoginActivity: BaseActivity(){
 
                         event.isLogin = true
 
+                        event.userName = userName
+
                         SharePreference.saveKV(SharePreference.IS_LOGIN, true)
 
                         SharePreference.saveKV(SharePreference.USER_NAME, userName)
 
-                        EventBus.getDefault().post(event)
+                        EventBus.getDefault().postSticky(event)
 
                         Toast.makeText(baseContext, "success", Toast.LENGTH_SHORT).show()
 
@@ -88,7 +124,16 @@ class LoginActivity: BaseActivity(){
 
     }
 
+    private fun saveNamePwd(userName: String, userPwd: String) {
+        if (isSaveNamePwd) {
+            SharePreference.saveKV(SharePreference.USER_NAME, userName)
+            SharePreference.saveKV(SharePreference.USER_PWD, userPwd)
+        }
+    }
+
     private fun register(username: String, password1: String, password2: String) {
+
+        saveNamePwd(username, password1)
 
         CookieTools.getCookieService()!!
                 .register(username, password1, password2)
