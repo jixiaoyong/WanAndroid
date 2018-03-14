@@ -5,5 +5,5 @@ package cf.android666.wanandroid.`interface`
  * email:jixiaoyong1995@gmail.com
  */
 interface EventInterface{
-    fun setValue(value : Any)
+    fun setValue(value : Any):EventInterface
 }

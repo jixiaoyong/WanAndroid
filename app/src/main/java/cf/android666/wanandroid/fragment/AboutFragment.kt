@@ -11,12 +11,17 @@ import cf.android666.wanandroid.base.BaseFragment
 import cf.android666.wanandroid.utils.SharePreference
 import kotlinx.android.synthetic.main.fragment_about.view.*
 import android.content.Intent
+import cf.android666.wanandroid.`interface`.EventInterface
 import cf.android666.wanandroid.`interface`.RefreshUiInterface
 import cf.android666.wanandroid.activity.LoginActivity
 import cf.android666.wanandroid.activity.SettingActivity
+import cf.android666.wanandroid.utils.EventFactory
 import cf.android666.wanandroid.utils.MessageEvent
 import com.orhanobut.logger.Logger
 import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
+
 /**
  * Created by jixiaoyong on 2018/2/25.
  */
@@ -113,6 +118,19 @@ class AboutFragment : BaseFragment() ,RefreshUiInterface{
         activity.finish()
         activity.overridePendingTransition(0, 0)
         startActivity(intent)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
+    fun handlerEvent(eventInterface: EventInterface) {
+
+        Logger.wtf("Handler EventFactory eve is $eventInterface")
+
+        when (eventInterface) {
+            is EventFactory.Login ->{
+                var islogin = (eventInterface as EventFactory.Login).isLogin
+                Logger.wtf("Handler EventFactory islogin $islogin")
+            }
+        }
     }
 
     override fun onStart() {

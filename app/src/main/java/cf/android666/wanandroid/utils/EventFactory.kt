@@ -7,11 +7,11 @@ import cf.android666.wanandroid.`interface`.EventInterface
  * Created by jixiaoyong on 2018/3/7.
  * email:jixiaoyong1995@gmail.com
  */
-class EventFactory :EventInterface{
+data class EventFactory(private val clazz: Any) :EventInterface{
 
     private var event:EventInterface? = null
 
-    fun <T> build(clazz: Class<T>): EventInterface {
+    fun build() :EventInterface{
 
         event =  when (clazz) {
 
@@ -26,18 +26,23 @@ class EventFactory :EventInterface{
             }
         }
 
-        return event as EventInterface
+        return this
+
     }
 
-    override fun setValue(value: Any) {
+    override fun setValue(value: Any) :EventInterface{
+
         event?.setValue(value)
+        return if (event!=null) event!!
+        else throw KotlinNullPointerException("must call build() before invoke setValue()")
     }
 
 
     inner class NightMode : EventInterface {
 
-        override fun setValue(value: Any) {
+        override fun setValue(value: Any): EventInterface {
             isNightMode = value as Boolean
+            return this
         }
 
         var isNightMode: Boolean = false
@@ -45,8 +50,9 @@ class EventFactory :EventInterface{
 
     inner class Login : EventInterface {
 
-        override fun setValue(value: Any) {
+        override fun setValue(value: Any): EventInterface {
             isLogin = value as Boolean
+            return this
         }
 
         var isLogin: Boolean = false
@@ -54,8 +60,9 @@ class EventFactory :EventInterface{
 
     inner class CollectState : EventInterface {
 
-        override fun setValue(value: Any) {
+        override fun setValue(value: Any): EventInterface {
             changeNum = value as Int
+            return this
         }
 
         var changeNum: Int = 0
@@ -63,3 +70,13 @@ class EventFactory :EventInterface{
 
 
 }
+
+//fun main(args: Array<String>) {
+//
+//    var type = EventFactory(EventFactory.NightMode::class.java).build().setValue(false)
+//
+////    print("type is NightMode ${type is EventFactory.NightMode}")
+//
+//    print("type is NightMode ${(type as EventFactory.NightMode).isNightMode}")
+//
+//}

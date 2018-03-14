@@ -6,6 +6,7 @@ import android.widget.Toast
 import cf.android666.wanandroid.R
 import cf.android666.wanandroid.api.cookie.CookieTools
 import cf.android666.wanandroid.base.BaseActivity
+import cf.android666.wanandroid.utils.EventFactory
 import cf.android666.wanandroid.utils.MessageEvent
 import cf.android666.wanandroid.utils.MessageEvent.userName
 import cf.android666.wanandroid.utils.SharePreference
@@ -115,6 +116,9 @@ class LoginActivity: BaseActivity(){
 
                         EventBus.getDefault().postSticky(event)
 
+                        EventBus.getDefault().postSticky(EventFactory(EventFactory.Login::class.java)
+                                .build().setValue(true))
+
                         Toast.makeText(baseContext, "success", Toast.LENGTH_SHORT).show()
 
                         finish()
@@ -155,6 +159,9 @@ class LoginActivity: BaseActivity(){
                         SharePreference.saveKV(SharePreference.USER_NAME, username)
 
                         EventBus.getDefault().post(event)
+
+                        EventBus.getDefault().postSticky(EventFactory(EventFactory.Login::class.java)
+                                .build().setValue(true))
 
                         Toast.makeText(baseContext, "success", Toast.LENGTH_SHORT).show()
 
