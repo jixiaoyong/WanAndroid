@@ -11,16 +11,12 @@ import cf.android666.wanandroid.base.BaseFragment
 import cf.android666.wanandroid.utils.SharePreference
 import kotlinx.android.synthetic.main.fragment_about.view.*
 import android.content.Intent
-import cf.android666.wanandroid.`interface`.EventInterface
 import cf.android666.wanandroid.`interface`.RefreshUiInterface
 import cf.android666.wanandroid.activity.LoginActivity
 import cf.android666.wanandroid.activity.SettingActivity
 import cf.android666.wanandroid.utils.EventFactory
-import cf.android666.wanandroid.utils.MessageEvent
-import com.orhanobut.logger.Logger
+import cf.android666.wanandroid.utils.EventInterface
 import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 
 /**
  * Created by jixiaoyong on 2018/2/25.
@@ -31,22 +27,37 @@ class AboutFragment : BaseFragment() ,RefreshUiInterface{
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        var view = inflater!!.inflate(R.layout.fragment_about, container, false)
+        val view = inflater!!.inflate(R.layout.fragment_about, container, false)
 
         mView = view
 
-        refreshUi()
+        updateUi()
 
         return view
     }
 
-    override fun refreshUi() {
+    override fun refreshUi(eventInterface: EventInterface) {
+
+        when (eventInterface) {
+
+            is EventFactory.LoginState ->{
+
+                updateUserName()
+
+            }
+        }
+
+        updateUi()
+
+    }
+
+    private fun updateUi() {
 
         if (mView == null) {
             return
         }
 
-        var isNightMode = SharePreference.getV<Boolean>(SharePreference.IS_NIGHT_MODE, false)
+        val isNightMode = SharePreference.getV<Boolean>(SharePreference.IS_NIGHT_MODE, false)
 
         mView!!.night_mode.isChecked = isNightMode
 
@@ -64,37 +75,13 @@ class AboutFragment : BaseFragment() ,RefreshUiInterface{
 
         var isLogin = SharePreference.getV<Boolean>(SharePreference.IS_LOGIN, false)
 
-        var username = SharePreference.getV<String>(SharePreference.USER_NAME, "请点击头像登录")
-
-        mView!!.about_user_name.text = if (username.isEmpty()) "请点击头像登录" else username
+        updateUserName()
 
         if (isLogin) {
 
-
             mView!!.user_icon.setOnClickListener {
 
-                AlertDialog.Builder(context)
-                        .setTitle("确定注销登录吗？")
-                        .setMessage("注销后将无法收藏、查看已经收藏的文章，其他功能不受影响。" +
-                                "您仍然可以再次登录查看这些信息")
-                        .setPositiveButton("去意已决") { dialog, which ->
-
-                            SharePreference.clear()
-
-                            dialog.dismiss()
-
-                            EventBus.getDefault().post(MessageEvent.setIsLogin(false))
-
-                            Toast.makeText(context, "注销成功", Toast.LENGTH_SHORT).show()
-
-
-                        }.setNegativeButton("再玩会儿") {
-
-                            dialog, which ->
-
-                            dialog.dismiss()
-
-                        }.create().show()
+                showDialog()
 
             }
 
@@ -106,31 +93,55 @@ class AboutFragment : BaseFragment() ,RefreshUiInterface{
             }
 
         }
-
     }
+
+    private fun showDialog() {
+        AlertDialog.Builder(context)
+                .setTitle("确定注销登录吗？")
+                .setMessage("注销后将无法收藏、查看已经收藏的文章，其他功能不受影响。" +
+                        "您仍然可以再次登录查看这些信息")
+                .setPositiveButton("去意已决") { dialog, which ->
+
+                    SharePreference.clear()
+
+                    dialog.dismiss()
+
+                    EventBus.getDefault().post(EventFactory.NightMode(true))
+
+                    Toast.makeText(context, "注销成功", Toast.LENGTH_SHORT).show()
+
+
+                }.setNegativeButton("再玩会儿") {
+
+                    dialog, which ->
+
+                    dialog.dismiss()
+
+                }.create().show()
+    }
+
     private fun updateTheme() {
 
         //todo 在切换activity的时候做个动画掩饰，可以参考酷软
 
         val intent = activity.intent
+
         activity.overridePendingTransition(0, 0)//不设置进入退出动画
+
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+
         activity.finish()
+
         activity.overridePendingTransition(0, 0)
+
         startActivity(intent)
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
-    fun handlerEvent(eventInterface: EventInterface) {
+    fun updateUserName() {
 
-        Logger.wtf("Handler EventFactory eve is $eventInterface")
+        var username = SharePreference.getV<String>(SharePreference.USER_NAME, "请点击头像登录")
 
-        when (eventInterface) {
-            is EventFactory.Login ->{
-                var islogin = (eventInterface as EventFactory.Login).isLogin
-                Logger.wtf("Handler EventFactory islogin $islogin")
-            }
-        }
+        mView?.about_user_name?.text = if (username.isEmpty()) "请点击头像登录" else username
     }
 
     override fun onStart() {

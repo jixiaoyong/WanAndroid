@@ -19,6 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="用户名"
+            android:text="test201803"
             android:maxLines="1" />
 
     </android.support.design.widget.TextInputLayout>
@@ -32,6 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="密码"
+            android:text="Test123456"
             android:inputType="textPassword"
             android:maxLines="1" />
     </android.support.design.widget.TextInputLayout>
@@ -70,7 +72,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="保存账户密码" />
+            android:text="保存账户密码"
+            android:visibility="gone"/>
 
         <CheckBox
             android:id="@+id/register"

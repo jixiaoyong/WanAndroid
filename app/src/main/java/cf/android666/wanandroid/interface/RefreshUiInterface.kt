@@ -1,6 +1,6 @@
 package cf.android666.wanandroid.`interface`
 
-import cf.android666.wanandroid.utils.MessageEvent
+import cf.android666.wanandroid.utils.EventInterface
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
@@ -11,9 +11,9 @@ import org.greenrobot.eventbus.ThreadMode
 interface RefreshUiInterface{
 
     @Subscribe(threadMode = ThreadMode.MAIN,sticky = true)
-    open fun handlerMessage(eventMsg:MessageEvent){
-        refreshUi()
+    open fun handlerMessage(event: EventInterface){
+        refreshUi(event)
     }
 
-    fun refreshUi()
+    fun refreshUi(event:EventInterface)
 }

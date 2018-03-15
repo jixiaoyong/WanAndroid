@@ -12,11 +12,15 @@ import kotlinx.android.synthetic.main.activity_settings.*
 class SettingActivity: BaseActivity(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_settings)
 
         setSupportActionBar(toolbar)
+
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+
         toolbar.setNavigationOnClickListener { finish() }
 
     }

@@ -21,10 +21,6 @@ import kotlinx.android.synthetic.main.fragment_index_post_banner.view.*
 
 class BannerViewHolder : MZViewHolder<IndexBannerBean.DataBean> {
 
-    init {
-
-    }
-
     private var mImageView: ImageView? = null
 
     private var mTextView: TextView? = null

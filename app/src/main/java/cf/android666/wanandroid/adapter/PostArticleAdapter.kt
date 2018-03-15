@@ -63,9 +63,5 @@ class PostArticleAdapter(private val data: ArrayList<BaseArticlesBean>,
 
     }
 
-
-    class MViewHolder(view:View) : RecyclerView.ViewHolder(view){
-         init {
-         }
-    }
+    class MViewHolder(view:View) : RecyclerView.ViewHolder(view)
 }

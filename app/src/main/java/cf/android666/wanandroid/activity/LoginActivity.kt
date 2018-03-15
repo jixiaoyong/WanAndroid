@@ -6,15 +6,13 @@ import android.widget.Toast
 import cf.android666.wanandroid.R
 import cf.android666.wanandroid.api.cookie.CookieTools
 import cf.android666.wanandroid.base.BaseActivity
+import cf.android666.wanandroid.bean.CookieBean
 import cf.android666.wanandroid.utils.EventFactory
-import cf.android666.wanandroid.utils.MessageEvent
-import cf.android666.wanandroid.utils.MessageEvent.userName
 import cf.android666.wanandroid.utils.SharePreference
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_login.*
 import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Logger
 
 /**
  * Created by jixiaoyong on 2018/3/12.
@@ -22,11 +20,11 @@ import org.greenrobot.eventbus.Logger
  */
 class LoginActivity: BaseActivity(){
 
-
     private var isSaveNamePwd = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_login)
 
         register.setOnCheckedChangeListener{
@@ -78,15 +76,12 @@ class LoginActivity: BaseActivity(){
                 register(userName, userPwd, userPwdRe)
 
             } else {
+
                 login(userName, userPwd)
+
             }
         }
 
-    }
-
-    override fun mainSubscribe(msgEvent: MessageEvent) {
-        super.mainSubscribe(msgEvent)
-        com.orhanobut.logger.Logger.wtf("this is loginActiviyt")
     }
 
     private fun login(userName: String,userPwd: String) {
@@ -98,41 +93,9 @@ class LoginActivity: BaseActivity(){
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
-                    if (it.errorCode < 0) {
-
-                        Toast.makeText(baseContext, it.errorMsg, Toast.LENGTH_SHORT).show()
-
-                    } else{
-
-                        var event = MessageEvent
-
-                        event.isLogin = true
-
-                        event.userName = userName
-
-                        SharePreference.saveKV(SharePreference.IS_LOGIN, true)
-
-                        SharePreference.saveKV(SharePreference.USER_NAME, userName)
-
-                        EventBus.getDefault().postSticky(event)
-
-                        EventBus.getDefault().postSticky(EventFactory(EventFactory.Login::class.java)
-                                .build().setValue(true))
-
-                        Toast.makeText(baseContext, "success", Toast.LENGTH_SHORT).show()
-
-                        finish()
-
-                    }
+                    updateLoginState(it, userName,"登录成功")
                 }
 
-    }
-
-    private fun saveNamePwd(userName: String, userPwd: String) {
-        if (isSaveNamePwd) {
-            SharePreference.saveKV(SharePreference.USER_NAME, userName)
-            SharePreference.saveKV(SharePreference.USER_PWD, userPwd)
-        }
     }
 
     private fun register(username: String, password1: String, password2: String) {
@@ -144,32 +107,37 @@ class LoginActivity: BaseActivity(){
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
-                    if (it.errorCode < 0) {
-
-                        Toast.makeText(baseContext, it.errorMsg, Toast.LENGTH_SHORT).show()
-
-                    } else{
-
-                        var event = MessageEvent
-
-                        event.isLogin = true
-
-                        SharePreference.saveKV(SharePreference.IS_LOGIN, true)
-
-                        SharePreference.saveKV(SharePreference.USER_NAME, username)
-
-                        EventBus.getDefault().post(event)
-
-                        EventBus.getDefault().postSticky(EventFactory(EventFactory.Login::class.java)
-                                .build().setValue(true))
-
-                        Toast.makeText(baseContext, "success", Toast.LENGTH_SHORT).show()
-
-                        finish()
-
-                    }
+                    updateLoginState(it, username,"注册成功")
                 }
 
+    }
+
+    private fun updateLoginState(it: CookieBean, userName: String,msg:String) {
+
+        if (it.errorCode < 0) {
+
+            Toast.makeText(baseContext, it.errorMsg, Toast.LENGTH_SHORT).show()
+
+        } else {
+
+            SharePreference.saveKV(SharePreference.IS_LOGIN, true)
+
+            SharePreference.saveKV(SharePreference.USER_NAME, userName)
+
+            EventBus.getDefault().postSticky(EventFactory.LoginState(true, userName))
+
+            Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+
+            finish()
+
+        }
+    }
+
+    private fun saveNamePwd(userName: String, userPwd: String) {
+        if (isSaveNamePwd) {
+            SharePreference.saveKV(SharePreference.USER_NAME, userName)
+            SharePreference.saveKV(SharePreference.USER_PWD, userPwd)
+        }
     }
 
     private fun checkNameAndPassWord(userName: String, userPwd: String): Boolean {
