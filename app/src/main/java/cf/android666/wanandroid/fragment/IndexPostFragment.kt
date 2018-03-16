@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import cf.android666.mylibrary.view.SwitchStateLayout
 import cf.android666.wanandroid.R
 import cf.android666.wanandroid.`interface`.RefreshUiInterface
 import cf.android666.wanandroid.activity.ContentActivity
@@ -45,6 +46,8 @@ class IndexPostFragment : BaseFragment(), RefreshUiInterface {
                               savedInstanceState: Bundle?): View? {
 
         val view = inflater!!.inflate(R.layout.fragment_index_post, container, false)
+
+        view.switch_state.showView(SwitchStateLayout.VIEW_LOADING)
 
         //banner
         var mMZBanner = view.banner

@@ -21,12 +21,14 @@ class ContentActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_content)
 
         setSupportActionBar(toolbar)
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-        toolbar.setNavigationOnClickListener { finish() }
 
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+
+        toolbar.setNavigationOnClickListener { finish() }
 
         SuperUtil.loadUrl(web_view,intent.getStringExtra("url"))
 
