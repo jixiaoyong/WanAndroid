@@ -19,27 +19,28 @@ import kotlinx.android.synthetic.main.fragment_discover_tree.view.*
  */
 class DiscoverTreeFragment : BaseFragment() {
 
-    private var mData: ArrayList<DiscoverTreeBean.DataBean> = arrayListOf()
+    override fun onCreateViewState(savedInstanceState: Bundle?) {
+        mView!!.expandable_layout.setAdapter(DiscoverTreeAdapter(context, mData))
+    }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater!!.inflate(R.layout.fragment_discover_tree, container, false)
-
-        view.expandable_layout.setAdapter(DiscoverTreeAdapter(context,mData))
+    override fun lazyLoadData() {
 
         CookieTools.getCookieService()!!
                 .getTree()
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe{
+                .subscribe {
 
                     mData.clear()
 
                     mData.addAll(it.data)
 
-                    view.expandable_layout.setAdapter(DiscoverTreeAdapter(context,mData))
+                    mView!!.expandable_layout.setAdapter(DiscoverTreeAdapter(context, mData))
                 }
-
-
-        return view
     }
+
+    override var layoutId = R.layout.fragment_discover_tree
+
+    private var mData: ArrayList<DiscoverTreeBean.DataBean> = arrayListOf()
+
 }

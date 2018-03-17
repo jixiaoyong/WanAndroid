@@ -27,12 +27,14 @@ import org.greenrobot.eventbus.EventBus
  * Created by jixiaoyong on 2018/2/25.
  */
 class IndexPostFragment : BaseFragment(), RefreshUiInterface {
+
     override fun refreshUi(event: EventInterface) {
 
         downloadData()
 
     }
 
+    override var layoutId = R.layout.fragment_index_post
 
     private var mData: ArrayList<BaseArticlesBean> = arrayListOf()
 
@@ -42,20 +44,14 @@ class IndexPostFragment : BaseFragment(), RefreshUiInterface {
 
     private var childCount = 0
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateViewState(savedInstanceState: Bundle?) {
 
-        val view = inflater!!.inflate(R.layout.fragment_index_post, container, false)
+        mView!!.switch_state.showView(SwitchStateLayout.VIEW_LOADING)
 
-        view.switch_state.showView(SwitchStateLayout.VIEW_LOADING)
-
-        //banner
-        var mMZBanner = view.banner
-
-        view.recycler_view.layoutManager = LinearLayoutManager(context,
+        mView!!.recycler_view.layoutManager = LinearLayoutManager(context,
                 LinearLayoutManager.VERTICAL, false)
 
-        view.recycler_view.adapter = PostArticleAdapter(mData, false, {
+        mView!!.recycler_view.adapter = PostArticleAdapter(mData, false, {
 
             SuperUtil.startActivity(context, ContentActivity::class.java, it)
 
@@ -83,7 +79,7 @@ class IndexPostFragment : BaseFragment(), RefreshUiInterface {
         })
 
         //onTouchEvent事件被NestedScrollView拦截，故而不起作用
-        view.recycler_view.setOnFootListener {
+        mView!!.recycler_view.setOnFootListener {
 
             if (currentPage < pageCount) {
 
@@ -92,14 +88,15 @@ class IndexPostFragment : BaseFragment(), RefreshUiInterface {
             }
         }
 
-        view.recycler_view.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        mView!!.recycler_view.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
             }
 
             override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
 
-                var lastPosition = (recyclerView!!.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
+                var lastPosition = (recyclerView!!.layoutManager as LinearLayoutManager)
+                        .findLastVisibleItemPosition()
 
                 if (lastPosition > childCount -2 && currentPage < pageCount) {
 
@@ -111,15 +108,15 @@ class IndexPostFragment : BaseFragment(), RefreshUiInterface {
             }
         })
 
-        downloadData()
-        downloadBanner(mMZBanner)
-
-        view.swipe_refresh.setOnRefreshListener {
-            downloadData()
-            downloadBanner(mMZBanner)
+        mView!!.swipe_refresh.setOnRefreshListener {
+            lazyLoadData()
         }
 
-        return view
+    }
+
+    override fun lazyLoadData() {
+        downloadData()
+        downloadBanner( mView!!.banner)
     }
 
     private fun unCollectPost(postId: Int) {

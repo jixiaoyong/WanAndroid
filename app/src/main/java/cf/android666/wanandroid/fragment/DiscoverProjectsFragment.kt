@@ -23,7 +23,7 @@ import java.util.ArrayList
 /**
  * Created by jixiaoyong on 2018/2/25.
  */
-class DiscoverProjectsFragment : BaseFragment() {
+class DiscoverProjectsFragment() : BaseFragment() {
 
     private var mData  = ArrayList<BaseArticlesBean>()
 
@@ -37,18 +37,19 @@ class DiscoverProjectsFragment : BaseFragment() {
 
     private var pageCount = 0
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater!!.inflate(R.layout.fragment_discover_projects, container, false)
+    override var layoutId = R.layout.fragment_discover_projects
+
+    override fun onCreateViewState(savedInstanceState: Bundle?) {
 
         for (x in mTreeData.indices) {
 
-            view!!.tab_layout.addTab(view!!.tab_layout.newTab(),x)
-            view!!.tab_layout.getTabAt(x)!!.text = mTreeData[x].name
+            mView!!.tab_layout.addTab(mView!!.tab_layout.newTab(),x)
+            mView!!.tab_layout.getTabAt(x)!!.text = mTreeData[x].name
         }
 
-        view!!.tab_layout.tabMode = TabLayout.MODE_SCROLLABLE
+        mView!!.tab_layout.tabMode = TabLayout.MODE_SCROLLABLE
 
-        view.tab_layout.setOnTabSelectedListener(object :TabLayout.OnTabSelectedListener{
+        mView!!.tab_layout.setOnTabSelectedListener(object :TabLayout.OnTabSelectedListener{
             override fun onTabUnselected(tab: TabLayout.Tab?) {
 
             }
@@ -68,16 +69,18 @@ class DiscoverProjectsFragment : BaseFragment() {
         })
 
 
-        view.recycler_view.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+        mView!!.recycler_view.layoutManager = StaggeredGridLayoutManager(2,
+                StaggeredGridLayoutManager.VERTICAL)
 
-        view.recycler_view.adapter = DiscoverProjectsAdapter(context, mData, {
+        mView!!.recycler_view.adapter = DiscoverProjectsAdapter(context, mData, {
 
             SuperUtil.startActivity(context, ContentActivity::class.java, it)
 
         }, {
 
         })
-        view.recycler_view.setOnFootListener {
+
+        mView!!.recycler_view.setOnFootListener {
 
             if (currentPage < pageCount){
 
@@ -85,16 +88,21 @@ class DiscoverProjectsFragment : BaseFragment() {
             }
         }
 
-        view.swipe_refresh.setOnRefreshListener{
+        mView!!.swipe_refresh.setOnRefreshListener{
 
             downloadData(1,316)
 
             downloadTree()
         }
 
-        return view
     }
 
+    override fun lazyLoadData() {
+
+        downloadData(1,294)
+        downloadTree()
+
+    }
 
     private fun downloadTree() {
 
@@ -115,14 +123,6 @@ class DiscoverProjectsFragment : BaseFragment() {
                     }
 
                 }
-    }
-
-    override fun onAttach(context: Context?) {
-        super.onAttach(context)
-
-        downloadData(1,294)
-        downloadTree()
-
     }
 
     private fun downloadData(page:Int,cid:Int) {

@@ -18,25 +18,27 @@ import kotlinx.android.synthetic.main.fragment_discover_tree.view.*
  */
 class DiscoverNaviFragment : BaseFragment() {
 
+    override var layoutId = R.layout.fragment_discover_tree
+
     private var mData: ArrayList<DiscoverNaviBean.DataBean> = arrayListOf()
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater!!.inflate(R.layout.fragment_discover_tree, container, false)
+    override fun onCreateViewState(savedInstanceState: Bundle?) {
 
+
+    }
+
+    override fun lazyLoadData() {
 
         CookieTools.getCookieService()!!.getNavi()
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe{
+                .subscribe {
 
                     mData.clear()
 
                     mData.addAll(it.data)
 
-                    view.expandable_layout.setAdapter(DiscoverNaviAdapter(context,mData))
+                    mView!!.expandable_layout.setAdapter(DiscoverNaviAdapter(context, mData))
                 }
-
-
-        return view
     }
 }

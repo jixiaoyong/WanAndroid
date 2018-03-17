@@ -23,36 +23,8 @@ import org.greenrobot.eventbus.EventBus
  */
 class AboutFragment : BaseFragment() ,RefreshUiInterface{
 
-    var mView: View? = null
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-
-        val view = inflater!!.inflate(R.layout.fragment_about, container, false)
-
-        mView = view
-
-        updateUi()
-
-        return view
-    }
-
-    override fun refreshUi(eventInterface: EventInterface) {
-
-        when (eventInterface) {
-
-            is EventFactory.LoginState ->{
-
-                updateUserName()
-
-            }
-        }
-
-        updateUi()
-
-    }
-
-    private fun updateUi() {
-
+    override fun lazyLoadData() {
         if (mView == null) {
             return
         }
@@ -60,18 +32,6 @@ class AboutFragment : BaseFragment() ,RefreshUiInterface{
         val isNightMode = SharePreference.getV<Boolean>(SharePreference.IS_NIGHT_MODE, false)
 
         mView!!.night_mode.isChecked = isNightMode
-
-        mView!!.night_mode.setOnClickListener {
-
-            SharePreference.saveKV(SharePreference.IS_NIGHT_MODE, mView!!.night_mode.isChecked)
-
-            updateTheme()
-
-        }
-
-        mView!!.more_tv.setOnClickListener {
-            context.startActivity(Intent(activity, SettingActivity::class.java))
-        }
 
         var isLogin = SharePreference.getV<Boolean>(SharePreference.IS_LOGIN, false)
 
@@ -93,6 +53,40 @@ class AboutFragment : BaseFragment() ,RefreshUiInterface{
             }
 
         }
+    }
+
+    override fun onCreateViewState(savedInstanceState: Bundle?) {
+
+        mView!!.night_mode.setOnClickListener {
+
+            SharePreference.saveKV(SharePreference.IS_NIGHT_MODE, mView!!.night_mode.isChecked)
+
+            updateTheme()
+
+        }
+
+        mView!!.more_tv.setOnClickListener {
+            context.startActivity(Intent(activity, SettingActivity::class.java))
+        }
+
+    }
+
+
+    override var layoutId = R.layout.fragment_about
+
+    override fun refreshUi(eventInterface: EventInterface) {
+
+        when (eventInterface) {
+
+            is EventFactory.LoginState ->{
+
+                updateUserName()
+
+            }
+        }
+
+        lazyLoadData()
+
     }
 
     private fun showDialog() {

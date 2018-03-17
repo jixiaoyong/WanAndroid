@@ -18,23 +18,21 @@ import kotlinx.android.synthetic.main.fragment_index.view.*
  */
 class IndexFragment : BaseFragment() {
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override var layoutId = R.layout.fragment_index
 
-        var view = inflater!!.inflate(R.layout.fragment_index, container, false)
-
+    override fun onCreateViewState(savedInstanceState: Bundle?) {
         val fragments = arrayListOf<BaseFragment>()
 
         fragments.add(IndexPostFragment())
         fragments.add(IndexFavoriteFragment())
 
-        view.viewpager.adapter = MFragmentViewPagerAdapter(childFragmentManager, fragments)
+        mView!!.viewpager.adapter = MFragmentViewPagerAdapter(childFragmentManager, fragments)
 
-        var tablayout = view.tab_layout
+        var tablayout = mView!!.tab_layout
+
         //设置该方法后会删除tab标题，因此在后面手动加上
-        tablayout.setupWithViewPager(view.viewpager)
+        tablayout.setupWithViewPager(mView!!.viewpager)
         tablayout.getTabAt(0)!!.text = "主页"
         tablayout.getTabAt(1)!!.text = "收藏"
-
-        return view
     }
 }

@@ -30,35 +30,32 @@ class IndexFavoriteFragment : BaseFragment() , RefreshUiInterface {
 
     }
 
+    override var layoutId = R.layout.fragment_index_favorite
 
     private var mData: ArrayList<BaseArticlesBean> = arrayListOf()
 
-    var mView: View? = null
 
     private var currentPage = 0
 
+
     private var pageCount = 0
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater!!.inflate(R.layout.fragment_index_favorite, container, false)
+    override fun onCreateViewState(savedInstanceState: Bundle?) {
 
-        mView = view
+        mView!!.swipe_refresh.setOnRefreshListener {
+            mView!!.swipe_refresh.isRefreshing = true
 
-
-        view.swipe_refresh.setOnRefreshListener {
-            view.swipe_refresh.isRefreshing = true
-
-            loadData(view)
+            loadData(mView!!)
         }
 
         var isLogin = SharePreference.getV<Boolean>(SharePreference.IS_LOGIN, false)
 
         if (isLogin) {
 
-            view.recycler_view.layoutManager = LinearLayoutManager(context,
+            mView!!.recycler_view.layoutManager = LinearLayoutManager(context,
                     LinearLayoutManager.VERTICAL, false)
 
-            view.recycler_view.adapter = PostArticleAdapter(mData,
+            mView!!.recycler_view.adapter = PostArticleAdapter(mData,
                     true,
                     {
 
@@ -72,34 +69,37 @@ class IndexFavoriteFragment : BaseFragment() , RefreshUiInterface {
 
                 mData.removeAt(position)
 
-                view.recycler_view.adapter.notifyDataSetChanged()
+                mView!!.recycler_view.adapter.notifyDataSetChanged()
 
             })
 
-            loadData(view)
+            mView!!.noting_img.visibility = View.GONE
 
-            view.noting_img.visibility = View.GONE
-
-            view.recycler_view.visibility = View.VISIBLE
+            mView!!.recycler_view.visibility = View.VISIBLE
 
         } else {
 
-            view.noting_img.visibility = View.VISIBLE
+            mView!!.noting_img.visibility = View.VISIBLE
 
-            view.recycler_view.visibility = View.GONE
+            mView!!.recycler_view.visibility = View.GONE
 
             Toast.makeText(context, "请登录", Toast.LENGTH_SHORT).show()
         }
 
 
-        view.recycler_view.setOnFootListener {
+        mView!!.recycler_view.setOnFootListener {
 
             if (currentPage < pageCount){
-                loadData(view,++currentPage)
+                loadData(mView!!,++currentPage)
             }
         }
 
-        return view
+    }
+
+    override fun lazyLoadData() {
+
+        loadData(mView!!)
+
     }
 
     private fun unCollectPost(id: Int) {

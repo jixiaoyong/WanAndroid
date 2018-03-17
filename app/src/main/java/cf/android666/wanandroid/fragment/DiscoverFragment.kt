@@ -14,9 +14,9 @@ import kotlinx.android.synthetic.main.fragment_discover.view.*
  */
 class DiscoverFragment : BaseFragment() {
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override var layoutId = R.layout.fragment_discover
 
-        var view = inflater!!.inflate(R.layout.fragment_discover, container, false)
+    override fun onCreateViewState(savedInstanceState: Bundle?) {
 
         val fragments = arrayListOf<BaseFragment>()
 
@@ -24,15 +24,14 @@ class DiscoverFragment : BaseFragment() {
         fragments.add(DiscoverProjectsFragment())
         fragments.add(DiscoverNaviFragment())
 
-        view.viewpager.adapter = MFragmentViewPagerAdapter(childFragmentManager, fragments)
+        mView!!.viewpager.adapter = MFragmentViewPagerAdapter(childFragmentManager, fragments)
 
-        var tablayout = view.tab_layout
+        var tablayout = mView!!.tab_layout
+
         //设置该方法后会删除tab标题，因此在后面手动加上
-        tablayout.setupWithViewPager(view.viewpager)
+        tablayout.setupWithViewPager(mView!!.viewpager)
         tablayout.getTabAt(0)!!.text = "体系"
         tablayout.getTabAt(1)!!.text = "项目"
         tablayout.getTabAt(2)!!.text = "导航"
-
-        return view
     }
 }
