@@ -1,18 +1,14 @@
 package cf.android666.wanandroid.adapter
 
-import android.content.Context
 import android.support.v7.widget.RecyclerView
-import android.text.Layout
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import cf.android666.wanandroid.R
 import cf.android666.wanandroid.bean.BaseArticlesBean
-import cf.android666.wanandroid.bean.DiscoverProjectItemBean
-import cf.android666.wanandroid.utils.SuperUtil
+import cf.android666.wanandroid.fragment.DiscoverProjectsFragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.orhanobut.logger.Logger
 import kotlinx.android.synthetic.main.item_discover_projects.view.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -20,7 +16,7 @@ import java.util.*
 /**
  * Created by jixiaoyong on 2018/2/28.
  */
-class DiscoverProjectsAdapter(private val context: Context,
+class DiscoverProjectsAdapter(private val context: DiscoverProjectsFragment,
                               private val data: List<BaseArticlesBean>,
                               private val itemListener: ((url: String) -> Unit),
                               private val imgBtnListener: ((view: View) -> Unit))
@@ -51,10 +47,14 @@ class DiscoverProjectsAdapter(private val context: Context,
 
         holder!!.itemView.author.text = data[position].author
 
-        var request = RequestOptions().placeholder(R.drawable.nothing)
+        var request = RequestOptions()
+                .placeholder(R.drawable.nothing)
+
+
+        val imgUtl = data[position].envelopePic
 
         Glide.with(context)
-                .load(data[position].envelopePic)
+                .load(imgUtl)
                 .apply(request)
                 .into(holder.itemView.image)
 

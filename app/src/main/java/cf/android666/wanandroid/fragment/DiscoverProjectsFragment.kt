@@ -1,12 +1,9 @@
 package cf.android666.wanandroid.fragment
 
-import android.content.Context
 import android.os.Bundle
 import android.support.design.widget.TabLayout
 import android.support.v7.widget.StaggeredGridLayoutManager
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import cf.android666.mylibrary.view.SwitchStateLayout
 import cf.android666.wanandroid.R
 import cf.android666.wanandroid.activity.ContentActivity
 import cf.android666.wanandroid.adapter.DiscoverProjectsAdapter
@@ -25,7 +22,7 @@ import java.util.ArrayList
  */
 class DiscoverProjectsFragment() : BaseFragment() {
 
-    private var mData  = ArrayList<BaseArticlesBean>()
+    private var mData = ArrayList<BaseArticlesBean>()
 
     private var mTreeData = ArrayList<DiscoverProjectTreeBean.DataBean>()
 
@@ -41,15 +38,17 @@ class DiscoverProjectsFragment() : BaseFragment() {
 
     override fun onCreateViewState(savedInstanceState: Bundle?) {
 
+        mView!!.switch_state.showView(SwitchStateLayout.VIEW_EMPTY)
+
         for (x in mTreeData.indices) {
 
-            mView!!.tab_layout.addTab(mView!!.tab_layout.newTab(),x)
+            mView!!.tab_layout.addTab(mView!!.tab_layout.newTab(), x)
             mView!!.tab_layout.getTabAt(x)!!.text = mTreeData[x].name
         }
 
         mView!!.tab_layout.tabMode = TabLayout.MODE_SCROLLABLE
 
-        mView!!.tab_layout.setOnTabSelectedListener(object :TabLayout.OnTabSelectedListener{
+        mView!!.tab_layout.setOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabUnselected(tab: TabLayout.Tab?) {
 
             }
@@ -64,7 +63,7 @@ class DiscoverProjectsFragment() : BaseFragment() {
 
                 mPage = 0
 
-                downloadData(1,mTreeData[tab!!.position].id)
+                downloadData(1, mTreeData[tab!!.position].id)
             }
         })
 
@@ -72,7 +71,7 @@ class DiscoverProjectsFragment() : BaseFragment() {
         mView!!.recycler_view.layoutManager = StaggeredGridLayoutManager(2,
                 StaggeredGridLayoutManager.VERTICAL)
 
-        mView!!.recycler_view.adapter = DiscoverProjectsAdapter(context, mData, {
+        mView!!.recycler_view.adapter = DiscoverProjectsAdapter(this, mData, {
 
             SuperUtil.startActivity(context, ContentActivity::class.java, it)
 
@@ -82,15 +81,15 @@ class DiscoverProjectsFragment() : BaseFragment() {
 
         mView!!.recycler_view.setOnFootListener {
 
-            if (currentPage < pageCount){
+            if (currentPage < pageCount) {
 
-                downloadData(++currentPage,mTreeData[mTabId].id)
+                downloadData(++currentPage, mTreeData[mTabId].id)
             }
         }
 
-        mView!!.swipe_refresh.setOnRefreshListener{
+        mView!!.swipe_refresh.setOnRefreshListener {
 
-            downloadData(1,316)
+            downloadData(1, 316)
 
             downloadTree()
         }
@@ -99,7 +98,7 @@ class DiscoverProjectsFragment() : BaseFragment() {
 
     override fun lazyLoadData() {
 
-        downloadData(1,294)
+        downloadData(1, 294)
         downloadTree()
 
     }
@@ -110,7 +109,7 @@ class DiscoverProjectsFragment() : BaseFragment() {
                 .getProjectTree()
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
+                .subscribe({
 
                     mTreeData.clear()
 
@@ -118,14 +117,17 @@ class DiscoverProjectsFragment() : BaseFragment() {
 
                     for (x in mTreeData.indices) {
 
-                        view!!.tab_layout.addTab(view!!.tab_layout.newTab(),x)
+                        view!!.tab_layout.addTab(view!!.tab_layout.newTab(), x)
                         view!!.tab_layout.getTabAt(x)!!.text = mTreeData[x].name
                     }
-
-                }
+                }, {
+                    mView!!.switch_state.showView(SwitchStateLayout.VIEW_ERROR)
+                }, {
+                    mView!!.switch_state.showContentView()
+                })
     }
 
-    private fun downloadData(page:Int,cid:Int) {
+    private fun downloadData(page: Int, cid: Int) {
 
         CookieTools.getCookieService()!!
                 .getProjectItems(page, cid)

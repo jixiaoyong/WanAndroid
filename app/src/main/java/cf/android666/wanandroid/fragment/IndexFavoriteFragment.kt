@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import cf.android666.mylibrary.view.SwitchStateLayout
 import cf.android666.wanandroid.R
 import cf.android666.wanandroid.`interface`.RefreshUiInterface
 import cf.android666.wanandroid.activity.ContentActivity
@@ -22,7 +23,7 @@ import org.greenrobot.eventbus.EventBus
 /**
  * Created by jixiaoyong on 2018/2/25.
  */
-class IndexFavoriteFragment : BaseFragment() , RefreshUiInterface {
+class IndexFavoriteFragment : BaseFragment(), RefreshUiInterface {
 
     override fun refreshUi(event: EventInterface) {
 
@@ -34,13 +35,13 @@ class IndexFavoriteFragment : BaseFragment() , RefreshUiInterface {
 
     private var mData: ArrayList<BaseArticlesBean> = arrayListOf()
 
-
     private var currentPage = 0
-
 
     private var pageCount = 0
 
     override fun onCreateViewState(savedInstanceState: Bundle?) {
+
+        mView!!.switch_state.showView(SwitchStateLayout.VIEW_EMPTY)
 
         mView!!.swipe_refresh.setOnRefreshListener {
             mView!!.swipe_refresh.isRefreshing = true
@@ -73,13 +74,10 @@ class IndexFavoriteFragment : BaseFragment() , RefreshUiInterface {
 
             })
 
-            mView!!.noting_img.visibility = View.GONE
 
             mView!!.recycler_view.visibility = View.VISIBLE
 
         } else {
-
-            mView!!.noting_img.visibility = View.VISIBLE
 
             mView!!.recycler_view.visibility = View.GONE
 
@@ -89,8 +87,8 @@ class IndexFavoriteFragment : BaseFragment() , RefreshUiInterface {
 
         mView!!.recycler_view.setOnFootListener {
 
-            if (currentPage < pageCount){
-                loadData(mView!!,++currentPage)
+            if (currentPage < pageCount) {
+                loadData(mView!!, ++currentPage)
             }
         }
 
@@ -98,7 +96,15 @@ class IndexFavoriteFragment : BaseFragment() , RefreshUiInterface {
 
     override fun lazyLoadData() {
 
-        loadData(mView!!)
+        var isLogin = SharePreference.getV<Boolean>(SharePreference.IS_LOGIN, false)
+
+        if (isLogin) {
+
+            mView!!.switch_state.showView(SwitchStateLayout.VIEW_LOADING)
+
+            loadData(mView!!)
+        }
+
 
     }
 
@@ -108,27 +114,34 @@ class IndexFavoriteFragment : BaseFragment() , RefreshUiInterface {
                 .uncollectById(id, -1)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
-                .subscribe {
+                .subscribe({
                     if (it.errorCode < 0) {
                         Toast.makeText(context, it.errorMsg, Toast.LENGTH_SHORT).show()
                     } else {
                         Toast.makeText(context, "取消收藏成功", Toast.LENGTH_SHORT).show()
                         EventBus.getDefault().post(EventFactory.CollectState(-id))
                     }
+                }, {
+                    mView!!.switch_state.showView(SwitchStateLayout.VIEW_ERROR)
+
+                }, {
+                    mView!!.switch_state.showContentView()
+
                 }
+                )
     }
 
-    private fun loadData(view: View?){
-        loadData(view,0)
+    private fun loadData(view: View?) {
+        loadData(view, 0)
     }
 
-    private fun loadData(view: View?, page:Int) {
+    private fun loadData(view: View?, page: Int) {
 
         CookieTools.getCookieService()!!
                 .getCollect(0)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
+                .subscribe({
 
                     view?.swipe_refresh?.isRefreshing = false
 
@@ -140,6 +153,11 @@ class IndexFavoriteFragment : BaseFragment() , RefreshUiInterface {
 
 
                     } else {
+
+                        if (it.data.datas.size == 0) {
+                            mView!!.switch_state.showView(SwitchStateLayout.VIEW_EMPTY)
+
+                        }
 
                         when (page) {
 
@@ -158,10 +176,18 @@ class IndexFavoriteFragment : BaseFragment() , RefreshUiInterface {
                         view?.recycler_view?.adapter?.notifyDataSetChanged()
 
                         SharePreference.saveKV(SharePreference.FAVORITE_COUNT, it.data.total.toString())
+
+                        mView!!.switch_state.showContentView()
+
                     }
 
+                }, {
+                    mView!!.switch_state.showView(SwitchStateLayout.VIEW_ERROR)
 
-                }
+                }, {
+                    mView!!.switch_state.showContentView()
+
+                })
     }
 
     override fun onStart() {

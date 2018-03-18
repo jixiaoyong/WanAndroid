@@ -21,6 +21,11 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+
+        debug {
+            //关闭代码混淆，加快编译速度
+            minifyEnabled false
+        }
     }
 
 }

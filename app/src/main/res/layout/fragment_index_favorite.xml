@@ -4,26 +4,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RelativeLayout
+    <cf.android666.mylibrary.view.SwitchStateLayout
+        android:id="@+id/switch_state"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center">
-
-        <ImageView
-            android:id="@+id/noting_img"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:src="@drawable/nothing" />
+        android:layout_height="match_parent">
 
         <cf.android666.wanandroid.view.AutoRefreshRecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone"
-            android:paddingBottom="@dimen/nav_height">
+            android:paddingBottom="@dimen/nav_height"
+            android:visibility="gone">
 
         </cf.android666.wanandroid.view.AutoRefreshRecyclerView>
 
-    </RelativeLayout>
+    </cf.android666.mylibrary.view.SwitchStateLayout>
 </android.support.v4.widget.SwipeRefreshLayout>

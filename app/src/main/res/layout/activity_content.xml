@@ -1,26 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/nav_height"
-        app:titleTextColor="#fff"
         android:background="@color/colorBottomNav"
-        >
+        app:titleTextColor="#fff">
 
     </android.support.v7.widget.Toolbar>
 
-    <WebView
-        android:id="@+id/web_view"
+    <cf.android666.mylibrary.view.SwitchStateLayout
+        android:id="@+id/switch_state"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/toolbar">
 
-    </WebView>
+        <WebView
+            android:id="@+id/web_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
 
+        </WebView>
+    </cf.android666.mylibrary.view.SwitchStateLayout>
 </RelativeLayout>

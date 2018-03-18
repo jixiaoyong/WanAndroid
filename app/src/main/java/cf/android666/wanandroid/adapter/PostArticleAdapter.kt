@@ -12,15 +12,16 @@ import kotlinx.android.synthetic.main.item_index_post.view.*
  * Created by jixiaoyong on 2018/2/27.
  */
 class PostArticleAdapter(private val data: ArrayList<BaseArticlesBean>,
-                         private val isImageButtonSelect : Boolean,
+                         private val isImageButtonSelect: Boolean,
                          private val itemListener: ((url: String) -> Unit),
-                         private val imgBtnListener: ((view:View,position:Int) -> Unit))
-    : RecyclerView.Adapter<PostArticleAdapter.MViewHolder>(){
+                         private val imgBtnListener: ((view: View, position: Int) -> Unit))
+    : RecyclerView.Adapter<PostArticleAdapter.MViewHolder>() {
+
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): MViewHolder {
 
         var view = LayoutInflater.from(parent!!.context)
-                .inflate( R.layout.item_index_post,parent,false)
+                .inflate(R.layout.item_index_post, parent, false)
 
         return MViewHolder(view)
     }
@@ -40,7 +41,7 @@ class PostArticleAdapter(private val data: ArrayList<BaseArticlesBean>,
 
         holder.itemView.chapter.text = "分类：${data[position].chapterName}"
 
-        holder.itemView.setOnClickListener{
+        holder.itemView.setOnClickListener {
 
             this.itemListener.invoke(data[position].link)
 
@@ -55,13 +56,13 @@ class PostArticleAdapter(private val data: ArrayList<BaseArticlesBean>,
             holder.itemView.imageButton.isSelected = data[position].collect
         }
 
-        holder.itemView.imageButton.setOnClickListener{
+        holder.itemView.imageButton.setOnClickListener {
 
-            this.imgBtnListener!!.invoke(it,position)
+            this.imgBtnListener!!.invoke(it, position)
 
         }
 
     }
 
-    class MViewHolder(view:View) : RecyclerView.ViewHolder(view)
+    class MViewHolder(view: View) : RecyclerView.ViewHolder(view)
 }

@@ -3,9 +3,6 @@ package cf.android666.wanandroid.fragment
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import cf.android666.mylibrary.view.SwitchStateLayout
 import cf.android666.wanandroid.R
@@ -20,7 +17,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_index_post.view.*
 import com.zhouwei.mzbanner.MZBannerView
-import kotlinx.android.synthetic.main.activity_search.*
+import kotlinx.android.synthetic.main.fragment_index_post.*
 import org.greenrobot.eventbus.EventBus
 
 /**
@@ -31,6 +28,7 @@ class IndexPostFragment : BaseFragment(), RefreshUiInterface {
     override fun refreshUi(event: EventInterface) {
 
         downloadData()
+        downloadBanner(mView!!.banner)
 
     }
 
@@ -43,6 +41,8 @@ class IndexPostFragment : BaseFragment(), RefreshUiInterface {
     private var pageCount = 0
 
     private var childCount = 0
+
+    var hasLoadData = false
 
     override fun onCreateViewState(savedInstanceState: Bundle?) {
 
@@ -98,7 +98,7 @@ class IndexPostFragment : BaseFragment(), RefreshUiInterface {
                 var lastPosition = (recyclerView!!.layoutManager as LinearLayoutManager)
                         .findLastVisibleItemPosition()
 
-                if (lastPosition > childCount -2 && currentPage < pageCount) {
+                if (lastPosition > childCount - 2 && currentPage < pageCount) {
 
                     downloadData(++currentPage)
 
@@ -109,14 +109,21 @@ class IndexPostFragment : BaseFragment(), RefreshUiInterface {
         })
 
         mView!!.swipe_refresh.setOnRefreshListener {
-            lazyLoadData()
+//            lazyLoadData()
+            downloadData()
+            downloadBanner(mView!!.banner)
         }
 
     }
 
     override fun lazyLoadData() {
-        downloadData()
-        downloadBanner( mView!!.banner)
+
+        if (!hasLoadData) {
+
+            downloadData()
+            downloadBanner(mView!!.banner)
+            hasLoadData = true
+        }
     }
 
     private fun unCollectPost(postId: Int) {
@@ -125,7 +132,7 @@ class IndexPostFragment : BaseFragment(), RefreshUiInterface {
                 .uncollectByOriginId(postId)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
-                .subscribe {
+                .subscribe({
                     if (it.errorCode < 0) {
                         Toast.makeText(context, it.errorMsg, Toast.LENGTH_SHORT).show()
                     } else {
@@ -134,7 +141,17 @@ class IndexPostFragment : BaseFragment(), RefreshUiInterface {
                         EventBus.getDefault().post(EventFactory.CollectState(-postId))
 
                     }
+
+                }, {
+
+                    mView!!.switch_state.showView(SwitchStateLayout.VIEW_ERROR)
+
+                }, {
+                    mView!!.switch_state.showContentView()
+
                 }
+
+                )
     }
 
     private fun collectPost(postId: Int) {
@@ -143,16 +160,22 @@ class IndexPostFragment : BaseFragment(), RefreshUiInterface {
                 .collectPostById(postId)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
-                .subscribe {
+                .subscribe({
                     if (it.errorCode < 0) {
                         Toast.makeText(context, it.errorMsg, Toast.LENGTH_SHORT).show()
                     } else {
                         Toast.makeText(context, "收藏成功", Toast.LENGTH_SHORT).show()
 
                         EventBus.getDefault().post(EventFactory.CollectState(postId))
-
                     }
-                }
+                }, {
+
+                    mView!!.switch_state.showView(SwitchStateLayout.VIEW_ERROR)
+
+                }, {
+                    mView!!.switch_state.showContentView()
+
+                })
 
     }
 
@@ -168,7 +191,7 @@ class IndexPostFragment : BaseFragment(), RefreshUiInterface {
 
         observable.subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
+                .subscribe({
 
                     when (page) {
 
@@ -189,9 +212,15 @@ class IndexPostFragment : BaseFragment(), RefreshUiInterface {
                         childCount = recycler_view.childCount
                     }
 
-
                     view?.swipe_refresh?.isRefreshing = false
-                }
+                }, {
+
+                    mView!!.switch_state.showView(SwitchStateLayout.VIEW_ERROR)
+
+                }, {
+                    mView!!.switch_state.showContentView()
+
+                })
     }
 
     private fun downloadBanner(mMZBanner: MZBannerView<*>) {
@@ -200,12 +229,20 @@ class IndexPostFragment : BaseFragment(), RefreshUiInterface {
                 .getBanner()
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
+                .subscribe( {
 
                     TempTools.setBanner(it.data, mMZBanner)
 
-                }
+                }, {
+
+                    mView!!.switch_state.showView(SwitchStateLayout.VIEW_ERROR)
+
+                }, {
+                    mView!!.switch_state.showContentView()
+
+                })
     }
+
     override fun onStart() {
         super.onStart()
         if (!EventBus.getDefault().isRegistered(this)) {

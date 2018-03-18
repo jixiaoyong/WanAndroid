@@ -11,6 +11,7 @@ import cf.android666.wanandroid.bean.IndexBannerBean
 import cf.android666.wanandroid.utils.SuperUtil
 import com.bumptech.glide.Glide
 import com.bumptech.glide.Glide.init
+import com.bumptech.glide.request.RequestOptions
 import com.zhouwei.mzbanner.holder.MZViewHolder
 import kotlinx.android.synthetic.main.fragment_index_post_banner.view.*
 
@@ -39,9 +40,14 @@ class BannerViewHolder : MZViewHolder<IndexBannerBean.DataBean> {
 
     override fun onBind(p0: Context?, p1: Int, p2: IndexBannerBean.DataBean?) {
 
+        var request = RequestOptions()
+                .placeholder(R.drawable.nothing)
+
         Glide.with(p0)
                 .load(p2!!.imagePath)
+                .apply(request)
                 .into(mImageView)
+
 
         mImageView!!.setOnClickListener {
 

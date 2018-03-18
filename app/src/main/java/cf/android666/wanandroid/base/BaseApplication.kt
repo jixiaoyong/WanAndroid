@@ -1,9 +1,10 @@
 package cf.android666.wanandroid.base
 
 import android.app.Application
-import android.content.Context
+import android.content.ComponentCallbacks2
 import cf.android666.wanandroid.api.cookie.Preference
 import cf.android666.wanandroid.utils.SharePreference
+import com.bumptech.glide.Glide
 import com.orhanobut.logger.AndroidLogAdapter
 import com.orhanobut.logger.Logger
 import com.umeng.analytics.MobclickAgent
@@ -18,6 +19,13 @@ class BaseApplication:Application(){
 
 
         super.onCreate()
+
+//        if (LeakCanary.isInAnalyzerProcess(this)) {
+//            // This process is dedicated to LeakCanary for heap analysis.
+//            // You should not init your app in this process.
+//            return;
+//        }
+//        LeakCanary.install(this)
 
         Logger.addLogAdapter(AndroidLogAdapter())
 
@@ -50,6 +58,21 @@ class BaseApplication:Application(){
         UMConfigure.setEncryptEnabled(false)
 
         MobclickAgent.setScenarioType(applicationContext, MobclickAgent.EScenarioType. E_UM_NORMAL)
+    }
+
+    override fun onTrimMemory(level: Int) {
+        super.onTrimMemory(level)
+
+        if (level == ComponentCallbacks2.TRIM_MEMORY_UI_HIDDEN) {
+            Glide.get(this).clearMemory()
+        }
+        Glide.get(this).trimMemory(level)
+    }
+
+    override fun onLowMemory() {
+        super.onLowMemory()
+
+        Glide.get(this).clearMemory()
     }
 
 }

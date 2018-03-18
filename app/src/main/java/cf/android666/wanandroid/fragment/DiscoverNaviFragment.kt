@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import cf.android666.mylibrary.view.SwitchStateLayout
 import cf.android666.wanandroid.R
 import cf.android666.wanandroid.adapter.DiscoverNaviAdapter
 import cf.android666.wanandroid.base.BaseFragment
@@ -24,21 +25,29 @@ class DiscoverNaviFragment : BaseFragment() {
 
     override fun onCreateViewState(savedInstanceState: Bundle?) {
 
+        mView!!.switch_state.showView(SwitchStateLayout.VIEW_EMPTY)
+
 
     }
 
     override fun lazyLoadData() {
 
+        mView!!.switch_state.showView(SwitchStateLayout.VIEW_LOADING)
+
         CookieTools.getCookieService()!!.getNavi()
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
+                .subscribe({
 
                     mData.clear()
 
                     mData.addAll(it.data)
 
                     mView!!.expandable_layout.setAdapter(DiscoverNaviAdapter(context, mData))
-                }
+                }, {
+                    mView!!.switch_state.showView(SwitchStateLayout.VIEW_ERROR)
+                }, {
+                    mView!!.switch_state.showContentView()
+                })
     }
 }

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import cf.android666.mylibrary.view.SwitchStateLayout
 import cf.android666.wanandroid.R
 import cf.android666.wanandroid.adapter.DiscoverTreeAdapter
 import cf.android666.wanandroid.base.BaseFragment
@@ -20,23 +21,30 @@ import kotlinx.android.synthetic.main.fragment_discover_tree.view.*
 class DiscoverTreeFragment : BaseFragment() {
 
     override fun onCreateViewState(savedInstanceState: Bundle?) {
+        mView!!.switch_state.showView(SwitchStateLayout.VIEW_EMPTY)
+
         mView!!.expandable_layout.setAdapter(DiscoverTreeAdapter(context, mData))
     }
 
     override fun lazyLoadData() {
+        mView!!.switch_state.showView(SwitchStateLayout.VIEW_LOADING)
 
         CookieTools.getCookieService()!!
                 .getTree()
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
+                .subscribe({
 
                     mData.clear()
 
                     mData.addAll(it.data)
 
                     mView!!.expandable_layout.setAdapter(DiscoverTreeAdapter(context, mData))
-                }
+                }, {
+                    mView!!.switch_state.showView(SwitchStateLayout.VIEW_ERROR)
+                }, {
+                    mView!!.switch_state.showContentView()
+                })
     }
 
     override var layoutId = R.layout.fragment_discover_tree

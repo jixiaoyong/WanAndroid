@@ -4,11 +4,16 @@
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/nav_height">
 
-    <ExpandableListView
-        android:id="@+id/expandable_layout"
+    <cf.android666.mylibrary.view.SwitchStateLayout
+        android:id="@+id/switch_state"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    </ExpandableListView>
+        <ExpandableListView
+            android:id="@+id/expandable_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
+        </ExpandableListView>
+    </cf.android666.mylibrary.view.SwitchStateLayout>
 </LinearLayout>

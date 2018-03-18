@@ -25,6 +25,7 @@ class AboutFragment : BaseFragment() ,RefreshUiInterface{
 
 
     override fun lazyLoadData() {
+
         if (mView == null) {
             return
         }

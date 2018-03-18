@@ -17,12 +17,17 @@
 
         </android.support.design.widget.TabLayout>
 
-        <cf.android666.wanandroid.view.AutoRefreshRecyclerView
-            android:id="@+id/recycler_view"
+        <cf.android666.mylibrary.view.SwitchStateLayout
+            android:id="@+id/switch_state"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            />
+            android:layout_height="match_parent">
 
+            <cf.android666.wanandroid.view.AutoRefreshRecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </cf.android666.mylibrary.view.SwitchStateLayout>
     </LinearLayout>
 
 

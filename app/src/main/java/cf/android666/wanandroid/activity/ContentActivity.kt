@@ -10,7 +10,10 @@ import cf.android666.wanandroid.utils.SuperUtil
 import kotlinx.android.synthetic.main.activity_content.*
 import cf.android666.wanandroid.base.BaseActivity
 import android.content.Intent
+import android.graphics.Bitmap
 import android.net.Uri
+import android.webkit.*
+import cf.android666.mylibrary.view.SwitchStateLayout
 
 
 /**
@@ -30,9 +33,38 @@ class ContentActivity : BaseActivity() {
 
         toolbar.setNavigationOnClickListener { finish() }
 
+        switch_state.showView(SwitchStateLayout.VIEW_EMPTY)
+
         SuperUtil.loadUrl(web_view,intent.getStringExtra("url"))
 
-        toolbar.title = web_view.title
+        web_view.settings.setSupportZoom(true)
+        web_view.settings.builtInZoomControls = true
+
+        web_view.webViewClient = object : WebViewClient(){
+
+            override fun onReceivedError(view: WebView?, request: WebResourceRequest?, error: WebResourceError?) {
+                super.onReceivedError(view, request, error)
+                switch_state.showView(SwitchStateLayout.VIEW_ERROR)
+            }
+
+            override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
+                super.onPageStarted(view, url, favicon)
+                switch_state.showView(SwitchStateLayout.VIEW_LOADING)
+
+            }
+
+            override fun onPageFinished(view: WebView?, url: String?) {
+                super.onPageFinished(view, url)
+                switch_state.showContentView()
+            }
+
+            override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
+                return false
+            }
+
+        }
+
+
 
     }
 

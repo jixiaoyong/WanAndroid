@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.SearchView
 import android.view.Menu
 import android.widget.Toast
+import cf.android666.mylibrary.view.SwitchStateLayout
 import cf.android666.wanandroid.R
 import cf.android666.wanandroid.adapter.PostArticleAdapter
 import cf.android666.wanandroid.base.BaseActivity
@@ -24,9 +25,9 @@ import kotlinx.android.synthetic.main.activity_search.*
 
 class SearchActivity : BaseActivity() {
 
-    var mData : ArrayList<BaseArticlesBean> = arrayListOf()
+    var mData: ArrayList<BaseArticlesBean> = arrayListOf()
 
-    var key :String = ""
+    var key: String = ""
 
     private var currentPage = 0
 
@@ -38,6 +39,8 @@ class SearchActivity : BaseActivity() {
 
         setContentView(R.layout.activity_search)
 
+        switch_state.showView(SwitchStateLayout.VIEW_EMPTY)
+
         setSupportActionBar(toolbar)
 
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
@@ -46,17 +49,16 @@ class SearchActivity : BaseActivity() {
 
         recycler_view.layoutManager = LinearLayoutManager(baseContext, LinearLayoutManager.VERTICAL, false)
 
-        recycler_view.adapter = PostArticleAdapter(mData,false,
+        recycler_view.adapter = PostArticleAdapter(mData, false,
                 {
-                    SuperUtil.startActivity(baseContext,ContentActivity::class.java,it)
-                }) {
-                    _, _ ->
+                    SuperUtil.startActivity(baseContext, ContentActivity::class.java, it)
+                }) { _, _ ->
 
-                }
+        }
         recycler_view.setOnFootListener {
 
-            if (currentPage < pageCount){
-                search(key,++currentPage)
+            if (currentPage < pageCount) {
+                search(key, ++currentPage)
             }
         }
         key = intent.getStringExtra(SearchManager.QUERY)
@@ -69,19 +71,20 @@ class SearchActivity : BaseActivity() {
         search(searchKey, 0)
     }
 
-    private fun search(searchKey: String,page:Int) {
+    private fun search(searchKey: String, page: Int) {
+        switch_state.showView(SwitchStateLayout.VIEW_LOADING)
 
         CookieTools.getCookieService()!!
-                .search(page,searchKey)
+                .search(page, searchKey)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
-                    if (recycler_view == null){
+                .subscribe({
+                    if (recycler_view == null) {
                         return@subscribe
                     }
 
                     if (it.data.datas.isEmpty()) {
-                        Toast.makeText(baseContext,"未找到$key",Toast.LENGTH_SHORT).show()
+                        Toast.makeText(baseContext, "未找到$key", Toast.LENGTH_SHORT).show()
                     }
 
                     when (page) {
@@ -98,14 +101,18 @@ class SearchActivity : BaseActivity() {
                     currentPage = it.data.curPage
 
                     recycler_view.adapter.notifyDataSetChanged()
-                }
+                }, {
+                    switch_state.showView(SwitchStateLayout.VIEW_ERROR)
+                }, {
+                    switch_state.showContentView()
+                })
 
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_main,menu)
+        menuInflater.inflate(R.menu.menu_main, menu)
 
-        var searchManager= getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        var searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
 
         var searchView: SearchView = menu!!.findItem(R.id.app_bar_search).actionView as SearchView
 
