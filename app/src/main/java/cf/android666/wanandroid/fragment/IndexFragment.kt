@@ -34,5 +34,7 @@ class IndexFragment : BaseFragment() {
         tablayout.setupWithViewPager(mView!!.viewpager)
         tablayout.getTabAt(0)!!.text = "主页"
         tablayout.getTabAt(1)!!.text = "收藏"
+
+        tablayout.animation = null
     }
 }
