@@ -27,6 +27,14 @@ beta版本现已放出，欢迎体验。
 
 部分界面预览如下（非最终效果）：
 
+GIF预览：
+
+![WanAndroid Show](https://github.com/jixiaoyong/WanAndroid/blob/master/images/WanAndroidShow.gif?raw=true)
+
+
+
+
+
 ![WanAndroid IndexPost](https://github.com/jixiaoyong/WanAndroid/blob/master/images/WanAndroidIndexPost.png?raw=true)
 
 ![](https://github.com/jixiaoyong/WanAndroid/blob/master/images/WanAndroidIndexFavorite.png?raw=true)
@@ -65,14 +73,14 @@ beta版本现已放出，欢迎体验。
 - [x] 项目 列表 / 详情
 - [x] 项目 下载
 - [x] 站内文章 收藏 / 取消收藏
-- [x] 站外文章 收藏 / ~~取消收藏~~
-- [x] 收藏网址 展示 / 编辑 / 删除
+- [ ] 站外文章 收藏 / ~~取消收藏~~
+- [ ] 收藏网址 展示 / 编辑 / 删除
 - [x] 自动检查更新
 - [x] 列表底部自动加载数据
 - [x] 搜索 搜索指定内容
-- [x] 搜索 历史记录 / 热门 
+- [ ] 搜索 历史记录 / 热门 
 - [x] 分享功能
-- [x] 右划退出
+- [ ] 右划退出
 - [x] 日间 / 夜间模式
 
 
