@@ -17,8 +17,8 @@ android {
         applicationId "cf.android666.wanandroid"
         minSdkVersion 21
         targetSdkVersion 26
-        versionCode 1
-        versionName "0.1 beta"
+        versionCode 2
+        versionName "0.2 beta"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
     }
