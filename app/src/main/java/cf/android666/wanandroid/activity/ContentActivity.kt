@@ -1,10 +1,8 @@
 package cf.android666.wanandroid.activity
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import cf.android666.wanandroid.R
 import cf.android666.wanandroid.utils.SuperUtil
 import kotlinx.android.synthetic.main.activity_content.*
@@ -21,6 +19,8 @@ import cf.android666.mylibrary.view.SwitchStateLayout
  */
 
 class ContentActivity : BaseActivity() {
+
+    var webTitle = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,12 +50,13 @@ class ContentActivity : BaseActivity() {
             override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
                 super.onPageStarted(view, url, favicon)
                 switch_state.showView(SwitchStateLayout.VIEW_LOADING)
-
             }
 
             override fun onPageFinished(view: WebView?, url: String?) {
                 super.onPageFinished(view, url)
                 switch_state.showContentView()
+                webTitle = view!!.title
+                toolbar.title =  view!!.title
             }
 
             override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
@@ -81,6 +82,23 @@ class ContentActivity : BaseActivity() {
 
             R.id.open_sys ->
                 startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(intent.getStringExtra("url"))))
+
+            R.id.share ->{
+                var share_intent = Intent()
+
+                share_intent.action = Intent.ACTION_SEND
+
+                share_intent.type = "text/plain"
+
+                share_intent.putExtra(Intent.EXTRA_SUBJECT, "分享")
+
+                share_intent.putExtra(Intent.EXTRA_TEXT, "这篇文章不错，快来看看。${intent.getStringExtra("url")}" +
+                        "\n分享自【WanAndroid】")
+
+                share_intent = Intent.createChooser(share_intent, "分享")
+
+                startActivity(share_intent)
+            }
 
         }
 

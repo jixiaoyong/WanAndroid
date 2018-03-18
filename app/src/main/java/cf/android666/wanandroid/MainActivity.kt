@@ -54,15 +54,18 @@ class MainActivity : BaseActivity() {
         bottom_nav.setOnNavigationItemSelectedListener { it ->
             when (it.itemId) {
                 R.id.index -> {
-                    viewpager.currentItem = 0
+//                    viewpager.currentItem = 0
+                    viewpager.setCurrentItem(0,false)
                     return@setOnNavigationItemSelectedListener true
                 }
                 R.id.discover -> {
-                    viewpager.currentItem = 1
+//                    viewpager.currentItem = 1
+                    viewpager.setCurrentItem(1,false)
                     return@setOnNavigationItemSelectedListener true
                 }
                 R.id.about -> {
-                    viewpager.currentItem = 2
+//                    viewpager.currentItem = 2
+                    viewpager.setCurrentItem(2,false)
                     return@setOnNavigationItemSelectedListener true
                 }
                 else -> return@setOnNavigationItemSelectedListener false
