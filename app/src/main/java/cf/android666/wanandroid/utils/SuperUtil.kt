@@ -68,11 +68,11 @@ object SuperUtil {
                             it.errorCode < 0 -> Toast.makeText(context, "检查更新失败，请稍后重试~"
                                     , Toast.LENGTH_SHORT).show()
 
-                            versionCode > it.versionCode -> updateApp(context, it)
+                            versionCode < it.versionCode -> updateApp(context, it)
 
                             else -> Toast.makeText(context, "已经是最新啦", Toast.LENGTH_SHORT).show()
                         }
-                    } else if (versionCode > it.versionCode) {
+                    } else if (versionCode < it.versionCode) {
                         updateApp(context, it)
                     }
 

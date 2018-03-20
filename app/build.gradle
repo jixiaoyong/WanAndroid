@@ -18,7 +18,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 26
         versionCode 2
-        versionName "0.2 beta"
+        versionName "1.0.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
     }
@@ -33,12 +33,19 @@ android {
 
     productFlavors {
         beta {}
+        baidu {}
+        zhushou91  {}
+        anzhi {}
+
     }
 
     productFlavors.all {
 
-        flavor -> flavor.manifestPlaceholders = [UMENG_CHANNEL_VALUE: name,APP_KEY:umenInfo['APP_KEY']]
+        flavor -> flavor.manifestPlaceholders = [UMENG_CHANNEL_VALUE: name
+                                                 ,APP_KEY:umenInfo['APP_KEY']
+                                                 ]
     }
+
 
     //解决flavor Dimensions问题  http://blog.csdn.net/syif88/article/details/75009663
     flavorDimensions "versionCode"
@@ -80,4 +87,6 @@ dependencies {
     //内存泄漏分析
 //    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.4'
 //    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
+
+    compile 'com.yanzhikai:TextPathView:0.1.1'
 }

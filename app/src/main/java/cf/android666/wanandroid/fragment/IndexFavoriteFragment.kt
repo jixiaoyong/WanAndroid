@@ -2,9 +2,7 @@ package cf.android666.wanandroid.fragment
 
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import cf.android666.mylibrary.view.SwitchStateLayout
 import cf.android666.wanandroid.R
@@ -27,7 +25,13 @@ class IndexFavoriteFragment : BaseFragment(), RefreshUiInterface {
 
     override fun refreshUi(event: EventInterface) {
 
-        view?.let { loadData(it) }
+        when (event) {
+            is EventFactory.LoginState -> {
+                mView!!.recycler_view.visibility = View.VISIBLE
+
+                if (event.value) view?.let { loadData(it) }
+            }
+        }
 
     }
 
@@ -37,57 +41,56 @@ class IndexFavoriteFragment : BaseFragment(), RefreshUiInterface {
 
     private var currentPage = 0
 
-    private var pageCount = 0
+    private var pageCount = 1
 
     override fun onCreateViewState(savedInstanceState: Bundle?) {
 
         mView!!.switch_state.showView(SwitchStateLayout.VIEW_EMPTY)
 
         mView!!.swipe_refresh.setOnRefreshListener {
-            mView!!.swipe_refresh.isRefreshing = true
 
-            loadData(mView!!)
+            var isLogin = SharePreference.getV<Boolean>(SharePreference.IS_LOGIN, false)
+
+            if (!isLogin) {
+
+                Toast.makeText(context, "先请登录", Toast.LENGTH_SHORT).show()
+
+            } else {
+                mView!!.swipe_refresh.isRefreshing = true
+
+                loadData(mView!!)
+            }
+
         }
 
-        var isLogin = SharePreference.getV<Boolean>(SharePreference.IS_LOGIN, false)
 
-        if (isLogin) {
+        mView!!.recycler_view.layoutManager = LinearLayoutManager(context,
+                LinearLayoutManager.VERTICAL, false)
 
-            mView!!.recycler_view.layoutManager = LinearLayoutManager(context,
-                    LinearLayoutManager.VERTICAL, false)
+        mView!!.recycler_view.adapter = PostArticleAdapter(mData,
+                true,
+                {
 
-            mView!!.recycler_view.adapter = PostArticleAdapter(mData,
-                    true,
-                    {
+                    SuperUtil.startActivity(context, ContentActivity::class.java, it)
 
-                        SuperUtil.startActivity(context, ContentActivity::class.java, it)
+                }, { it, position ->
 
-                    }, { it, position ->
+            it.isSelected = false
 
-                it.isSelected = false
+            unCollectPost(mData[position].id)
 
-                unCollectPost(mData[position].id)
+            mData.removeAt(position)
 
-                mData.removeAt(position)
+            mView!!.recycler_view.adapter.notifyDataSetChanged()
 
-                mView!!.recycler_view.adapter.notifyDataSetChanged()
+        })
 
-            })
-
-
-            mView!!.recycler_view.visibility = View.VISIBLE
-
-        } else {
-
-            mView!!.recycler_view.visibility = View.GONE
-
-            Toast.makeText(context, "请登录", Toast.LENGTH_SHORT).show()
-        }
-
+        mView!!.switch_state.showView(SwitchStateLayout.VIEW_EMPTY)
 
         mView!!.recycler_view.setOnFootListener {
 
-            if (currentPage < pageCount) {
+            if (currentPage <= pageCount) {
+
                 loadData(mView!!, ++currentPage)
             }
         }
@@ -155,7 +158,10 @@ class IndexFavoriteFragment : BaseFragment(), RefreshUiInterface {
                     } else {
 
                         if (it.data.datas.size == 0) {
+
                             mView!!.switch_state.showView(SwitchStateLayout.VIEW_EMPTY)
+
+                            return@subscribe
 
                         }
 

@@ -27,12 +27,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
         <activity android:name=".MainActivity"
-            android:windowSoftInputMode="adjustPan">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            android:windowSoftInputMode="adjustPan"
+            android:launchMode="singleTask">
 
             <meta-data android:name="android.app.default_searchable"
                 android:value=".activity.SearchActivity"/>
@@ -40,7 +36,7 @@
         <activity android:name=".activity.ContentActivity"/>
         <activity android:name=".activity.SearchActivity"
             android:parentActivityName=".MainActivity"
-            android:launchMode="singleTask">
+            android:launchMode="singleInstance">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
@@ -54,7 +50,13 @@
 
         </activity>
         <activity android:name=".activity.SettingActivity" />
-        <activity android:name=".activity.LoginActivity" />
+        <activity android:name=".activity.LoginActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <!--友盟初始化appkey和channel-->
         <meta-data android:value="${APP_KEY}" android:name="UMENG_APPKEY"/>

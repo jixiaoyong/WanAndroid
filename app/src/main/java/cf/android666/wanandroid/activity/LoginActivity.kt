@@ -1,8 +1,13 @@
 package cf.android666.wanandroid.activity
 
+import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
+import android.view.Window
+import android.view.WindowManager
 import android.widget.Toast
+import cf.android666.mylibrary.view.SwitchStateLayout
 import cf.android666.wanandroid.R
 import cf.android666.wanandroid.api.cookie.CookieTools
 import cf.android666.wanandroid.base.BaseActivity
@@ -13,6 +18,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_login.*
 import org.greenrobot.eventbus.EventBus
+import cf.android666.wanandroid.MainActivity
+
 
 /**
  * Created by jixiaoyong on 2018/3/12.
@@ -23,9 +30,25 @@ class LoginActivity: BaseActivity(){
     private var isSaveNamePwd = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_login)
+
+        var isLogin = SharePreference.getV<Boolean>(SharePreference.IS_LOGIN, false)
+
+        if (isLogin) {
+
+            login_box.visibility = View.GONE
+
+            go2MainActivity()
+
+        }
+
+
+        skip.setOnClickListener {
+            go2MainActivity()
+        }
 
         register.setOnCheckedChangeListener{
 
@@ -128,7 +151,7 @@ class LoginActivity: BaseActivity(){
 
             Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
 
-            finish()
+            go2MainActivity()
 
         }
     }
@@ -156,6 +179,12 @@ class LoginActivity: BaseActivity(){
 
         return r.matches(userPwd)
 
+    }
+
+    private fun go2MainActivity() {
+        switch_state.showView(SwitchStateLayout.VIEW_LOADING)
+        startActivity(Intent(this, MainActivity::class.java))
+        finish()
     }
 
 
