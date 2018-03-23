@@ -35,12 +35,12 @@ class ContentActivity : BaseActivity() {
 
         switch_state.showView(SwitchStateLayout.VIEW_EMPTY)
 
-        SuperUtil.loadUrl(web_view,intent.getStringExtra("url"))
+        SuperUtil.loadUrl(web_view, intent.getStringExtra("url"))
 
         web_view.settings.setSupportZoom(true)
         web_view.settings.builtInZoomControls = true
 
-        web_view.webViewClient = object : WebViewClient(){
+        web_view.webViewClient = object : WebViewClient() {
 
             override fun onReceivedError(view: WebView?, request: WebResourceRequest?, error: WebResourceError?) {
                 super.onReceivedError(view, request, error)
@@ -56,7 +56,7 @@ class ContentActivity : BaseActivity() {
                 super.onPageFinished(view, url)
                 switch_state.showContentView()
                 webTitle = view!!.title
-                toolbar.title =  view!!.title
+                toolbar.title = view!!.title
             }
 
             override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
@@ -66,11 +66,10 @@ class ContentActivity : BaseActivity() {
         }
 
 
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-       menuInflater.inflate(R.menu.menu_content, menu)
+        menuInflater.inflate(R.menu.menu_content, menu)
         return true
     }
 
@@ -83,7 +82,7 @@ class ContentActivity : BaseActivity() {
             R.id.open_sys ->
                 startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(intent.getStringExtra("url"))))
 
-            R.id.share ->{
+            R.id.share -> {
                 var share_intent = Intent()
 
                 share_intent.action = Intent.ACTION_SEND

@@ -27,7 +27,12 @@ class IndexPostFragment : BaseFragment(), RefreshUiInterface {
 
     override fun refreshUi(event: EventInterface) {
 
-        downloadData()
+        when (event) {
+            is EventFactory.LoginState -> {
+                downloadData()
+            }
+        }
+
         downloadBanner(mView!!.banner)
 
     }

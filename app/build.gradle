@@ -85,8 +85,8 @@ dependencies {
     implementation project(':mylibrary')
 
     //内存泄漏分析
-//    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.4'
-//    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.4'
+    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
 
     compile 'com.yanzhikai:TextPathView:0.1.1'
 }

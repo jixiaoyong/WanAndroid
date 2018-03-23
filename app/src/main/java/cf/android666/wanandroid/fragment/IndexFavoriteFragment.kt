@@ -13,8 +13,10 @@ import cf.android666.wanandroid.base.BaseFragment
 import cf.android666.wanandroid.bean.BaseArticlesBean
 import cf.android666.wanandroid.api.cookie.CookieTools
 import cf.android666.wanandroid.utils.*
+import com.orhanobut.logger.Logger
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import kotlinx.android.synthetic.main.fragment_index_favorite.*
 import kotlinx.android.synthetic.main.fragment_index_favorite.view.*
 import org.greenrobot.eventbus.EventBus
 
@@ -26,10 +28,24 @@ class IndexFavoriteFragment : BaseFragment(), RefreshUiInterface {
     override fun refreshUi(event: EventInterface) {
 
         when (event) {
-            is EventFactory.LoginState -> {
-                mView!!.recycler_view.visibility = View.VISIBLE
 
-                if (event.value) view?.let { loadData(it) }
+            is EventFactory.LoginState -> {
+
+                if (event.value) {
+
+                    mView!!.recycler_view.visibility = View.VISIBLE
+
+                    switch_state.showView(SwitchStateLayout.VIEW_LOADING)
+
+                    if (event.value) view?.let { loadData(it) }
+                } else {
+                    mView!!.recycler_view.visibility = View.GONE
+
+                    mData.clear()
+
+                    switch_state.showView(SwitchStateLayout.VIEW_EMPTY)
+                }
+
             }
         }
 

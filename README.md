@@ -15,7 +15,7 @@
 
 # 下载体验
 
-beta版本现已放出，欢迎体验。
+1.0版本现已放出，欢迎体验。
 
 点击下载 [WanAndroid 0.1-beta.apk](https://raw.githubusercontent.com/jixiaoyong/Notes-Files/master/download/apk/WanAndroid.apk)
 
@@ -88,7 +88,7 @@ GIF预览：
 
 # 更新日志
 
-
+2018-03-20 发布正式版 1.0
 
 2018-03-14 发布测试版本 0.1 beta
 
@@ -107,9 +107,10 @@ GIF预览：
 * com.squareup.retrofit2:adapter-rxjava2 2.3.0
 * com.squareup.retrofit2:retrofit 2.3.0
 * com.squareup.retrofit2:converter-gson 2.1.0
-* com.github.pinguo-zhouwei:MZBannerView ``2.0.0
+* com.github.pinguo-zhouwei:MZBannerView 2.0.0
 * com.squareup.okhttp3:logging-interceptor 3.6.0
 * org.greenrobot:eventbus 3.1.1
+* com.yanzhikai:TextPathView:0.1.1
 * [WanAndroidClient](https://github.com/wangzailfm/WanAndroidClient) 使用了他的登录模块
 
 此外，应用中部分图标来自[Iconfont-阿里巴巴矢量图标库](http://www.iconfont.cn/)

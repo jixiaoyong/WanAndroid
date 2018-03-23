@@ -9,10 +9,12 @@ import com.orhanobut.logger.AndroidLogAdapter
 import com.orhanobut.logger.Logger
 import com.umeng.analytics.MobclickAgent
 import com.umeng.commonsdk.UMConfigure
+import com.squareup.leakcanary.LeakCanary
 
 /**
  * Created by jixiaoyong on 2018/2/28.
  */
+
 class BaseApplication:Application(){
 
     override fun onCreate() {
@@ -25,7 +27,8 @@ class BaseApplication:Application(){
 //            // You should not init your app in this process.
 //            return;
 //        }
-//        LeakCanary.install(this)
+
+        LeakCanary.install(this)
 
         Logger.addLogAdapter(AndroidLogAdapter())
 

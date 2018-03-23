@@ -101,7 +101,7 @@ class AboutFragment : BaseFragment() ,RefreshUiInterface{
 
                     dialog.dismiss()
 
-                    EventBus.getDefault().post(EventFactory.NightMode(true))
+                    EventBus.getDefault().postSticky(EventFactory.LoginState(false,""))
 
                     Toast.makeText(context, "注销成功", Toast.LENGTH_SHORT).show()
 
