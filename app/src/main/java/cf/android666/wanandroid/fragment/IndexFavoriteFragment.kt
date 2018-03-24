@@ -67,12 +67,15 @@ class IndexFavoriteFragment : BaseFragment(), RefreshUiInterface {
 
             var isLogin = SharePreference.getV<Boolean>(SharePreference.IS_LOGIN, false)
 
+            mView?.swipe_refresh?.isRefreshing = isLogin
+
             if (!isLogin) {
 
                 Toast.makeText(context, "先请登录", Toast.LENGTH_SHORT).show()
 
+                switch_state.showView(SwitchStateLayout.VIEW_EMPTY)
+
             } else {
-                mView!!.swipe_refresh.isRefreshing = true
 
                 loadData(mView!!)
             }

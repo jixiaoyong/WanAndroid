@@ -15,6 +15,12 @@ android {
 
     }
 
+    lintOptions{
+        //停止lint在build时检查
+        abortOnError false
+    }
+
+
     buildTypes {
         release {
             minifyEnabled false

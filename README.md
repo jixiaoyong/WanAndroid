@@ -17,7 +17,7 @@
 
 1.0版本现已放出，欢迎体验。
 
-点击下载 [WanAndroid 0.1-beta.apk](https://raw.githubusercontent.com/jixiaoyong/Notes-Files/master/download/apk/WanAndroid.apk)
+点击下载 [WanAndroid 1.0 .apk](https://raw.githubusercontent.com/jixiaoyong/Notes-Files/master/download/apk/WanAndroid.apk)
 
 扫描二维码下载
 
@@ -32,6 +32,12 @@ GIF预览：
 ![WanAndroid Show](https://github.com/jixiaoyong/WanAndroid/blob/master/images/WanAndroidShow.gif?raw=true)
 
 
+
+静态图片：
+
+
+
+![WanAndroid Login](https://github.com/jixiaoyong/WanAndroid/blob/master/images/WanAndroidLogin.png?raw=true)
 
 
 
@@ -50,10 +56,6 @@ GIF预览：
 ![](https://github.com/jixiaoyong/WanAndroid/blob/master/images/WanAndroidDiscoverNavi.png?raw=true)
 
 ![WanAndroid Search](https://github.com/jixiaoyong/WanAndroid/blob/master/images/WanAndroidSearch.png?raw=true)
-
-
-
-
 
 
 
@@ -111,9 +113,9 @@ GIF预览：
 * com.squareup.okhttp3:logging-interceptor 3.6.0
 * org.greenrobot:eventbus 3.1.1
 * com.yanzhikai:TextPathView:0.1.1
-* [WanAndroidClient](https://github.com/wangzailfm/WanAndroidClient) 使用了他的登录模块
+* [WanAndroidClient](https://github.com/wangzailfm/WanAndroidClient) 使用了他的登录保存cookie模块
 
-此外，应用中部分图标来自[Iconfont-阿里巴巴矢量图标库](http://www.iconfont.cn/)
+此外，此应用请求的数据来自[WanAndroid.com](http://wanandroid.com/) ,应用中部分图标来自[Iconfont-阿里巴巴矢量图标库](http://www.iconfont.cn/).
 
 感谢以上开源作者和机构，致敬！
 

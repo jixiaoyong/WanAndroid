@@ -18,14 +18,17 @@ public class TempTools {
 
     public static void setBanner(List<IndexBannerBean.DataBean> data, MZBannerView mMZBannerView){
 
-        mMZBannerView.setPages(data, new MZHolderCreator<BannerViewHolder>() {
-            @Override
-            public BannerViewHolder createViewHolder() {
-                return new BannerViewHolder();
-            }
-        });
+        mMZBannerView.setPages(data, new MViewHolder());
 
         mMZBannerView.start();
 
     }
+
+    static class MViewHolder implements MZHolderCreator<BannerViewHolder> {
+        @Override
+        public BannerViewHolder createViewHolder() {
+            return new BannerViewHolder();
+        }
+    }
+
 }

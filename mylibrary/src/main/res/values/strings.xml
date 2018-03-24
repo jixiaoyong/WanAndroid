@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">My Library</string>
+    <string name="noting">咦...这里啥也没有?\n1.检查网络\n2.登录试试</string>
 </resources>
