@@ -3,6 +3,7 @@ package cf.android666.wanandroid.fragment
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.View
 import android.widget.Toast
 import cf.android666.mylibrary.view.SwitchStateLayout
 import cf.android666.wanandroid.R
@@ -13,6 +14,8 @@ import cf.android666.wanandroid.base.BaseFragment
 import cf.android666.wanandroid.bean.BaseArticlesBean
 import cf.android666.wanandroid.api.cookie.CookieTools
 import cf.android666.wanandroid.utils.*
+import com.orhanobut.logger.AndroidLogAdapter
+import com.orhanobut.logger.Logger
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_index_post.view.*
@@ -99,9 +102,13 @@ class IndexPostFragment : BaseFragment(), RefreshUiInterface {
             }
 
             override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
 
                 var lastPosition = (recyclerView!!.layoutManager as LinearLayoutManager)
                         .findLastVisibleItemPosition()
+
+                Logger.addLogAdapter(AndroidLogAdapter())
+                Logger.wtf("dx is $dx dy is $dy")
 
                 if (lastPosition > childCount - 2 && currentPage < pageCount) {
 
@@ -109,9 +116,15 @@ class IndexPostFragment : BaseFragment(), RefreshUiInterface {
 
                 }
 
-                super.onScrolled(recyclerView, dx, dy)
             }
         })
+
+//        mView!!.recycler_view.setOnScrollChangeListener(object :View.OnScrollChangeListener{
+//            override fun onScrollChange(v: View?, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int) {
+//
+//            }
+//
+//        })
 
         mView!!.swipe_refresh.setOnRefreshListener {
 //            lazyLoadData()
@@ -173,6 +186,7 @@ class IndexPostFragment : BaseFragment(), RefreshUiInterface {
 
                         EventBus.getDefault().post(EventFactory.CollectState(postId))
                     }
+                    mView!!.switch_state.showContentView()
                 }, {
 
                     mView!!.switch_state.showView(SwitchStateLayout.VIEW_ERROR)
@@ -191,6 +205,8 @@ class IndexPostFragment : BaseFragment(), RefreshUiInterface {
     }
 
     private fun downloadData(page: Int) {
+
+        mView!!.switch_state.showView(SwitchStateLayout.VIEW_LOADING)
 
         val observable = CookieTools.getCookieService()!!.getArticles(page)
 

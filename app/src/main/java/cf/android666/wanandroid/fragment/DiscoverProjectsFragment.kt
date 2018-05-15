@@ -133,7 +133,7 @@ class DiscoverProjectsFragment() : BaseFragment() {
                 .getProjectItems(page, cid)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
+                .subscribe ({
 
                     when (page) {
 
@@ -153,7 +153,11 @@ class DiscoverProjectsFragment() : BaseFragment() {
 
                     view!!.swipe_refresh.isRefreshing = false
 
-                }
+                }, {
+                    mView!!.switch_state.showView(SwitchStateLayout.VIEW_ERROR)
+                }, {
+                    mView!!.switch_state.showContentView()
+                })
 
     }
 

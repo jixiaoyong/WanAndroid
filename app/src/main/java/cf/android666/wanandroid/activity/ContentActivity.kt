@@ -5,13 +5,13 @@ import android.view.Menu
 import android.view.MenuItem
 import cf.android666.wanandroid.R
 import cf.android666.wanandroid.utils.SuperUtil
-import kotlinx.android.synthetic.main.activity_content.*
 import cf.android666.wanandroid.base.BaseActivity
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.webkit.*
 import cf.android666.mylibrary.view.SwitchStateLayout
+import kotlinx.android.synthetic.main.activity_content.*
 
 
 /**

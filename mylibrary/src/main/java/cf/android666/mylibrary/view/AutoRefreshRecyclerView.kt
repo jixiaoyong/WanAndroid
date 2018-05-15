@@ -6,7 +6,6 @@ import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.StaggeredGridLayoutManager
 import android.util.AttributeSet
 import android.view.MotionEvent
-import com.orhanobut.logger.Logger
 
 /**
  * Created by jixiaoyong on 2018/3/13.
@@ -54,7 +53,9 @@ class AutoRefreshRecyclerView(context: Context, attributeSet: AttributeSet?, def
         }
 
 
-        if (dy < 0 && lastPosition > childCount - 2 && onFootListener!=null) {
+        if (dy < 0 && lastPosition > childCount - 2
+                && onFootListener!=null) {
+
             onFootListener!!.invoke()
 
         }
@@ -63,6 +64,11 @@ class AutoRefreshRecyclerView(context: Context, attributeSet: AttributeSet?, def
 
     fun setOnFootListener(listener:( () -> Unit) ){
         onFootListener = listener
+    }
+
+    override fun onScrolled(dx: Int, dy: Int) {
+        super.onScrolled(dx, dy)
+
     }
 
 }
