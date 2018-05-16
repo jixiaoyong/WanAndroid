@@ -38,10 +38,6 @@ android {
 
     productFlavors {
         beta {}
-        baidu {}
-        zhushou91  {}
-        anzhi {}
-
     }
 
     productFlavors.all {

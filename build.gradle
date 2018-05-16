@@ -4,6 +4,7 @@ buildscript {
     ext.kotlin_version = '1.2.30'
 //    ext.kotlin_version = '1.2.21'
     repositories {
+        maven {url'http://maven.aliyun.com/nexus/content/groups/public/'}
         google()
         jcenter()
         maven { url 'https://jitpack.io' }//for MZBannerView,PersistentCookieJar
@@ -19,6 +20,7 @@ buildscript {
 
 allprojects {
     repositories {
+        maven {url'http://maven.aliyun.com/nexus/content/groups/public/'}
         google()
         jcenter()
         maven { url 'https://jitpack.io' }
