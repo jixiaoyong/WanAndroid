@@ -1,8 +1,10 @@
 package cf.android666.wanandroid.activity
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
@@ -29,11 +31,15 @@ class LoginActivity: BaseActivity(){
 
     private var isSaveNamePwd = false
 
+    private lateinit var context:Context
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_login)
+
+        context = this
 
         var isLogin = SharePreference.getV<Boolean>(SharePreference.IS_LOGIN, false)
 
@@ -115,9 +121,11 @@ class LoginActivity: BaseActivity(){
                 .login(userName,userPwd)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
-                    updateLoginState(it, userName,"登录成功")
-                }
+                .subscribe({
+                        updateLoginState(it, userName,"登录成功")
+                },{
+                    Toast("登录失败，请检查账号/密码或者网络")
+                })
 
     }
 
@@ -129,9 +137,11 @@ class LoginActivity: BaseActivity(){
                 .register(username, password1, password2)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
+                .subscribe ({
                     updateLoginState(it, username,"注册成功")
-                }
+                },{
+                    Toast("登录失败，请检查账号/密码或者网络")
+                })
 
     }
 
@@ -155,6 +165,11 @@ class LoginActivity: BaseActivity(){
 
         }
     }
+
+    private fun Toast(msg: String) {
+        Toast.makeText(context,msg,Toast.LENGTH_SHORT).show()
+    }
+
 
     private fun saveNamePwd(userName: String, userPwd: String) {
         if (isSaveNamePwd) {
