@@ -17,9 +17,9 @@
 
 **提示：该链接指向的apk版本可能滞后于开发版本，为更好体验请直接下载源码编译，谢谢。**
 
-1.0版本现已放出，欢迎体验。
+1.1.0版本现已放出，欢迎体验。
 
-点击下载 [WanAndroid 1.0 .apk](https://raw.githubusercontent.com/jixiaoyong/Notes-Files/master/download/apk/WanAndroid.apk)
+点击下载 [WanAndroid 1.1.0 .apk](https://raw.githubusercontent.com/jixiaoyong/Notes-Files/master/downloa/apk/WanAndroid.apk)
 
 扫描二维码下载
 

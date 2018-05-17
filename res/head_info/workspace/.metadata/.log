@@ -1,0 +1,35 @@
+!SESSION 2018-03-18 19:44:51.754 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.8.0_131
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=zh_CN
+Framework arguments:  D:\Develop\AndroidProjects\WanAndroid\res\head_info\head20180318.hprof
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 D:\Develop\AndroidProjects\WanAndroid\res\head_info\head20180318.hprof
+
+!ENTRY org.eclipse.mat.ui 4 0 2018-03-18 19:45:04.403
+!MESSAGE Error opening heap dump 'head20180318.hprof'. Check the error log for further details.
+!STACK 0
+org.eclipse.mat.SnapshotException: Error opening heap dump 'head20180318.hprof'. Check the error log for further details.
+	at org.eclipse.mat.parser.internal.SnapshotFactoryImpl.parse(SnapshotFactoryImpl.java:268)
+	at org.eclipse.mat.parser.internal.SnapshotFactoryImpl.openSnapshot(SnapshotFactoryImpl.java:126)
+	at org.eclipse.mat.snapshot.SnapshotFactory.openSnapshot(SnapshotFactory.java:145)
+	at org.eclipse.mat.ui.snapshot.ParseHeapDumpJob.run(ParseHeapDumpJob.java:83)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:55)
+Caused by: java.io.IOException: Unknown HPROF Version (JAVA PROFILE 1.0.3)
+	at org.eclipse.mat.hprof.AbstractParser.readVersion(AbstractParser.java:132)
+	at org.eclipse.mat.hprof.Pass1Parser.read(Pass1Parser.java:84)
+	at org.eclipse.mat.hprof.HprofIndexBuilder.fill(HprofIndexBuilder.java:80)
+	at org.eclipse.mat.parser.internal.SnapshotFactoryImpl.parse(SnapshotFactoryImpl.java:222)
+	... 4 more
+!SUBENTRY 1 org.eclipse.mat.ui 4 0 2018-03-18 19:45:04.408
+!MESSAGE Unknown HPROF Version (JAVA PROFILE 1.0.3) (java.io.IOException)
+!STACK 0
+java.io.IOException: Unknown HPROF Version (JAVA PROFILE 1.0.3)
+	at org.eclipse.mat.hprof.AbstractParser.readVersion(AbstractParser.java:132)
+	at org.eclipse.mat.hprof.Pass1Parser.read(Pass1Parser.java:84)
+	at org.eclipse.mat.hprof.HprofIndexBuilder.fill(HprofIndexBuilder.java:80)
+	at org.eclipse.mat.parser.internal.SnapshotFactoryImpl.parse(SnapshotFactoryImpl.java:222)
+	at org.eclipse.mat.parser.internal.SnapshotFactoryImpl.openSnapshot(SnapshotFactoryImpl.java:126)
+	at org.eclipse.mat.snapshot.SnapshotFactory.openSnapshot(SnapshotFactory.java:145)
+	at org.eclipse.mat.ui.snapshot.ParseHeapDumpJob.run(ParseHeapDumpJob.java:83)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:55)
