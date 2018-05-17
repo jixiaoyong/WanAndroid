@@ -5,6 +5,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.StaggeredGridLayoutManager
 import android.util.AttributeSet
+import android.util.Log
 import android.view.MotionEvent
 
 /**
@@ -64,6 +65,7 @@ class AutoRefreshRecyclerView(context: Context, attributeSet: AttributeSet?, def
 
     fun setOnFootListener(listener:( () -> Unit) ){
         onFootListener = listener
+        Log.d("TAG","on foot recycler...")
     }
 
     override fun onScrolled(dx: Int, dy: Int) {

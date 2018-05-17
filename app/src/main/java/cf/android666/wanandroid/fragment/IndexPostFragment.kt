@@ -1,6 +1,7 @@
 package cf.android666.wanandroid.fragment
 
 import android.os.Bundle
+import android.support.v4.widget.NestedScrollView
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
@@ -86,48 +87,22 @@ class IndexPostFragment : BaseFragment(), RefreshUiInterface {
 
         })
 
-        //onTouchEvent事件被NestedScrollView拦截，故而不起作用
-        mView!!.recycler_view.setOnFootListener {
+        val recyclerView = mView!!.recycler_view
+        mView!!.nested_scrollview.setOnScrollChangeListener { v: NestedScrollView?,
+                                                              scrollX: Int, scrollY: Int,
+                                                              oldScrollX: Int, oldScrollY: Int ->
 
-            if (currentPage < pageCount) {
+            if ((scrollY - oldScrollY) > 0
+                    && (scrollY + v!!.measuredHeight) == mView!!.switch_state.measuredHeight
+                    && recyclerView.scrollState == RecyclerView.SCROLL_STATE_IDLE) {
 
                 downloadData(++currentPage)
 
             }
         }
 
-        mView!!.recycler_view.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-            }
-
-            override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-
-                var lastPosition = (recyclerView!!.layoutManager as LinearLayoutManager)
-                        .findLastVisibleItemPosition()
-
-                Logger.addLogAdapter(AndroidLogAdapter())
-                Logger.wtf("dx is $dx dy is $dy")
-
-                if (lastPosition > childCount - 2 && currentPage < pageCount) {
-
-                    downloadData(++currentPage)
-
-                }
-
-            }
-        })
-
-//        mView!!.recycler_view.setOnScrollChangeListener(object :View.OnScrollChangeListener{
-//            override fun onScrollChange(v: View?, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int) {
-//
-//            }
-//
-//        })
-
         mView!!.swipe_refresh.setOnRefreshListener {
-//            lazyLoadData()
+            //            lazyLoadData()
             downloadData()
             downloadBanner(mView!!.banner)
         }
@@ -250,7 +225,7 @@ class IndexPostFragment : BaseFragment(), RefreshUiInterface {
                 .getBanner()
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe( {
+                .subscribe({
 
                     TempTools.setBanner(it.data, mMZBanner)
 
