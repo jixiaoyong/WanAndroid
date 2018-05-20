@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="cf.android666.wanandroid">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <!--以下是友盟SDK需要的权限-->
     <!-- 必须的权限 -->
@@ -22,27 +22,33 @@
         android:name=".base.BaseApplication"
         android:allowBackup="true"
         android:icon="@drawable/wanandroid"
-        android:roundIcon="@drawable/wanandroid_round"
         android:label="@string/app_name"
+        android:roundIcon="@drawable/wanandroid_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".MainActivity"
-            android:windowSoftInputMode="adjustPan"
-            android:launchMode="singleTask">
+        <activity
+            android:name=".MainActivity"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustPan">
 
-            <meta-data android:name="android.app.default_searchable"
-                android:value=".activity.SearchActivity"/>
+            <meta-data
+                android:name="android.app.default_searchable"
+                android:value=".activity.SearchActivity" />
         </activity>
-        <activity android:name=".activity.ContentActivity"/>
-        <activity android:name=".activity.SearchActivity"
-            android:parentActivityName=".MainActivity"
-            android:launchMode="singleInstance">
+        <activity
+            android:name=".activity.ContentActivity"
+            android:launchMode="singleInstance" />
+        <activity
+            android:name=".activity.SearchActivity"
+            android:launchMode="singleInstance"
+            android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
 
-            <meta-data android:name="android.app.searchable"
-                android:resource="@xml/searchable"/>
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
 
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
@@ -50,7 +56,7 @@
 
         </activity>
         <activity android:name=".activity.SettingActivity" />
-        <activity android:name=".activity.LoginActivity" >
+        <activity android:name=".activity.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -59,8 +65,12 @@
         </activity>
 
         <!--友盟初始化appkey和channel-->
-        <meta-data android:value="${APP_KEY}" android:name="UMENG_APPKEY"/>
-        <meta-data android:name="UMENG_CHANNEL" android:value="${UMENG_CHANNEL_VALUE}" />
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="${APP_KEY}" />
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="${UMENG_CHANNEL_VALUE}" />
     </application>
 
 </manifest>

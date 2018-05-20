@@ -96,6 +96,7 @@ class IndexPostFragment : BaseFragment(), RefreshUiInterface {
                     && (scrollY + v!!.measuredHeight) == mView!!.switch_state.measuredHeight
                     && recyclerView.scrollState == RecyclerView.SCROLL_STATE_IDLE) {
 
+                Toast.makeText(context,"更新数据中...",Toast.LENGTH_SHORT).show()
                 downloadData(++currentPage)
 
             }
