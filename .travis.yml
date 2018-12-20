@@ -1,5 +1,7 @@
 language: android
 
+sudo: false         # 开启基于容器的Travis CI任务，让编译效率更高。
+
 android:   
   components:
   # Uncomment the lines below if you want to
@@ -21,8 +23,8 @@ android:
     
   # Specify at least one system image,     
   # if you need to run emulator(s) during your tests     
-  - sys-img-armeabi-v7a-android-26     
-  - sys-img-armeabi-v7a-android-17
+  # - sys-img-armeabi-v7a-android-26     
+  # - sys-img-armeabi-v7a-android-17
   
   licenses:
     - 'android-sdk-preview-license-52d11cd2'
@@ -32,3 +34,5 @@ android:
     
 before_install:
      - chmod +x gradlew
+script:              # 执行:下面的命令
+  - ./gradlew assembleRelease  
