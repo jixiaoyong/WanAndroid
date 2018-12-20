@@ -1,8 +1,8 @@
-# WanAndroid
+# WanAndroid  
 
+[![Build Status](https://www.travis-ci.org/jixiaoyong/WanAndroid.svg?branch=master)](https://www.travis-ci.org/jixiaoyong/WanAndroid)
 
 ![WanAndroid Logo](https://github.com/jixiaoyong/WanAndroid/blob/master/images/WanAndroidLogo.png?raw=true)
-
 
 
 一个用kotlin语言编写的www.wanandroid.com的客户端，支持Android 5.0及以上版本。
