@@ -6,9 +6,20 @@ apply plugin: 'kotlin-android-extensions'
 
 def localPropFile = rootProject.file("local.properties")
 def localProp = new Properties()
-localProp.load(new FileInputStream(localPropFile))
+def hasLocalProp = (rootProject.file('local.properties') != null)
+def BUGLY_APP_KEY = ""
+def UMENG_APP_KEY = ""
+if (hasLocalProp) {
+    localProp.load(new FileInputStream(localPropFile))
+    BUGLY_APP_KEY = localProp['BUGLY_APP_KEY']
+    UMENG_APP_KEY = localProp['UMENG_APP_KEY']
+} else {
+    BUGLY_APP_KEY = System.getenv("BUGLY_APP_KEY")
+    UMENG_APP_KEY = System.getenv("UMENG_APP_KEY")
+}
 
-def  releaseTime(){
+
+def releaseTime() {
     return new Date(System.currentTimeMillis()).format("yyyyMMdd")
 }
 
@@ -20,8 +31,7 @@ android {
         applicationId "cf.android666.wanandroid"
         minSdkVersion 21
         targetSdkVersion 26
-//        versionCode Integer.parseInt(releaseTime())
-        versionCode 3
+        versionCode Integer.parseInt(releaseTime())
         versionName "1.1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         ndk {
@@ -44,7 +54,7 @@ android {
 
     productFlavors {
         beta {
-            buildConfigField "String", "BUGLY_APP_KEY", "\"${localProp['BUGLY_APP_KEY']}\""
+            buildConfigField "String", "BUGLY_APP_KEY", "\"$BUGLY_APP_KEY\""
         }
     }
 
@@ -52,7 +62,7 @@ android {
 
         flavor ->
             flavor.manifestPlaceholders = [UMENG_CHANNEL_VALUE: name
-                                           , APP_KEY          : localProp['UMENG_APP_KEY']
+                                           , APP_KEY          : UMENG_APP_KEY
             ]
     }
 
@@ -95,7 +105,8 @@ dependencies {
 
     //腾讯bugly
 //    implementation 'com.tencent.bugly:crashreport:latest.release'
-    implementation 'com.tencent.bugly:crashreport_upgrade:latest.release'//其中latest.release指代最新版本号，也可以指定明确的版本号，例如1.2.0
+    implementation 'com.tencent.bugly:crashreport_upgrade:latest.release'
+//其中latest.release指代最新版本号，也可以指定明确的版本号，例如1.2.0
     implementation 'com.tencent.bugly:nativecrashreport:latest.release'
 
     //内存泄漏分析
