@@ -6,7 +6,7 @@ apply plugin: 'kotlin-android-extensions'
 
 def localPropFile = rootProject.file("local.properties")
 def localProp = new Properties()
-def hasLocalProp = (rootProject.file('local.properties') != null)
+def hasLocalProp = (localPropFile.exists())
 def BUGLY_APP_KEY = ""
 def UMENG_APP_KEY = ""
 if (hasLocalProp) {
