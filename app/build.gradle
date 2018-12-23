@@ -4,50 +4,57 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
-def umenInfoFile = rootProject.file("umen_info.properties")
+def localPropFile = rootProject.file("local.properties")
+def localProp = new Properties()
+localProp.load(new FileInputStream(localPropFile))
 
-def umenInfo = new Properties()
-
-umenInfo.load(new FileInputStream(umenInfoFile))
+def  releaseTime(){
+    return new Date(System.currentTimeMillis()).format("yyyyMMdd")
+}
 
 android {
     compileSdkVersion 26
-    buildToolsVersion '27.0.3'
+    buildToolsVersion '28.0.3'
 
     defaultConfig {
         applicationId "cf.android666.wanandroid"
         minSdkVersion 21
         targetSdkVersion 26
+//        versionCode Integer.parseInt(releaseTime())
         versionCode 3
         versionName "1.1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
+        ndk {
+            //腾讯bugly 设置支持的SO库架构
+            abiFilters 'armeabi' //, 'x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a'
+        }
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
-
         }
     }
 
-    lintOptions{
+    lintOptions {
         //停止lint在build时检查
         abortOnError false
     }
 
     productFlavors {
-        beta {}
+        beta {
+            buildConfigField "String", "BUGLY_APP_KEY", "\"${localProp['BUGLY_APP_KEY']}\""
+        }
     }
 
     productFlavors.all {
 
-        flavor -> flavor.manifestPlaceholders = [UMENG_CHANNEL_VALUE: name
-                                                 ,APP_KEY:umenInfo['APP_KEY']
-                                                 ]
+        flavor ->
+            flavor.manifestPlaceholders = [UMENG_CHANNEL_VALUE: name
+                                           , APP_KEY          : localProp['UMENG_APP_KEY']
+            ]
     }
-
 
     //解决flavor Dimensions问题  http://blog.csdn.net/syif88/article/details/75009663
     flavorDimensions "versionCode"
@@ -85,6 +92,11 @@ dependencies {
     implementation 'com.umeng.sdk:common:latest.integration'
     implementation 'com.umeng.sdk:analytics:latest.integration'
     implementation project(':mylibrary')
+
+    //腾讯bugly
+//    implementation 'com.tencent.bugly:crashreport:latest.release'
+    implementation 'com.tencent.bugly:crashreport_upgrade:latest.release'//其中latest.release指代最新版本号，也可以指定明确的版本号，例如1.2.0
+    implementation 'com.tencent.bugly:nativecrashreport:latest.release'
 
     //内存泄漏分析
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.4'

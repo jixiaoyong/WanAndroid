@@ -2,6 +2,7 @@ package cf.android666.wanandroid.base
 
 import android.app.Application
 import android.content.ComponentCallbacks2
+import cf.android666.wanandroid.BuildConfig
 import cf.android666.wanandroid.api.cookie.Preference
 import cf.android666.wanandroid.utils.SharePreference
 import com.bumptech.glide.Glide
@@ -10,6 +11,8 @@ import com.orhanobut.logger.Logger
 import com.umeng.analytics.MobclickAgent
 import com.umeng.commonsdk.UMConfigure
 import com.squareup.leakcanary.LeakCanary
+import com.tencent.bugly.Bugly
+import com.tencent.bugly.crashreport.CrashReport
 
 /**
  * Created by jixiaoyong on 2018/2/28.
@@ -59,6 +62,15 @@ class BaseApplication:Application(){
          * 参数：boolean 默认为false（不加密）
          */
         UMConfigure.setEncryptEnabled(false)
+
+        /**
+         * Bugly日志上报
+         */
+//        CrashReport.initCrashReport(applicationContext,BuildConfig.BUGLY_APP_KEY,false)
+        /**
+         * bugly update
+         */
+        Bugly.init(applicationContext, BuildConfig.BUGLY_APP_KEY, false)
 
         MobclickAgent.setScenarioType(applicationContext, MobclickAgent.EScenarioType. E_UM_NORMAL)
     }
