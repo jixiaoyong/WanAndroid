@@ -9,7 +9,7 @@
 
 本项目还在持续编写中。。。
 
-**我的邮箱: jixiaoyong1995@gmail.com ,有任何问题都可以email我或者在[issues](https://github.com/jixiaoyong/WanAndroid/issues) 提出。**
+**我的邮箱: aml4aWFveW9uZzE5OTVAZ21haWwuY29tCg== ,有任何问题都可以email我或者在[issues](https://github.com/jixiaoyong/WanAndroid/issues) 提出。**
 
 
 
@@ -123,7 +123,7 @@ GIF预览：
 
 
 
-**我的邮箱: jixiaoyong1995@gmail.com ,有任何问题都可以email我或者在[issues](https://github.com/jixiaoyong/WanAndroid/issues) 提出。**
+**我的邮箱: aml4aWFveW9uZzE5OTVAZ21haWwuY29tCg== ,有任何问题都可以email我或者在[issues](https://github.com/jixiaoyong/WanAndroid/issues) 提出。**
 
 
 
