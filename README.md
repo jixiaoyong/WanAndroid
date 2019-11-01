@@ -2,6 +2,8 @@
 
 [![Build Status](https://www.travis-ci.org/jixiaoyong/WanAndroid.svg?branch=master)](https://www.travis-ci.org/jixiaoyong/WanAndroid)
 
+![WanAndroid Action Badge](https://github.com/jixiaoyong/WanAndroid/workflows/Android%20CI/badge.svg)
+
 ![WanAndroid Logo](https://github.com/jixiaoyong/WanAndroid/blob/master/images/WanAndroidLogo.png?raw=true)
 
 
