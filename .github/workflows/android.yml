@@ -15,3 +15,6 @@ jobs:
         java-version: 1.8
     - name: Build with Gradle
       run: ./gradlew build
+      env:
+        BUGLY_APP_KEY: ${{ secrets.BUGLY_APP_KEY }} 
+        UMENG_APP_KEY: ${{ secrets.UMENG_APP_KEY }}  
