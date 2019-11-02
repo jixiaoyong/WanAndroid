@@ -7,6 +7,7 @@ import android.net.Uri
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Toast
+import cf.android666.wanandroid.R
 import cf.android666.wanandroid.api.UpdateService
 import cf.android666.wanandroid.bean.UpdateInfoBean
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -19,10 +20,6 @@ import retrofit2.converter.gson.GsonConverterFactory
  * Created by jixiaoyong on 2018/2/7.
  */
 object SuperUtil {
-
-    fun toast(context: Context, msg: String) {
-        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
-    }
 
     fun loadUrl(webView: WebView, url: String) {
 
@@ -62,20 +59,15 @@ object SuperUtil {
                     var versionCode = SharePreference.getV<Int>(SharePreference.VERSION_CODE, -1)
 
                     if (needToast) {
-
                         when {
-
-                            it.errorCode < 0 -> Toast.makeText(context, "检查更新失败，请稍后重试~"
+                            it.errorCode < 0 -> Toast.makeText(context, context.getString(R.string.tips_failed_to_check_upgrade)
                                     , Toast.LENGTH_SHORT).show()
-
                             versionCode < it.versionCode -> updateApp(context, it)
-
-                            else -> Toast.makeText(context, "已经是最新啦", Toast.LENGTH_SHORT).show()
+                            else -> Toast.makeText(context, context.getString(R.string.tips_alreadl_laster), Toast.LENGTH_SHORT).show()
                         }
                     } else if (versionCode < it.versionCode) {
                         updateApp(context, it)
                     }
-
 
                 }
 
@@ -85,21 +77,14 @@ object SuperUtil {
 
         AlertDialog.Builder(context)
                 .setMessage(it.summary)
-                .setTitle("更新程序")
-                .setPositiveButton("更新") { dialog, which ->
-
-                    var intent = Intent(Intent.ACTION_VIEW, Uri.parse(it.url))
-
+                .setTitle(context.getString(R.string.title_upgrade_app))
+                .setPositiveButton(context.getString(R.string.sure_upgrade)) { dialog, which ->
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(it.url))
                     intent.addCategory("android.intent.category.DEFAULT")
-
                     context.startActivity(intent)
-
                     dialog.dismiss()
-
-                }.setNegativeButton("取消") { dialog, which ->
-
+                }.setNegativeButton(context.getString(R.string.cancel_update)) { dialog, which ->
                     dialog.dismiss()
-
                 }.create().show()
 
     }

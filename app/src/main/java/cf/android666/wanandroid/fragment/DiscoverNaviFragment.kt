@@ -17,20 +17,14 @@ import kotlinx.android.synthetic.main.fragment_discover_tree.view.*
 class DiscoverNaviFragment : BaseFragment() {
 
     override var layoutId = R.layout.fragment_discover_tree
-
     private var mData: ArrayList<DiscoverNaviBean.DataBean> = arrayListOf()
 
     override fun onCreateViewState(savedInstanceState: Bundle?) {
-
         mView!!.switch_state.showView(SwitchStateLayout.VIEW_EMPTY)
-
-
     }
 
     override fun lazyLoadData() {
-
         mView!!.switch_state.showView(SwitchStateLayout.VIEW_LOADING)
-
         CookieTools.getCookieService()!!.getNavi()
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())

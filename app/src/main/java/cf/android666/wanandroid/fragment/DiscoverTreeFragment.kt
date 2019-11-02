@@ -19,7 +19,6 @@ class DiscoverTreeFragment : BaseFragment() {
 
     override fun onCreateViewState(savedInstanceState: Bundle?) {
         mView!!.switch_state.showView(SwitchStateLayout.VIEW_EMPTY)
-
         mView!!.expandable_layout.setAdapter(DiscoverTreeAdapter(requireContext(), mData))
     }
 
@@ -31,11 +30,8 @@ class DiscoverTreeFragment : BaseFragment() {
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-
                     mData.clear()
-
                     mData.addAll(it.data)
-
                     mView!!.expandable_layout.setAdapter(DiscoverTreeAdapter(requireContext(), mData))
                 }, {
                     mView!!.switch_state.showView(SwitchStateLayout.VIEW_ERROR)

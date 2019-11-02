@@ -8,11 +8,10 @@ import cf.android666.wanandroid.utils.SharePreference
 import com.bumptech.glide.Glide
 import com.orhanobut.logger.AndroidLogAdapter
 import com.orhanobut.logger.Logger
-import com.umeng.analytics.MobclickAgent
-import com.umeng.commonsdk.UMConfigure
 import com.squareup.leakcanary.LeakCanary
 import com.tencent.bugly.Bugly
-import com.tencent.bugly.crashreport.CrashReport
+import com.umeng.analytics.MobclickAgent
+import com.umeng.commonsdk.UMConfigure
 
 /**
  * Created by jixiaoyong on 2018/2/28.
@@ -21,8 +20,6 @@ import com.tencent.bugly.crashreport.CrashReport
 class BaseApplication:Application(){
 
     override fun onCreate() {
-
-
         super.onCreate()
 
 //        if (LeakCanary.isInAnalyzerProcess(this)) {
@@ -32,15 +29,10 @@ class BaseApplication:Application(){
 //        }
 
         LeakCanary.install(this)
-
         Logger.addLogAdapter(AndroidLogAdapter())
-
         Preference.setContext(applicationContext)
-
         SharePreference.setContext(this)
-
         val versionCode = applicationContext.packageManager.getPackageInfo(packageName, 0).versionCode
-
         SharePreference.saveKV(SharePreference.VERSION_CODE,versionCode)
 
         /**

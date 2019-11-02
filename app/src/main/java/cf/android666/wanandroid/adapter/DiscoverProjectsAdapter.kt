@@ -23,61 +23,42 @@ class DiscoverProjectsAdapter(private val context: DiscoverProjectsFragment,
     : RecyclerView.Adapter<DiscoverProjectsAdapter.MViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MViewHolder {
-
-        var view = LayoutInflater.from(parent!!.context)
+        val view = LayoutInflater.from(parent.context)
                 .inflate(R.layout.item_discover_projects, parent, false)
-
         return MViewHolder(view)
     }
 
     override fun getItemCount(): Int {
-
         return data.size
-
     }
 
     override fun onBindViewHolder(holder: MViewHolder, position: Int) {
-
-        holder!!.itemView.title.text = data[position].title
-
-        holder!!.itemView.summary.text = data[position].desc
-
-        holder!!.itemView.time.text = SimpleDateFormat("yyyy-MM-dd")
+        holder.itemView.title.text = data[position].title
+        holder.itemView.summary.text = data[position].desc
+        holder.itemView.time.text = SimpleDateFormat("yyyy-MM-dd")
                 .format(Date(data[position].publishTime))
+        holder.itemView.author.text = data[position].author
 
-        holder!!.itemView.author.text = data[position].author
-
-        var request = RequestOptions()
-                .placeholder(R.drawable.nothing)
-
-
-        val imgUtl = data[position].envelopePic
-
+        val request = RequestOptions().placeholder(R.drawable.nothing)
+        val imgUrl = data[position].envelopePic
         Glide.with(context)
-                .load(imgUtl)
+                .load(imgUrl)
                 .apply(request)
                 .into(holder.itemView.image)
 
-        holder!!.itemView.setOnClickListener {
-
-            itemListener!!.invoke(data[position].link!!)
+        holder.itemView.setOnClickListener {
+            itemListener.invoke(data[position].link)
         }
 
     }
 
 
-    class MViewHolder(view: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(view) {
-
+    class MViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         init {
-
-            var params: ViewGroup.LayoutParams = view.layoutParams
-
+            val params: ViewGroup.LayoutParams = view.layoutParams
             params.height = (Math.random() * 300 + 600).toInt()
-
             view.layoutParams = params
-
         }
-
     }
 
 }

@@ -7,13 +7,10 @@ import android.widget.BaseExpandableListAdapter
  * Created by jixiaoyong on 2018/3/15.
  * email:jixiaoyong1995@gmail.com
  */
-abstract class DisCoverBaseAdapter<T>(private val context: Context,
-                                      private val data: ArrayList<T>
-                                     )
+abstract class DisCoverBaseAdapter<T>(private val context: Context, private val data: ArrayList<T>)
     : BaseExpandableListAdapter() {
 
     override fun getGroup(groupPosition: Int): T {
-
         return (data[groupPosition])
     }
 

@@ -12,6 +12,7 @@ import cf.android666.wanandroid.activity.ContentActivity
 import cf.android666.wanandroid.adapter.PostArticleAdapter
 import cf.android666.wanandroid.api.cookie.CookieTools
 import cf.android666.wanandroid.base.BaseFragment
+import cf.android666.wanandroid.base.toast
 import cf.android666.wanandroid.bean.BaseArticlesBean
 import cf.android666.wanandroid.utils.*
 import com.zhouwei.mzbanner.MZBannerView
@@ -39,63 +40,40 @@ class IndexPostFragment : BaseFragment(), RefreshUiInterface {
     }
 
     override var layoutId = R.layout.fragment_index_post
-
     private var mData: ArrayList<BaseArticlesBean> = arrayListOf()
-
     private var currentPage = 0
-
     private var pageCount = 0
-
     private var childCount = 0
-
     var hasLoadData = false
 
     override fun onCreateViewState(savedInstanceState: Bundle?) {
-
         mView!!.switch_state.showView(SwitchStateLayout.VIEW_LOADING)
-
-        mView!!.recycler_view.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context,
-                androidx.recyclerview.widget.LinearLayoutManager.VERTICAL, false)
-
+        mView!!.recycler_view.layoutManager = LinearLayoutManager(context,
+                LinearLayoutManager.VERTICAL, false)
         mView!!.recycler_view.adapter = PostArticleAdapter(mData, false, {
-
             SuperUtil.startActivity(requireContext(), ContentActivity::class.java, it)
-
         }, { view, position ->
-
-            var isLogin = SharePreference.getV<Boolean>(SharePreference.IS_LOGIN, false)
-
+            val isLogin = SharePreference.getV<Boolean>(SharePreference.IS_LOGIN, false)
             if (isLogin) {
-
                 view.isSelected = !view.isSelected
-
             }
-
-            var postId = mData[position].id
-
+            val postId = mData[position].id
             if (view.isSelected) {
-
                 collectPost(postId)
-
             } else {
-
                 unCollectPost(postId)
             }
-
         })
 
         val recyclerView = mView!!.recycler_view
         mView!!.nested_scrollview.setOnScrollChangeListener { v: NestedScrollView?,
-                                                              scrollX: Int, scrollY: Int,
-                                                              oldScrollX: Int, oldScrollY: Int ->
-
+                                                              _: Int, scrollY: Int,
+                                                              _: Int, oldScrollY: Int ->
             if ((scrollY - oldScrollY) > 0
                     && (scrollY + v!!.measuredHeight) == mView!!.switch_state.measuredHeight
-                    && recyclerView.scrollState == androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE) {
-
-                Toast.makeText(context,"更新数据中...",Toast.LENGTH_SHORT).show()
+                    && recyclerView.scrollState == RecyclerView.SCROLL_STATE_IDLE) {
+                toast(getString(R.string.tips_update_data))
                 downloadData(++currentPage)
-
             }
         }
 
@@ -108,9 +86,7 @@ class IndexPostFragment : BaseFragment(), RefreshUiInterface {
     }
 
     override fun lazyLoadData() {
-
         if (!hasLoadData) {
-
             downloadData()
             downloadBanner(mView!!.banner)
             hasLoadData = true
@@ -128,18 +104,12 @@ class IndexPostFragment : BaseFragment(), RefreshUiInterface {
                         Toast.makeText(context, it.errorMsg, Toast.LENGTH_SHORT).show()
                     } else {
                         Toast.makeText(context, "取消收藏成功", Toast.LENGTH_SHORT).show()
-
                         EventBus.getDefault().post(EventFactory.CollectState(-postId))
-
                     }
-
                 }, {
-
                     mView!!.switch_state.showView(SwitchStateLayout.VIEW_ERROR)
-
                 }, {
                     mView!!.switch_state.showContentView()
-
                 }
 
                 )
@@ -156,14 +126,11 @@ class IndexPostFragment : BaseFragment(), RefreshUiInterface {
                         Toast.makeText(context, it.errorMsg, Toast.LENGTH_SHORT).show()
                     } else {
                         Toast.makeText(context, "收藏成功", Toast.LENGTH_SHORT).show()
-
                         EventBus.getDefault().post(EventFactory.CollectState(postId))
                     }
                     mView!!.switch_state.showContentView()
                 }, {
-
                     mView!!.switch_state.showView(SwitchStateLayout.VIEW_ERROR)
-
                 }, {
                     mView!!.switch_state.showContentView()
 
@@ -172,48 +139,33 @@ class IndexPostFragment : BaseFragment(), RefreshUiInterface {
     }
 
     private fun downloadData() {
-
         downloadData(0)
-
     }
 
     private fun downloadData(page: Int) {
-
         mView!!.switch_state.showView(SwitchStateLayout.VIEW_LOADING)
-
         val observable = CookieTools.getCookieService()!!.getArticles(page)
-
         observable.subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
 
                     when (page) {
-
                         0 -> {
                             mData.clear();mData.addAll(it.data.datas)
                         }
-
                         else -> mData.addAll(it.data.datas)
                     }
-
                     pageCount = it.data.pageCount
-
                     currentPage = it.data.curPage
-
                     if (view != null) {
-
                         view!!.recycler_view.adapter?.notifyDataSetChanged()
                         childCount = recycler_view.childCount
                     }
-
                     view?.swipe_refresh?.isRefreshing = false
                 }, {
-
                     mView!!.switch_state.showView(SwitchStateLayout.VIEW_ERROR)
-
                 }, {
                     mView!!.switch_state.showContentView()
-
                 })
     }
 
@@ -224,16 +176,11 @@ class IndexPostFragment : BaseFragment(), RefreshUiInterface {
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-
                     TempTools.setBanner(it.data, mMZBanner)
-
                 }, {
-
                     mView!!.switch_state.showView(SwitchStateLayout.VIEW_ERROR)
-
                 }, {
                     mView!!.switch_state.showContentView()
-
                 })
     }
 
