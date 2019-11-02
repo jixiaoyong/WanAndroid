@@ -4,13 +4,13 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <android.support.v7.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/nav_height"
         android:background="@color/colorBottomNav">
 
-    </android.support.v7.widget.Toolbar>
+    </androidx.appcompat.widget.Toolbar>
 
     <cf.android666.mylibrary.view.SwitchStateLayout
         android:id="@+id/switch_state"

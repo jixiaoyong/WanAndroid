@@ -1,12 +1,10 @@
 package cf.android666.wanandroid.base
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import cf.android666.wanandroid.R
 import cf.android666.wanandroid.utils.EventInterface
 import cf.android666.wanandroid.utils.SharePreference
-import com.squareup.leakcanary.LeakCanary
-
 import com.umeng.analytics.MobclickAgent
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe

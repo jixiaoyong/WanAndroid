@@ -1,16 +1,9 @@
 package cf.android666.wanandroid.fragment
 
 import android.os.Bundle
-import android.support.design.widget.TabItem
-import android.support.design.widget.TabLayout
-import android.support.v4.view.ViewPager
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import cf.android666.wanandroid.R
 import cf.android666.wanandroid.adapter.MFragmentViewPagerAdapter
 import cf.android666.wanandroid.base.BaseFragment
-import kotlinx.android.synthetic.main.fragment_index.*
 import kotlinx.android.synthetic.main.fragment_index.view.*
 
 /**

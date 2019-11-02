@@ -1,12 +1,10 @@
 package cf.android666.wanandroid.view
 
 import android.content.Context
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.StaggeredGridLayoutManager
 import android.util.AttributeSet
 import android.util.Log
 import android.view.MotionEvent
+import androidx.recyclerview.widget.RecyclerView
 
 /**
  * Created by jixiaoyong on 2018/3/13.
@@ -45,11 +43,11 @@ class AutoRefreshRecyclerView(context: Context, attributeSet: AttributeSet?, def
 
         when(layoutManager){
 
-            is LinearLayoutManager ->
-                lastPosition = (layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
+            is androidx.recyclerview.widget.LinearLayoutManager ->
+                lastPosition = (layoutManager as androidx.recyclerview.widget.LinearLayoutManager).findLastVisibleItemPosition()
 
-            is StaggeredGridLayoutManager ->
-                lastPosition = (layoutManager as StaggeredGridLayoutManager).findLastVisibleItemPositions(IntArray(2))[1]
+            is androidx.recyclerview.widget.StaggeredGridLayoutManager ->
+                lastPosition = (layoutManager as androidx.recyclerview.widget.StaggeredGridLayoutManager).findLastVisibleItemPositions(IntArray(2))[1]
 
         }
 

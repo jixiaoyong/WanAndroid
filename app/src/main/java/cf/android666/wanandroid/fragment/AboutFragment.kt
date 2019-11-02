@@ -1,27 +1,24 @@
 package cf.android666.wanandroid.fragment
 
 import android.app.AlertDialog
+import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import cf.android666.wanandroid.R
-import cf.android666.wanandroid.base.BaseFragment
-import cf.android666.wanandroid.utils.SharePreference
-import kotlinx.android.synthetic.main.fragment_about.view.*
-import android.content.Intent
 import cf.android666.wanandroid.`interface`.RefreshUiInterface
 import cf.android666.wanandroid.activity.LoginActivity
 import cf.android666.wanandroid.activity.SettingActivity
+import cf.android666.wanandroid.base.BaseFragment
 import cf.android666.wanandroid.utils.EventFactory
 import cf.android666.wanandroid.utils.EventInterface
+import cf.android666.wanandroid.utils.SharePreference
+import kotlinx.android.synthetic.main.fragment_about.view.*
 import org.greenrobot.eventbus.EventBus
 
 /**
  * Created by jixiaoyong on 2018/2/25.
  */
-class AboutFragment : BaseFragment() ,RefreshUiInterface{
+class AboutFragment : BaseFragment(), RefreshUiInterface {
 
 
     override fun lazyLoadData() {
@@ -49,7 +46,7 @@ class AboutFragment : BaseFragment() ,RefreshUiInterface{
         } else {
             mView!!.user_icon.setOnClickListener {
 
-                context.startActivity(Intent(activity, LoginActivity::class.java))
+                requireContext().startActivity(Intent(activity, LoginActivity::class.java))
 
             }
 
@@ -67,7 +64,7 @@ class AboutFragment : BaseFragment() ,RefreshUiInterface{
         }
 
         mView!!.more_tv.setOnClickListener {
-            context.startActivity(Intent(activity, SettingActivity::class.java))
+            requireContext().startActivity(Intent(activity, SettingActivity::class.java))
         }
 
     }
@@ -79,7 +76,7 @@ class AboutFragment : BaseFragment() ,RefreshUiInterface{
 
         when (eventInterface) {
 
-            is EventFactory.LoginState ->{
+            is EventFactory.LoginState -> {
 
                 updateUserName()
 
@@ -101,7 +98,7 @@ class AboutFragment : BaseFragment() ,RefreshUiInterface{
 
                     dialog.dismiss()
 
-                    EventBus.getDefault().postSticky(EventFactory.LoginState(false,""))
+                    EventBus.getDefault().postSticky(EventFactory.LoginState(false, ""))
 
                     Toast.makeText(context, "注销成功", Toast.LENGTH_SHORT).show()
 
@@ -119,15 +116,15 @@ class AboutFragment : BaseFragment() ,RefreshUiInterface{
 
         //todo 在切换activity的时候做个动画掩饰，可以参考酷软
 
-        val intent = activity.intent
+        val intent = requireActivity().intent
 
-        activity.overridePendingTransition(0, 0)//不设置进入退出动画
+        requireActivity().overridePendingTransition(0, 0)//不设置进入退出动画
 
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
 
-        activity.finish()
+        requireActivity().finish()
 
-        activity.overridePendingTransition(0, 0)
+        requireActivity().overridePendingTransition(0, 0)
 
         startActivity(intent)
     }

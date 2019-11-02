@@ -1,27 +1,24 @@
 package cf.android666.wanandroid.fragment
 
 import android.os.Bundle
-import android.support.v4.widget.NestedScrollView
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.view.View
 import android.widget.Toast
+import androidx.core.widget.NestedScrollView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import cf.android666.mylibrary.view.SwitchStateLayout
 import cf.android666.wanandroid.R
 import cf.android666.wanandroid.`interface`.RefreshUiInterface
 import cf.android666.wanandroid.activity.ContentActivity
 import cf.android666.wanandroid.adapter.PostArticleAdapter
+import cf.android666.wanandroid.api.cookie.CookieTools
 import cf.android666.wanandroid.base.BaseFragment
 import cf.android666.wanandroid.bean.BaseArticlesBean
-import cf.android666.wanandroid.api.cookie.CookieTools
 import cf.android666.wanandroid.utils.*
-import com.orhanobut.logger.AndroidLogAdapter
-import com.orhanobut.logger.Logger
+import com.zhouwei.mzbanner.MZBannerView
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.fragment_index_post.view.*
-import com.zhouwei.mzbanner.MZBannerView
 import kotlinx.android.synthetic.main.fragment_index_post.*
+import kotlinx.android.synthetic.main.fragment_index_post.view.*
 import org.greenrobot.eventbus.EventBus
 
 /**
@@ -57,12 +54,12 @@ class IndexPostFragment : BaseFragment(), RefreshUiInterface {
 
         mView!!.switch_state.showView(SwitchStateLayout.VIEW_LOADING)
 
-        mView!!.recycler_view.layoutManager = LinearLayoutManager(context,
-                LinearLayoutManager.VERTICAL, false)
+        mView!!.recycler_view.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context,
+                androidx.recyclerview.widget.LinearLayoutManager.VERTICAL, false)
 
         mView!!.recycler_view.adapter = PostArticleAdapter(mData, false, {
 
-            SuperUtil.startActivity(context, ContentActivity::class.java, it)
+            SuperUtil.startActivity(requireContext(), ContentActivity::class.java, it)
 
         }, { view, position ->
 
@@ -94,7 +91,7 @@ class IndexPostFragment : BaseFragment(), RefreshUiInterface {
 
             if ((scrollY - oldScrollY) > 0
                     && (scrollY + v!!.measuredHeight) == mView!!.switch_state.measuredHeight
-                    && recyclerView.scrollState == RecyclerView.SCROLL_STATE_IDLE) {
+                    && recyclerView.scrollState == androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE) {
 
                 Toast.makeText(context,"更新数据中...",Toast.LENGTH_SHORT).show()
                 downloadData(++currentPage)
@@ -205,7 +202,7 @@ class IndexPostFragment : BaseFragment(), RefreshUiInterface {
 
                     if (view != null) {
 
-                        view!!.recycler_view.adapter.notifyDataSetChanged()
+                        view!!.recycler_view.adapter?.notifyDataSetChanged()
                         childCount = recycler_view.childCount
                     }
 

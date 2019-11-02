@@ -1,26 +1,26 @@
 package cf.android666.wanandroid.fragment
 
 import android.os.Bundle
-import android.support.design.widget.TabLayout
-import android.support.v7.widget.StaggeredGridLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import cf.android666.mylibrary.view.SwitchStateLayout
 import cf.android666.wanandroid.R
 import cf.android666.wanandroid.activity.ContentActivity
 import cf.android666.wanandroid.adapter.DiscoverProjectsAdapter
+import cf.android666.wanandroid.api.cookie.CookieTools
 import cf.android666.wanandroid.base.BaseFragment
 import cf.android666.wanandroid.bean.BaseArticlesBean
 import cf.android666.wanandroid.bean.DiscoverProjectTreeBean
-import cf.android666.wanandroid.api.cookie.CookieTools
 import cf.android666.wanandroid.utils.SuperUtil
+import com.google.android.material.tabs.TabLayout
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_discover_projects.view.*
-import java.util.ArrayList
+import java.util.*
 
 /**
  * Created by jixiaoyong on 2018/2/25.
  */
-class DiscoverProjectsFragment() : BaseFragment() {
+class DiscoverProjectsFragment : BaseFragment() {
 
     private var mData = ArrayList<BaseArticlesBean>()
 
@@ -73,7 +73,7 @@ class DiscoverProjectsFragment() : BaseFragment() {
 
         mView!!.recycler_view.adapter = DiscoverProjectsAdapter(this, mData, {
 
-            SuperUtil.startActivity(context, ContentActivity::class.java, it)
+            SuperUtil.startActivity(requireContext(), ContentActivity::class.java, it)
 
         }, {
 
@@ -133,7 +133,7 @@ class DiscoverProjectsFragment() : BaseFragment() {
                 .getProjectItems(page, cid)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe ({
+                .subscribe({
 
                     when (page) {
 
@@ -149,7 +149,7 @@ class DiscoverProjectsFragment() : BaseFragment() {
 
                     currentPage = it.data.curPage
 
-                    view!!.recycler_view.adapter.notifyDataSetChanged()
+                    view!!.recycler_view.adapter?.notifyDataSetChanged()
 
                     view!!.swipe_refresh.isRefreshing = false
 

@@ -3,9 +3,8 @@ package cf.android666.wanandroid
 import android.app.SearchManager
 import android.content.Context
 import android.os.Bundle
-import android.support.v4.view.ViewPager
-import android.support.v7.widget.SearchView
 import android.view.Menu
+import androidx.appcompat.widget.SearchView
 import cf.android666.wanandroid.adapter.MFragmentViewPagerAdapter
 import cf.android666.wanandroid.base.BaseActivity
 import cf.android666.wanandroid.base.BaseFragment
@@ -15,6 +14,7 @@ import cf.android666.wanandroid.fragment.IndexFragment
 import cf.android666.wanandroid.utils.SharePreference
 import cf.android666.wanandroid.utils.SuperUtil
 import kotlinx.android.synthetic.main.activity_main.*
+
 class MainActivity : BaseActivity() {
 
 
@@ -26,7 +26,7 @@ class MainActivity : BaseActivity() {
         setSupportActionBar(toolbar)
 
         if (SharePreference.getV(SharePreference.IS_AUTO_UPDATE, false)) {
-            SuperUtil.update(this,false)
+            SuperUtil.update(this, false)
         }
 
         val fragments = arrayListOf<BaseFragment>()
@@ -39,7 +39,7 @@ class MainActivity : BaseActivity() {
 
         val bottomNavIds = arrayListOf(R.id.index, R.id.discover, R.id.about)
 
-        viewpager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+        viewpager.addOnPageChangeListener(object : androidx.viewpager.widget.ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {
             }
 
@@ -55,17 +55,17 @@ class MainActivity : BaseActivity() {
             when (it.itemId) {
                 R.id.index -> {
 //                    viewpager.currentItem = 0
-                    viewpager.setCurrentItem(0,false)
+                    viewpager.setCurrentItem(0, false)
                     return@setOnNavigationItemSelectedListener true
                 }
                 R.id.discover -> {
 //                    viewpager.currentItem = 1
-                    viewpager.setCurrentItem(1,false)
+                    viewpager.setCurrentItem(1, false)
                     return@setOnNavigationItemSelectedListener true
                 }
                 R.id.about -> {
 //                    viewpager.currentItem = 2
-                    viewpager.setCurrentItem(2,false)
+                    viewpager.setCurrentItem(2, false)
                     return@setOnNavigationItemSelectedListener true
                 }
                 else -> return@setOnNavigationItemSelectedListener false

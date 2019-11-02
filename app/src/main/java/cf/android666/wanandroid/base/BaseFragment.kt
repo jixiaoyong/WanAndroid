@@ -1,7 +1,6 @@
 package cf.android666.wanandroid.base
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +8,7 @@ import android.view.ViewGroup
 /**
  * Created by jixiaoyong on 2018/2/25.
  */
-abstract class BaseFragment : Fragment() {
+abstract class BaseFragment : androidx.fragment.app.Fragment() {
 
     protected abstract var layoutId: Int
 
@@ -20,7 +19,7 @@ abstract class BaseFragment : Fragment() {
     // 在viewpager中
     // 在自身/相邻fragment显示的时候就已经执行了，
     // 在自身/相邻fragment由都不可见（会执行onDestroyView）转可见时执行onCreateView
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         //复用view
         if (mView == null) {

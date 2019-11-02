@@ -4,16 +4,16 @@ import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.SearchView
 import android.view.Menu
 import android.widget.Toast
+import androidx.appcompat.widget.SearchView
+import androidx.recyclerview.widget.LinearLayoutManager
 import cf.android666.mylibrary.view.SwitchStateLayout
 import cf.android666.wanandroid.R
 import cf.android666.wanandroid.adapter.PostArticleAdapter
+import cf.android666.wanandroid.api.cookie.CookieTools
 import cf.android666.wanandroid.base.BaseActivity
 import cf.android666.wanandroid.bean.BaseArticlesBean
-import cf.android666.wanandroid.api.cookie.CookieTools
 import cf.android666.wanandroid.utils.SuperUtil
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -100,7 +100,7 @@ class SearchActivity : BaseActivity() {
 
                     currentPage = it.data.curPage
 
-                    recycler_view.adapter.notifyDataSetChanged()
+                    recycler_view.adapter?.notifyDataSetChanged()
                 }, {
                     switch_state.showView(SwitchStateLayout.VIEW_ERROR)
                 }, {

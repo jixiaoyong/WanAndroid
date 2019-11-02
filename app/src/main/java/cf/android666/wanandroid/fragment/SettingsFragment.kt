@@ -1,8 +1,10 @@
 package cf.android666.wanandroid.fragment
 
 import android.os.Bundle
-import android.support.v7.preference.*
-import android.widget.Switch
+import androidx.preference.Preference
+import androidx.preference.PreferenceCategory
+import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.SwitchPreferenceCompat
 import cf.android666.wanandroid.R
 import cf.android666.wanandroid.activity.ContentActivity
 import cf.android666.wanandroid.utils.SharePreference
@@ -18,7 +20,7 @@ class SettingsFragment:PreferenceFragmentCompat(){
 
         addPreferencesFromResource(R.xml.settings)
 
-        var version = context.packageManager.getPackageInfo(context.packageName,0).versionName
+        var version = requireContext().packageManager.getPackageInfo(requireContext().packageName, 0).versionName
 
         (preferenceScreen.getPreference(0) as PreferenceCategory).getPreference(1).summary = version
 
@@ -30,20 +32,23 @@ class SettingsFragment:PreferenceFragmentCompat(){
             "update"-> {
 
                 if ((preference as SwitchPreferenceCompat).isChecked) {
-                    SuperUtil.update(context,true)
+                    SuperUtil.update(requireContext(), true)
 
                 }
 
                 SharePreference.saveKV(SharePreference.IS_AUTO_UPDATE,preference.isChecked)
             }
 
-            "version"-> {SuperUtil.toast(context,
+            "version" -> {
+                SuperUtil.toast(requireContext(),
                     "当前版本是${preference.summary}")}
 
-            "project_url"-> {SuperUtil.startActivity(context,ContentActivity::class.java
+            "project_url" -> {
+                SuperUtil.startActivity(requireContext(), ContentActivity::class.java
                     ,preference.summary.toString())}
 
-            "author_url"-> {SuperUtil.startActivity(context,ContentActivity::class.java
+            "author_url" -> {
+                SuperUtil.startActivity(requireContext(), ContentActivity::class.java
                     ,preference.summary.toString())}
             "about_summary"-> {}
         }

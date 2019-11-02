@@ -1,9 +1,9 @@
 package cf.android666.wanandroid.adapter
 
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import cf.android666.wanandroid.R
 import cf.android666.wanandroid.bean.BaseArticlesBean
 import cf.android666.wanandroid.fragment.DiscoverProjectsFragment
@@ -22,7 +22,7 @@ class DiscoverProjectsAdapter(private val context: DiscoverProjectsFragment,
                               private val imgBtnListener: ((view: View) -> Unit))
     : RecyclerView.Adapter<DiscoverProjectsAdapter.MViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): MViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MViewHolder {
 
         var view = LayoutInflater.from(parent!!.context)
                 .inflate(R.layout.item_discover_projects, parent, false)
@@ -36,7 +36,7 @@ class DiscoverProjectsAdapter(private val context: DiscoverProjectsFragment,
 
     }
 
-    override fun onBindViewHolder(holder: MViewHolder?, position: Int) {
+    override fun onBindViewHolder(holder: MViewHolder, position: Int) {
 
         holder!!.itemView.title.text = data[position].title
 
@@ -66,7 +66,7 @@ class DiscoverProjectsAdapter(private val context: DiscoverProjectsFragment,
     }
 
 
-    class MViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    class MViewHolder(view: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(view) {
 
         init {
 

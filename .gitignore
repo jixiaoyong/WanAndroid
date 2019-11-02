@@ -8,3 +8,5 @@
 /captures
 .externalNativeBuild
 /.idea/
+src/main/java/cf/android666/wanandroid/utils/Logger.kt
+src/main/res/drawable/inputbox_bg.xml

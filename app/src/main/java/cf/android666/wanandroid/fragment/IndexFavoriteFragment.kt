@@ -1,19 +1,21 @@
 package cf.android666.wanandroid.fragment
 
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
 import cf.android666.mylibrary.view.SwitchStateLayout
 import cf.android666.wanandroid.R
 import cf.android666.wanandroid.`interface`.RefreshUiInterface
 import cf.android666.wanandroid.activity.ContentActivity
 import cf.android666.wanandroid.adapter.PostArticleAdapter
+import cf.android666.wanandroid.api.cookie.CookieTools
 import cf.android666.wanandroid.base.BaseFragment
 import cf.android666.wanandroid.bean.BaseArticlesBean
-import cf.android666.wanandroid.api.cookie.CookieTools
-import cf.android666.wanandroid.utils.*
-import com.orhanobut.logger.Logger
+import cf.android666.wanandroid.utils.EventFactory
+import cf.android666.wanandroid.utils.EventInterface
+import cf.android666.wanandroid.utils.SharePreference
+import cf.android666.wanandroid.utils.SuperUtil
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_index_favorite.*
@@ -83,14 +85,14 @@ class IndexFavoriteFragment : BaseFragment(), RefreshUiInterface {
         }
 
 
-        mView!!.recycler_view.layoutManager = LinearLayoutManager(context,
-                LinearLayoutManager.VERTICAL, false)
+        mView!!.recycler_view.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context,
+                androidx.recyclerview.widget.LinearLayoutManager.VERTICAL, false)
 
         mView!!.recycler_view.adapter = PostArticleAdapter(mData,
                 true,
                 {
 
-                    SuperUtil.startActivity(context, ContentActivity::class.java, it)
+                    SuperUtil.startActivity(requireContext(), ContentActivity::class.java, it)
 
                 }, { it, position ->
 
@@ -100,7 +102,7 @@ class IndexFavoriteFragment : BaseFragment(), RefreshUiInterface {
 
             mData.removeAt(position)
 
-            mView!!.recycler_view.adapter.notifyDataSetChanged()
+            mView!!.recycler_view.adapter?.notifyDataSetChanged()
 
         })
 

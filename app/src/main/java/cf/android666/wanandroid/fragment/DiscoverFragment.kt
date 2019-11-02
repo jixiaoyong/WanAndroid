@@ -1,9 +1,6 @@
 package cf.android666.wanandroid.fragment
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import cf.android666.wanandroid.R
 import cf.android666.wanandroid.adapter.MFragmentViewPagerAdapter
 import cf.android666.wanandroid.base.BaseFragment

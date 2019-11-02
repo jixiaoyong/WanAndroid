@@ -1,10 +1,7 @@
 package cf.android666.wanandroid.api
 
-import android.text.Editable
 import cf.android666.wanandroid.bean.*
 import io.reactivex.Observable
-import okhttp3.Cookie
-import retrofit2.Call
 import retrofit2.http.*
 
 /**
@@ -14,7 +11,7 @@ import retrofit2.http.*
 interface WanAndroidService{
 
     companion object {
-        const val BASE_URL = "http://www.wanandroid.com/"
+        const val BASE_URL = "https://www.wanandroid.com/"
     }
 
     @GET("tree/json")
