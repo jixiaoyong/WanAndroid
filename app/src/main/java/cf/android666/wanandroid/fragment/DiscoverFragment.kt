@@ -16,19 +16,17 @@ class DiscoverFragment : BaseFragment() {
     override fun onCreateViewState(savedInstanceState: Bundle?) {
 
         val fragments = arrayListOf<BaseFragment>()
-
         fragments.add(DiscoverTreeFragment())
         fragments.add(DiscoverProjectsFragment())
         fragments.add(DiscoverNaviFragment())
 
         mView!!.viewpager.adapter = MFragmentViewPagerAdapter(childFragmentManager, fragments)
 
-        var tablayout = mView!!.tab_layout
-
+        val tabLayout = mView!!.tab_layout
         //设置该方法后会删除tab标题，因此在后面手动加上
-        tablayout.setupWithViewPager(mView!!.viewpager)
-        tablayout.getTabAt(0)!!.text = "体系"
-        tablayout.getTabAt(1)!!.text = "项目"
-        tablayout.getTabAt(2)!!.text = "导航"
+        tabLayout.setupWithViewPager(mView!!.viewpager)
+        tabLayout.getTabAt(0)!!.text = "体系"
+        tabLayout.getTabAt(1)!!.text = "项目"
+        tabLayout.getTabAt(2)!!.text = "导航"
     }
 }

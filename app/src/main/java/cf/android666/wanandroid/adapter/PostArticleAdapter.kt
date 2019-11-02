@@ -18,47 +18,33 @@ class PostArticleAdapter(private val data: ArrayList<BaseArticlesBean>,
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MViewHolder {
-
-        var view = LayoutInflater.from(parent!!.context)
+        val view = LayoutInflater.from(parent.context)
                 .inflate(R.layout.item_index_post, parent, false)
-
         return MViewHolder(view)
     }
 
     override fun getItemCount(): Int {
-
         return data.size
     }
 
     override fun onBindViewHolder(holder: MViewHolder, position: Int) {
-
-        holder!!.itemView.title.text = data[position].title
-
-        holder.itemView.author.text = "作者：${data[position].author}"
-
-        holder.itemView.time.text = "时间：${data[position].niceDate}"
-
-        holder.itemView.chapter.text = "分类：${data[position].chapterName}"
-
+        val content = holder.itemView.context
+        holder.itemView.title.text = data[position].title
+        holder.itemView.author.text = "${content.getString(R.string.author)}:${data[position].author}"
+        holder.itemView.time.text = "${content.getString(R.string.date)}:${data[position].niceDate}"
+        holder.itemView.chapter.text = "${content.getString(R.string.classify)}:${data[position].chapterName}"
         holder.itemView.setOnClickListener {
-
             this.itemListener.invoke(data[position].link)
-
         }
 
         if (isImageButtonSelect) {
-
             holder.itemView.imageButton.isSelected = true
-
         } else {
-
             holder.itemView.imageButton.isSelected = data[position].collect
         }
 
         holder.itemView.imageButton.setOnClickListener {
-
-            this.imgBtnListener!!.invoke(it, position)
-
+            this.imgBtnListener.invoke(it, position)
         }
 
     }

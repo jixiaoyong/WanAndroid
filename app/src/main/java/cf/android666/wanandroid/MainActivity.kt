@@ -30,15 +30,12 @@ class MainActivity : BaseActivity() {
         }
 
         val fragments = arrayListOf<BaseFragment>()
-
         fragments.add(IndexFragment())
         fragments.add(DiscoverFragment())
         fragments.add(AboutFragment())
-
         viewpager.adapter = MFragmentViewPagerAdapter(supportFragmentManager, fragments)
 
         val bottomNavIds = arrayListOf(R.id.index, R.id.discover, R.id.about)
-
         viewpager.addOnPageChangeListener(object : androidx.viewpager.widget.ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {
             }
@@ -51,20 +48,17 @@ class MainActivity : BaseActivity() {
             }
         })
 
-        bottom_nav.setOnNavigationItemSelectedListener { it ->
+        bottom_nav.setOnNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.index -> {
-//                    viewpager.currentItem = 0
                     viewpager.setCurrentItem(0, false)
                     return@setOnNavigationItemSelectedListener true
                 }
                 R.id.discover -> {
-//                    viewpager.currentItem = 1
                     viewpager.setCurrentItem(1, false)
                     return@setOnNavigationItemSelectedListener true
                 }
                 R.id.about -> {
-//                    viewpager.currentItem = 2
                     viewpager.setCurrentItem(2, false)
                     return@setOnNavigationItemSelectedListener true
                 }
@@ -77,15 +71,10 @@ class MainActivity : BaseActivity() {
 
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-
         menuInflater.inflate(R.menu.menu_main, menu)
-
-        var searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
-
-        var searchView: SearchView = menu!!.findItem(R.id.app_bar_search).actionView as SearchView
-
+        val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        val searchView: SearchView = menu!!.findItem(R.id.app_bar_search).actionView as SearchView
         searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
-
         return true
     }
 

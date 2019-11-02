@@ -22,118 +22,76 @@ class AboutFragment : BaseFragment(), RefreshUiInterface {
 
 
     override fun lazyLoadData() {
-
         if (mView == null) {
             return
         }
 
         val isNightMode = SharePreference.getV<Boolean>(SharePreference.IS_NIGHT_MODE, false)
-
         mView!!.night_mode.isChecked = isNightMode
-
-        var isLogin = SharePreference.getV<Boolean>(SharePreference.IS_LOGIN, false)
-
+        val isLogin = SharePreference.getV<Boolean>(SharePreference.IS_LOGIN, false)
         updateUserName()
 
         if (isLogin) {
-
             mView!!.user_icon.setOnClickListener {
-
                 showDialog()
-
             }
-
         } else {
             mView!!.user_icon.setOnClickListener {
-
                 requireContext().startActivity(Intent(activity, LoginActivity::class.java))
-
             }
-
         }
     }
 
     override fun onCreateViewState(savedInstanceState: Bundle?) {
-
         mView!!.night_mode.setOnClickListener {
-
             SharePreference.saveKV(SharePreference.IS_NIGHT_MODE, mView!!.night_mode.isChecked)
-
             updateTheme()
-
         }
 
         mView!!.more_tv.setOnClickListener {
             requireContext().startActivity(Intent(activity, SettingActivity::class.java))
         }
-
     }
 
 
     override var layoutId = R.layout.fragment_about
 
     override fun refreshUi(eventInterface: EventInterface) {
-
         when (eventInterface) {
-
             is EventFactory.LoginState -> {
-
                 updateUserName()
-
             }
         }
-
         lazyLoadData()
-
     }
 
     private fun showDialog() {
         AlertDialog.Builder(context)
-                .setTitle("确定注销登录吗？")
-                .setMessage("注销后将无法收藏、查看已经收藏的文章，其他功能不受影响。" +
-                        "您仍然可以再次登录查看这些信息")
-                .setPositiveButton("去意已决") { dialog, which ->
-
+                .setTitle(getString(R.string.title_sure_to_unlogin))
+                .setMessage(getString(R.string.unlogin_tips))
+                .setPositiveButton(getString(R.string.sure_to_leave)) { dialog, which ->
                     SharePreference.clear()
-
                     dialog.dismiss()
-
                     EventBus.getDefault().postSticky(EventFactory.LoginState(false, ""))
-
-                    Toast.makeText(context, "注销成功", Toast.LENGTH_SHORT).show()
-
-
-                }.setNegativeButton("再玩会儿") {
-
-                    dialog, which ->
-
+                    Toast.makeText(context, getString(R.string.unlogin_succeeded), Toast.LENGTH_SHORT).show()
+                }.setNegativeButton(getString(R.string.wait_a_moment)) { dialog, _ ->
                     dialog.dismiss()
-
                 }.create().show()
     }
 
     private fun updateTheme() {
-
         //todo 在切换activity的时候做个动画掩饰，可以参考酷软
-
         val intent = requireActivity().intent
-
         requireActivity().overridePendingTransition(0, 0)//不设置进入退出动画
-
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-
         requireActivity().finish()
-
         requireActivity().overridePendingTransition(0, 0)
-
         startActivity(intent)
     }
 
     fun updateUserName() {
-
-        var username = SharePreference.getV<String>(SharePreference.USER_NAME, "请点击头像登录")
-
-        mView?.about_user_name?.text = if (username.isEmpty()) "请点击头像登录" else username
+        val username = SharePreference.getV<String>(SharePreference.USER_NAME, getString(R.string.click_icon_to_login))
+        mView?.about_user_name?.text = if (username.isEmpty()) getString(R.string.click_icon_to_login) else username
     }
 
     override fun onStart() {
@@ -141,13 +99,11 @@ class AboutFragment : BaseFragment(), RefreshUiInterface {
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this)
         }
-
     }
 
     override fun onPause() {
         super.onPause()
         EventBus.getDefault().unregister(this)
-
     }
 
 }

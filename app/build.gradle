@@ -59,7 +59,6 @@ android {
     }
 
     productFlavors.all {
-
         flavor ->
             flavor.manifestPlaceholders = [UMENG_CHANNEL_VALUE: name
                                            , APP_KEY          : UMENG_APP_KEY

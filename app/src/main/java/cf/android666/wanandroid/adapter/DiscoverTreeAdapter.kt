@@ -10,6 +10,13 @@ import cf.android666.wanandroid.bean.DiscoverTreeBean
 import cf.android666.wanandroid.utils.SuperUtil
 import kotlinx.android.synthetic.main.item_discover_tree_group.view.*
 
+/**
+ * author: jixiaoyong
+ * email: jixiaoyong1995@gmail.com
+ * website: https://jixiaoyong.github.io
+ * date: 2019-11-02
+ * description: todo
+ */
 class DiscoverTreeAdapter(private val context: Context,
                           private val data: ArrayList<DiscoverTreeBean.DataBean>)
     : DisCoverBaseAdapter<DiscoverTreeBean.DataBean>(context, data) {
@@ -18,45 +25,31 @@ class DiscoverTreeAdapter(private val context: Context,
                               parent: ViewGroup?): View {
 
         val name = this.data[groupPosition].name
-
         if (convertView == null) {
-
-            var view = LayoutInflater.from(this.context)
+            val view = LayoutInflater.from(this.context)
                     .inflate(R.layout.item_discover_tree_group, null)
-
             view.title.text = name
-
             return view
         }
 
         convertView.title.text = name
-
         return convertView
     }
 
     override fun getChildView(groupPosition: Int, childPosition: Int,
                               isLastChild: Boolean, convertView: View?, parent: ViewGroup?): View {
-
         val name = data[groupPosition].children[childPosition].name
-
         val id = data[groupPosition].children[childPosition].id
-
         if (convertView == null) {
-
-            var view = LayoutInflater.from(this.context)
+            val view = LayoutInflater.from(this.context)
                     .inflate(R.layout.item_discover_tree_child, null)
-
             view.title.text = name
-
             setClickListener(view, id)
-
             return view
         }
 
         convertView.title.text = name
-
         setClickListener(convertView, id)
-
         return convertView
     }
 
@@ -69,11 +62,8 @@ class DiscoverTreeAdapter(private val context: Context,
     }
 
     private fun setClickListener(view: View, id: Int) {
-
         val url = "http://www.wanandroid.com/article/list/0?cid=$id"
-
         view.setOnClickListener {
-
             SuperUtil.startActivity(context, ContentActivity::class.java, url)
 
         }

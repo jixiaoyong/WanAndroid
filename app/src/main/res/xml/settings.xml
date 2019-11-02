@@ -4,7 +4,7 @@
 
     <androidx.preference.PreferenceCategory android:title="版本信息">
 
-        <android.support.v7.preference.SwitchPreferenceCompat
+        <androidx.preference.SwitchPreferenceCompat
             android:defaultValue="true"
             android:key="update"
             android:title="自动检查更新"

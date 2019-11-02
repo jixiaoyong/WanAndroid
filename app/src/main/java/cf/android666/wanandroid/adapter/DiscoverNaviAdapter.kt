@@ -10,6 +10,13 @@ import cf.android666.wanandroid.bean.DiscoverNaviBean
 import cf.android666.wanandroid.utils.SuperUtil
 import kotlinx.android.synthetic.main.item_discover_tree_group.view.*
 
+/**
+ * author: jixiaoyong
+ * email: jixiaoyong1995@gmail.com
+ * website: https://jixiaoyong.github.io
+ * date: 2019-11-02
+ * description: todo
+ */
 class DiscoverNaviAdapter(private val context: Context,
                           private val  data:ArrayList<DiscoverNaviBean.DataBean>)
     : DisCoverBaseAdapter<DiscoverNaviBean.DataBean>(context,data) {
@@ -19,7 +26,7 @@ class DiscoverNaviAdapter(private val context: Context,
 
 
     override fun getChildrenCount(groupPosition: Int): Int {
-      return data[groupPosition].articles.size
+        return data[groupPosition].articles.size
     }
 
     override fun getChild(groupPosition: Int, childPosition: Int): Any {
@@ -43,6 +50,7 @@ class DiscoverNaviAdapter(private val context: Context,
 
         return convertView
     }
+
     override fun getChildView(groupPosition: Int, childPosition: Int, isLastChild: Boolean, convertView: View?, parent: ViewGroup?): View {
 
         val name =  data[groupPosition].articles[childPosition].title
@@ -60,7 +68,7 @@ class DiscoverNaviAdapter(private val context: Context,
             return view
         }
 
-        convertView!!.title.text = name
+        convertView.title.text = name
 
         setClickListener(convertView, url)
 

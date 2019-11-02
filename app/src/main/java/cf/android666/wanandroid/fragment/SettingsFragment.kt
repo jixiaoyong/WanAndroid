@@ -7,6 +7,7 @@ import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreferenceCompat
 import cf.android666.wanandroid.R
 import cf.android666.wanandroid.activity.ContentActivity
+import cf.android666.wanandroid.base.toast
 import cf.android666.wanandroid.utils.SharePreference
 import cf.android666.wanandroid.utils.SuperUtil
 
@@ -14,43 +15,41 @@ import cf.android666.wanandroid.utils.SuperUtil
  * Created by jixiaoyong on 2018/3/12.
  * email:jixiaoyong1995@gmail.com
  */
-class SettingsFragment:PreferenceFragmentCompat(){
+class SettingsFragment : PreferenceFragmentCompat() {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
 
         addPreferencesFromResource(R.xml.settings)
 
-        var version = requireContext().packageManager.getPackageInfo(requireContext().packageName, 0).versionName
+        var version = requireContext().packageManager
+                .getPackageInfo(requireContext().packageName, 0).versionName
 
         (preferenceScreen.getPreference(0) as PreferenceCategory).getPreference(1).summary = version
 
-}
+    }
 
     override fun onPreferenceTreeClick(preference: Preference?): Boolean {
 
-        when(preference!!.key) {
-            "update"-> {
-
+        when (preference!!.key) {
+            "update" -> {
                 if ((preference as SwitchPreferenceCompat).isChecked) {
                     SuperUtil.update(requireContext(), true)
-
                 }
-
-                SharePreference.saveKV(SharePreference.IS_AUTO_UPDATE,preference.isChecked)
+                SharePreference.saveKV(SharePreference.IS_AUTO_UPDATE, preference.isChecked)
             }
-
             "version" -> {
-                SuperUtil.toast(requireContext(),
-                    "当前版本是${preference.summary}")}
-
+                toast("${getString(R.string.current_version)}${preference.summary}")
+            }
             "project_url" -> {
                 SuperUtil.startActivity(requireContext(), ContentActivity::class.java
-                    ,preference.summary.toString())}
-
+                        , preference.summary.toString())
+            }
             "author_url" -> {
                 SuperUtil.startActivity(requireContext(), ContentActivity::class.java
-                    ,preference.summary.toString())}
-            "about_summary"-> {}
+                        , preference.summary.toString())
+            }
+            "about_summary" -> {
+            }
         }
 
 
