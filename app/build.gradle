@@ -24,13 +24,13 @@ static def releaseTime() {
 }
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion rootProject.targetSdkVersion
     buildToolsVersion '28.0.3'
 
     defaultConfig {
         applicationId "cf.android666.wanandroid"
-        minSdkVersion 21
-        targetSdkVersion 28
+        minSdkVersion rootProject.minSdkVersion
+        targetSdkVersion rootProject.targetSdkVersion
         versionCode Integer.parseInt(releaseTime())
         versionName "1.2.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
