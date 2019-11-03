@@ -9,22 +9,22 @@
 
 一个用kotlin语言编写的www.wanandroid.com的客户端，支持Android 5.0及以上版本。
 
-本项目还在持续编写中。。。
+> WARNNING **注意** 本版本已不再维护，新版WanAndroid正在设计、开发中，详情请参见[`develop`分支](https://github.com/jixiaoyong/WanAndroid/tree/develop)。
 
 **我的邮箱: aml4aWFveW9uZzE5OTVAZ21haWwuY29tCg== ,有任何问题都可以email我或者在[issues](https://github.com/jixiaoyong/WanAndroid/issues) 提出。**
 
 
 # 下载体验
 
-**提示：该链接指向的apk版本可能滞后于开发版本，为更好体验请直接下载源码编译，谢谢。**
+**提示：该链接指向的apk为本APP近期的最后一个release版本，后续将设计开发新版WanAndroid，此APP将不再维护。如果存在BUG，请直接下载源码编译，谢谢。**
 
-1.1.0版本现已放出，欢迎体验。
+1.2.0版本现已放出，欢迎体验。
 
-点击下载 [WanAndroid 1.1.0 .apk](https://raw.githubusercontent.com/jixiaoyong/Notes-Files/master/downloa/apk/WanAndroid.apk)
+点击下载 [WanAndroid 1.2.0 .apk](https://github.com/jixiaoyong/WanAndroid/releases/download/v1.2.0/WanAndroid-v1.2.0-release-20191103.apk)
 
 扫描二维码下载
 
-![WanAndroid Download](https://github.com/jixiaoyong/WanAndroid/blob/master/images/WanAndroidDownload.png?raw=true)
+![WanAndroid Download](https://jixiaoyong.github.io/download/data/wanandroid/WanAndroidDownloadUrl.png)
 
 # 界面预览
 
@@ -93,9 +93,11 @@ GIF预览：
 
 # 更新日志
 
-2018-03-20 发布正式版 1.0
+2019-11-03 发布release版本 v1.2.0
 
-2018-03-14 发布测试版本 0.1 beta
+2018-03-20 发布release版本 v1.0
+
+2018-03-14 发布测试版本 v0.1 beta
 
 
 
