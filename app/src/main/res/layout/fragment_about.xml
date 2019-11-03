@@ -15,7 +15,7 @@
             android:layout_width="130dp"
             android:layout_height="130dp"
             android:layout_margin="30dp"
-            android:background="@drawable/wanandroid" />
+            android:background="@mipmap/ic_icon_round" />
 
         <TextView
             android:id="@+id/about_user_name"
