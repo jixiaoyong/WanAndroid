@@ -18,7 +18,7 @@ interface UpdateService{
 
     companion object {
 
-        const val BASE_URL = "http://jixiaoyong.github.io/"
+        const val BASE_URL = "https://jixiaoyong.github.io/"
     }
 
 

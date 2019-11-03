@@ -31,7 +31,8 @@ android {
         applicationId "cf.android666.wanandroid"
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
-        versionCode Integer.parseInt(releaseTime())
+//        versionCode Integer.parseInt(releaseTime())
+        versionCode 6
         versionName "1.2.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 //        ndk {

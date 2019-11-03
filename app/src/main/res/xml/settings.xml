@@ -24,7 +24,7 @@
 
         <Preference
             android:key="author_url"
-            android:summary="http://jixiaoyong.github.io/"
+            android:summary="https://jixiaoyong.github.io/"
             android:title="作者网站" />
 
         <Preference
