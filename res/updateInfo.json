@@ -1,9 +1,9 @@
 {
     "errorCode":1,
     "appName": "WanAndroid",
-    "versionCode": 3,
-    "version": "1.1.0",
-    "summary": "WanAndroid版本更新到V1.1.0了！\n1.修复了首页加载卡顿的问题。\n2.修复了断网下闪退的问题。\n3.其他优化。\n快来下载体验吧。",
-    "updateTime": "2018/05/17",
-    "url": "https://raw.githubusercontent.com/jixiaoyong/Notes-Files/master/download/apk/WanAndroid.apk"
+    "versionCode": 20191103,
+    "version": "1.2.0",
+    "summary": "WanAndroid版本更新到V1.2.0了！\n1.修复了无法加载数据的问题。\n2.适配了Android 9.0。\n3.其他优化。\n快来下载体验吧。",
+    "updateTime": "2019/11/03",
+    "url": "https://github.com/jixiaoyong/WanAndroid/releases/download/v1.2.0/WanAndroid-v1.2.0-release-20191103.apk"
 }
