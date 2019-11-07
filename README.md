@@ -1,6 +1,6 @@
 
 
-<img src="https://jixiaoyong.github.io/download/data/wanandroid/WanAndroidIconRound.svg" width="120" hegiht="120" align=center />
+<img src="https://jixiaoyong.github.io/download/data/wanandroid/WanAndroidIconRound.png" width="120" hegiht="120" align=center />
 
 
 
