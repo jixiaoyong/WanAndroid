@@ -1,23 +1,7 @@
 apply plugin: 'com.android.application'
-
 apply plugin: 'kotlin-android'
-
 apply plugin: 'kotlin-android-extensions'
-
-def localPropFile = rootProject.file("local.properties")
-def localProp = new Properties()
-def hasLocalProp = (localPropFile.exists())
-def BUGLY_APP_KEY = ""
-def UMENG_APP_KEY = ""
-if (hasLocalProp) {
-    localProp.load(new FileInputStream(localPropFile))
-    BUGLY_APP_KEY = localProp['BUGLY_APP_KEY']
-    UMENG_APP_KEY = localProp['UMENG_APP_KEY']
-} else {
-    BUGLY_APP_KEY = System.getenv("BUGLY_APP_KEY")
-    UMENG_APP_KEY = System.getenv("UMENG_APP_KEY")
-}
-
+apply plugin: 'kotlin-kapt'
 
 static def releaseTime() {
     return new Date(System.currentTimeMillis()).format("yyyyMMdd")
@@ -32,12 +16,8 @@ android {
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
         versionCode Integer.parseInt(releaseTime())
-        versionName "1.2.0"
+        versionName "2.0.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-//        ndk {
-//            //腾讯bugly 设置支持的SO库架构
-//            abiFilters 'armeabi' //, 'x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a'
-//        }
     }
     buildTypes {
         release {
@@ -45,17 +25,16 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
         }
+
+        debug {
+            minifyEnabled false
+
+        }
     }
 
     lintOptions {
         //停止lint在build时检查
         abortOnError false
-    }
-
-    productFlavors {
-        WanAndroid {
-            buildConfigField "String", "BUGLY_APP_KEY", "\"$BUGLY_APP_KEY\""
-        }
     }
 
     productFlavors.all {
@@ -74,48 +53,35 @@ android {
             outputFileName = "${variant.flavorName}-v${variant.versionName}-${variant.buildType.name}-${releaseTime()}.apk"
         }
     }
+
+    dataBinding {
+        enabled = true
+    }
 }
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.1.1'
+//    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.1.1"
+
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-    implementation 'com.google.android.material:material:1.0.0'
-    implementation 'androidx.cardview:cardview:1.0.0'
-    implementation 'androidx.preference:preference:1.1.0'
-    implementation 'androidx.legacy:legacy-preference-v14:1.0.0'
-    implementation 'com.google.code.gson:gson:2.8.5'
-    //高版本对fragment有影响
-    implementation 'com.github.bumptech.glide:glide:4.0.0'
-    //打印日志
-    implementation 'com.orhanobut:logger:2.2.0'
-    //网络相关
-    implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
-    implementation 'io.reactivex.rxjava2:rxjava:2.1.10'
-    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
-    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
-    //解析返回数据
-    implementation 'com.github.pinguo-zhouwei:MZBannerView:v2.0.0'
-    implementation 'com.squareup.okhttp3:logging-interceptor:3.9.0'
-    //事件处理
-    implementation 'org.greenrobot:eventbus:3.1.1'
-    //友盟sdk
-    implementation 'com.umeng.sdk:common:1.5.3'
-    implementation 'com.umeng.sdk:analytics:7.5.3'
-    implementation project(':mylibrary')
 
-    //腾讯bugly
-    implementation 'com.tencent.bugly:crashreport_upgrade:1.3.6'
-//    implementation 'com.tencent.bugly:nativecrashreport:3.6.0.1'
+    implementation project(':mylibrary')
 
     //内存泄漏分析
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.4'
     releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
 
-    implementation 'com.yanzhikai:TextPathView:0.1.1'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.1.0'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.1.0'
+
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
+    implementation 'com.github.pinguo-zhouwei:MZBannerView:v2.0.0'
+
 }

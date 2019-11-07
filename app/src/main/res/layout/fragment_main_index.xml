@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/swipeRefreshLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/nav_height"
+                android:background="@color/colorPrimary"
+                app:layout_constraintTop_toTopOf="parent"
+                app:titleTextColor="#fff">
+
+                <androidx.appcompat.widget.SearchView
+                    android:id="@+id/searchView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/background_round"
+                    android:backgroundTint="#fff"
+                    app:queryHint="点击搜索文章" />
+
+            </androidx.appcompat.widget.Toolbar>
+
+            <ImageView
+                android:id="@+id/banner"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="20dp"
+                android:background="#AAAAAA"
+                app:layout_constraintTop_toBottomOf="@id/toolbar" />
+
+            <ImageButton
+                android:id="@+id/favoriteBtn"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/ic_favorite"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/banner" />
+
+
+            <TextView
+                android:id="@+id/favoriteTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="收藏"
+                app:layout_constraintEnd_toEndOf="@id/favoriteBtn"
+                app:layout_constraintStart_toStartOf="@id/favoriteBtn"
+                app:layout_constraintTop_toBottomOf="@id/favoriteBtn" />
+
+
+            <ImageButton
+                android:id="@+id/weChatBtn"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginEnd="30dp"
+                android:background="@drawable/ic_wechat"
+                app:layout_constraintBottom_toBottomOf="@id/favoriteBtn"
+                app:layout_constraintEnd_toEndOf="@id/favoriteBtn"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/favoriteBtn" />
+
+
+            <TextView
+                android:id="@+id/weChatTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="微信"
+                app:layout_constraintEnd_toEndOf="@id/weChatBtn"
+                app:layout_constraintStart_toStartOf="@id/weChatBtn"
+                app:layout_constraintTop_toBottomOf="@id/weChatBtn" />
+
+
+            <ImageButton
+                android:id="@+id/peopleBtn"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="30dp"
+                android:background="@drawable/ic_people"
+                app:layout_constraintBottom_toBottomOf="@id/favoriteBtn"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/favoriteBtn"
+                app:layout_constraintTop_toTopOf="@id/favoriteBtn" />
+
+
+            <TextView
+                android:id="@+id/peopleTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="广场"
+                app:layout_constraintEnd_toEndOf="@id/peopleBtn"
+                app:layout_constraintStart_toStartOf="@id/peopleBtn"
+                app:layout_constraintTop_toBottomOf="@id/peopleBtn" />
+
+
+            <View
+                android:id="@+id/dividerAfterFavoriteBtn"
+                android:layout_width="match_parent"
+                android:layout_height="15dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/colorGrey"
+                app:layout_constraintTop_toBottomOf="@id/favoriteTv" />
+
+            <ImageView
+                android:id="@+id/hotImg"
+                android:layout_width="16dp"
+                android:layout_height="20dp"
+                android:layout_margin="20dp"
+                android:background="@drawable/ic_hot"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/dividerAfterFavoriteBtn" />
+
+            <TextView
+                android:id="@+id/hotTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:text="热门文章"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@id/hotImg"
+                app:layout_constraintStart_toEndOf="@id/hotImg"
+                app:layout_constraintTop_toTopOf="@id/hotImg" />
+
+            <View
+                android:id="@+id/dividerAfterHotImg"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="15dp"
+                android:background="@color/colorGrey"
+                app:layout_constraintTop_toBottomOf="@id/hotImg" />
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/postRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="800dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/dividerAfterHotImg"
+                tools:listitem="@layout/item_main_index_post" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

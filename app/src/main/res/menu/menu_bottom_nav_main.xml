@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/mainIndexFragment"
+        android:icon="@drawable/ic_main_index"
+        android:title="首页"
+        app:showAsAction="withText" />
+    <item
+        android:id="@+id/mainSystemFragment"
+        android:icon="@drawable/ic_main_system"
+        android:title="体系"
+        app:showAsAction="withText" />
+    <item
+        android:id="@+id/mainTodoFragment"
+        android:icon="@drawable/ic_main_add"
+        android:title="TODO"
+        app:showAsAction="withText" />
+    <item
+        android:id="@+id/mainProjectFragment"
+        android:icon="@drawable/ic_main_project"
+        android:title="项目"
+        app:showAsAction="withText" />
+    <item
+        android:id="@+id/mainAboutFragment"
+        android:icon="@drawable/ic_main_me"
+        android:title="我的"
+        app:showAsAction="withText" />
+</menu>
