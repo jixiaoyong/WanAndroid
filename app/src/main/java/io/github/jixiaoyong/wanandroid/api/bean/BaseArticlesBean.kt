@@ -10,23 +10,42 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "baseArticles")
 data class BaseArticlesBean(
         /**
-         * apkLink :
-         * author : 小编
-         * chapterId : 272
-         * chapterName : 常用网站
-         * collect : false
-         * courseId : 13
-         * desc :
-         * envelopePic :
-         * id : 1848
-         * link : https://developers.google.cn/
-         * niceDate : 2018-01-07
-         * origin :
-         * projectLink :
-         * publishTime : 1515322795000
-         * title : Google开发者
-         * visible : 0
-         * zan : 0
+        {
+        "apkLink": "",
+        "audit": 1,
+        "author": "",
+        "chapterId": 502,
+        "chapterName": "自助",
+        "collect": false,
+        "courseId": 13,
+        "desc": "",
+        "envelopePic": "",
+        "fresh": true,
+        "id": 10239,
+        "link": "https://mp.weixin.qq.com/s/dhc3povL-_hVtp10IrRMow",
+        "niceDate": "2小时前",
+        "niceShareDate": "2小时前",
+        "origin": "",
+        "prefix": "",
+        "projectLink": "",
+        "publishTime": 1573559091000,
+        "selfVisible": 0,
+        "shareDate": 1573559091000,
+        "shareUser": "winlee28",
+        "superChapterId": 494,
+        "superChapterName": "广场Tab",
+        "tags": [
+        {
+        "name": "导航",
+        "url": "/navi#272"
+        }
+        ],
+        "title": "Flutter混合开发(二)：iOS项目集成Flutter模块详细指南",
+        "type": 0,
+        "userId": 25211,
+        "visible": 1,
+        "zan": 0
+        }
          */
 
         var apkLink: String = "",
