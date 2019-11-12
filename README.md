@@ -1,6 +1,6 @@
 
 
-<img src="https://jixiaoyong.github.io/download/data/wanandroid/WanAndroidIconRound.svg" width="120" hegiht="120" align=center />
+<img src="https://jixiaoyong.github.io/download/data/wanandroid/WanAndroidIconRound.png" width="120" hegiht="120" align=center />
 
 
 
@@ -12,19 +12,21 @@
 
 
 
- 本分支为*日常开发*版本，各个功能稳定后会合并到`master`分支。
+ 本分支为*日常开发*版本，各个功能稳定后会合并到[`master`](https://github.com/jixiaoyong/WanAndroid/tree/master)分支。
 
 
 
 # 工作计划
 
-今天距离本APP第一个版本发布已经过去快两年了，期间本人学习到了很多有用的知识技巧，也发现了当初编写APP时的诸多问题，于是打算在闲暇时间对其进行重构。
+距离本APP第一个版本发布已经过去快两年了，期间本人学习到了很多有用的知识技巧，也发现了当初编写APP时的诸多问题，于是打算在闲暇时间对其进行重构。
 
 目前主要计划如下：
 
-1. 取出旧版本多余的依赖
-2. 使用MVVM架构、Jetpack
-3. 重新设计UI
+- [x] 1. 去除旧版本多余的依赖
+
+- [ ] 2. 使用MVVM架构、Jetpack
+
+- [x] 3. 重新设计UI
 
 
 
@@ -36,7 +38,7 @@
 
  ```
   
-   Copyright 2018 jixiaoyong
+   Copyright 2018 - 2019 jixiaoyong
 
    Licensed under the Apache License, Version 2.0 (the "License");
 
