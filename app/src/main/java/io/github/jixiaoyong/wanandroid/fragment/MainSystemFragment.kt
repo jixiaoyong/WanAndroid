@@ -34,6 +34,7 @@ class MainSystemFragment : BaseFragment() {
         }
 
         val random = Random(15)
+        refreshSubTab(view, random)
         view.tabLayout.addOnTabSelectedListener(object : TabLayout.BaseOnTabSelectedListener<TabLayout.Tab> {
             override fun onTabReselected(p0: TabLayout.Tab?) {
 
@@ -44,15 +45,7 @@ class MainSystemFragment : BaseFragment() {
             }
 
             override fun onTabSelected(p0: TabLayout.Tab?) {
-                view.subTabLayout.removeAllTabs()
-                val randomCount = random.nextInt(15)
-                for (i in 0..randomCount) {
-                    val tabItem = view.subTabLayout.newTab()
-                    val text = layoutInflater.inflate(R.layout.item_textview, null, false) as TextView
-                    text.text = "subTab $i"
-                    tabItem.customView = text
-                    view.subTabLayout.addTab(tabItem)
-                }
+                refreshSubTab(view, random)
             }
         })
         view.subTabLayout.addOnTabSelectedListener(object : TabLayout.BaseOnTabSelectedListener<TabLayout.Tab> {
@@ -62,20 +55,40 @@ class MainSystemFragment : BaseFragment() {
 
             override fun onTabUnselected(p0: TabLayout.Tab?) {
                 (p0?.customView as? TextView)?.let {
-                    it.setTextColor(resources.getColor(R.color.colorNormalText))
-                    it.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.colorCommonBgGrey))
+                    updateSubTabItemStatus(it, false)
                 }
             }
 
             override fun onTabSelected(p0: TabLayout.Tab?) {
                 (p0?.customView as? TextView)?.let {
-                    it.setTextColor(resources.getColor(R.color.colorWhite))
-                    it.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.colorPrimary))
+                    updateSubTabItemStatus(it)
                 }
 
             }
 
         })
+    }
+
+    private fun updateSubTabItemStatus(it: TextView, isSelect: Boolean = true) {
+        it.setTextColor(resources.getColor(if (isSelect) R.color.colorWhite else R.color.colorNormalText))
+        it.backgroundTintList = ColorStateList.valueOf(
+                resources.getColor(if (isSelect) R.color.colorPrimary else R.color.colorCommonBgGrey))
+    }
+
+    private fun refreshSubTab(view: View, random: Random) {
+        view.subTabLayout.removeAllTabs()
+        val randomCount = random.nextInt(15)
+        for (i in 0..randomCount) {
+            val tabItem = view.subTabLayout.newTab()
+            val text = layoutInflater.inflate(R.layout.item_textview, null, false) as TextView
+            text.text = "subTab $i"
+            tabItem.customView = text
+            if (i == 0) {
+                tabItem.select()
+                updateSubTabItemStatus(tabItem.customView as TextView)
+            }
+            view.subTabLayout.addTab(tabItem)
+        }
     }
 }
 

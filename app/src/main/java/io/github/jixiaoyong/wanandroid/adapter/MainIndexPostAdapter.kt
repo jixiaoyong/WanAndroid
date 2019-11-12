@@ -1,6 +1,5 @@
 package io.github.jixiaoyong.wanandroid.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,8 +24,7 @@ class MainIndexPostAdapter(val count: Int = 150) : BaseAdapter<MainIndexPostAdap
     override fun getItemCount() = count
 
     override fun onBindViewHolder(holder: VH, position: Int) {
-        Log.d("tag", "oncreate:$position")
-        holder.itemView.textView.text = "item $position"
+        holder.itemView.titleTv.text = "item $position"
     }
 
 

@@ -6,6 +6,7 @@ buildscript {
         targetSdkVersion = 28
         minSdkVersion = 21
         lifecycle_version = "2.1.0"
+        room_version = "2.2.1"
     }
 
     repositories {
@@ -16,6 +17,7 @@ buildscript {
         maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
         google()
         jcenter()
+        maven { url 'https://dl.bintray.com/jixiaoyong/maven/' }
         maven { url 'https://jitpack.io' }//for MZBannerView,PersistentCookieJar
     }
     dependencies {
@@ -35,6 +37,7 @@ allprojects {
         maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
         google()
         jcenter()
+        maven { url 'https://dl.bintray.com/jixiaoyong/maven/' }
         maven { url 'https://jitpack.io' }
     }
 }

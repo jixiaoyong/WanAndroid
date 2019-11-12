@@ -8,6 +8,7 @@ import androidx.appcompat.widget.SearchView
 import io.github.jixiaoyong.wanandroid.R
 import io.github.jixiaoyong.wanandroid.adapter.MainIndexPostAdapter
 import io.github.jixiaoyong.wanandroid.base.BaseFragment
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_main_index.view.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -28,8 +29,17 @@ class MainIndexFragment : BaseFragment() {
     }
 
     private fun initView(view: View) {
-        //todo 在这里初始化recycleView的高度 = 屏幕高度 - bottomNavView - hotTitle
+        // 在这里初始化recycleView的高度 = 屏幕高度 - bottomNavView
+        val rootView = requireActivity().window.decorView.rootView
+        rootView.post {
+            val listHeight = rootView.height - requireActivity().bottomNavView.height
+            val listParams = view.postRecyclerView.layoutParams
+            listParams.height = listHeight
+            view.postRecyclerView.layoutParams = listParams
+        }
+
         view.postRecyclerView.adapter = MainIndexPostAdapter()
+        view.nestedScrollView.isNeedInterceptActionMove = this::isNeedIntercept
         val random = Random(120)
         view.swipeRefreshLayout.setOnRefreshListener {
             launch {
@@ -39,6 +49,15 @@ class MainIndexFragment : BaseFragment() {
                 view.swipeRefreshLayout.isRefreshing = false
             }
         }
+    }
+
+    //是否需要拦截postRecyclerView向上滑动
+    private fun isNeedIntercept(): Boolean {
+
+        view?.nestedScrollView?.let { targetView ->
+            return 0 < (view!!.dividerAfterHotImg!!.y - targetView.scrollY)
+        }
+        return false
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

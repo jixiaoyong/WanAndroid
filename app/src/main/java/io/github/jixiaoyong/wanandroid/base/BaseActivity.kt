@@ -11,4 +11,6 @@ import kotlinx.coroutines.MainScope
  * date: 2019-11-05
  * description: todo
  */
-open class BaseActivity : AppCompatActivity(), CoroutineScope by MainScope()
+open class BaseActivity : AppCompatActivity(), CoroutineScope by MainScope() {
+
+}
