@@ -1,81 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/input_box_bg"
-    android:padding="30dp">
+    xmlns:tools="http://schemas.android.com/tools">
 
 
-    <EditText
-        android:id="@+id/userNameEditText"
+    <data>
+
+        <variable
+            name="isLogin"
+            type="Boolean" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="10dp"
-        android:hint="请输入邮箱地址"
-        android:theme="@style/EditTextStyle"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/pwdEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:layout_marginBottom="10dp"
-        android:hint="请输入密码"
-        android:theme="@style/EditTextStyle"
-        app:layout_constraintTop_toBottomOf="@id/userNameEditText" />
-
-    <ImageButton
-        android:layout_width="22dp"
-        android:layout_height="13dp"
-        android:background="@drawable/ic_eye_close"
-        app:layout_constraintBottom_toBottomOf="@id/pwdEditText"
-        app:layout_constraintEnd_toEndOf="@id/pwdEditText"
-        app:layout_constraintTop_toTopOf="@id/pwdEditText" />
-
-    <ImageButton
-        android:id="@+id/pwdReIcon"
-        android:layout_width="22dp"
-        android:layout_height="13dp"
-        android:background="@drawable/ic_eye_close"
-        app:layout_constraintBottom_toBottomOf="@id/pwdReEditText"
-        app:layout_constraintEnd_toEndOf="@id/pwdReEditText"
-        app:layout_constraintTop_toTopOf="@id/pwdReEditText" />
-
-    <EditText
-        android:id="@+id/pwdReEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:layout_marginBottom="10dp"
-        android:hint="请再次输入密码"
-        android:theme="@style/EditTextStyle"
-        app:layout_constraintTop_toBottomOf="@id/pwdEditText" />
+        android:background="@drawable/input_box_bg"
+        android:padding="30dp">
 
 
-    <androidx.constraintlayout.widget.Group
-        android:id="@+id/pwdReGroup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:constraint_referenced_ids="pwdReEditText,pwdReIcon" />
+        <EditText
+            android:id="@+id/userNameEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
+            android:hint="@string/plz_entry_email"
+            android:theme="@style/EditTextStyle"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/pwdBtn"
-        android:layout_width="250dp"
-        android:layout_height="90dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginBottom="30dp"
-        android:background="@drawable/btn_disbale"
-        android:gravity="center"
-        android:paddingBottom="7dp"
-        android:text="登录"
-        android:textColor="#fff"
-        android:textSize="26sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/pwdReEditText" />
+        <EditText
+            android:id="@+id/pwdEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="10dp"
+            android:hint="@string/plz_entry_pwd"
+            android:inputType="textPassword"
+            android:theme="@style/EditTextStyle"
+            app:layout_constraintTop_toBottomOf="@id/userNameEditText" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <ImageView
+            android:id="@+id/pwdIcon"
+            android:layout_width="22dp"
+            android:layout_height="13dp"
+            android:background="@drawable/ic_eye_close"
+            android:padding="20dp"
+            app:layout_constraintBottom_toBottomOf="@id/pwdEditText"
+            app:layout_constraintEnd_toEndOf="@id/pwdEditText"
+            app:layout_constraintTop_toTopOf="@id/pwdEditText" />
+
+
+        <EditText
+            android:id="@+id/pwdReEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="10dp"
+            android:hint="@string/plz_reentry_pwd"
+            android:inputType="textPassword"
+            android:theme="@style/EditTextStyle"
+            app:layout_constraintTop_toBottomOf="@id/pwdEditText" />
+
+        <ImageView
+            android:id="@+id/pwdReIcon"
+            android:layout_width="22dp"
+            android:layout_height="13dp"
+            android:background="@drawable/ic_eye_close"
+            android:padding="20dp"
+            app:layout_constraintBottom_toBottomOf="@id/pwdReEditText"
+            app:layout_constraintEnd_toEndOf="@id/pwdReEditText"
+            app:layout_constraintTop_toTopOf="@id/pwdReEditText" />
+
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/pwdReGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:constraint_referenced_ids="pwdReEditText,pwdReIcon"
+            app:hideIfLogin="@{isLogin}" />
+
+        <Button
+            android:id="@+id/loginRegisterBtn"
+            android:layout_width="250dp"
+            android:layout_height="90dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="30dp"
+            android:background="@drawable/btn_disbale"
+            android:gravity="center"
+            android:paddingBottom="7dp"
+            android:textColor="#fff"
+            android:textSize="26sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/pwdReEditText"
+            app:loginBtnText="@{isLogin}"
+            tools:text="@string/login" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

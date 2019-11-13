@@ -26,7 +26,7 @@ class LauncherActivity : BaseActivity() {
 //        dialog.window?.setBackgroundDrawable(ColorDrawable(0))
 //        dialog.show()
 
-        val isLogin = true
+        val isLogin = false
         val context = this
 
         launch {

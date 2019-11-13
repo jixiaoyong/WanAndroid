@@ -43,4 +43,34 @@ object Utils {
             ViewCompat.requestApplyInsets(mChildView)
         }
     }
+
+    /**
+     * 最长不得超过7个汉字，或14个字节(数字，字母和下划线)
+     */
+    fun isNameCorrect(name: String?): Boolean {
+        val name = name?.trim()
+        return if (!name.isNullOrBlank()) {
+            val chineseRegex = Regex("[\\u4e00-\\u9fa5]*")
+            val numLetterRegex = Regex("[\\u4e00-\\u9fa5a-zA-Z0-9_]*")
+
+            if (chineseRegex.matches(name) && name.length <= 7) {
+                true
+            } else numLetterRegex.matches(name) && name.length <= 14
+        } else {
+            false
+        }
+    }
+
+    /**
+     * 密码6~50位且为数字、字母、-、_
+     */
+    fun isPasswordCorrect(pwd: String?): Boolean {
+        val newPwd = pwd?.trim()
+        return if (!newPwd.isNullOrEmpty() && (newPwd.length in 6..50)) {
+            val numLetterRegex = Regex("[a-zA-Z0-9_]*")
+            numLetterRegex.matches(newPwd)
+        } else {
+            false
+        }
+    }
 }
