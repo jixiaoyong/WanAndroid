@@ -13,5 +13,9 @@
     <string name="tips_pwd_not_correct">密码不符合规范，请重新输入</string>
     <string name="tips_name_not_correct">用户名不符合规范，请重新输入</string>
     <string name="tips_repwd_not_match">两次输入的密码不一致，请重新输入</string>
+    <string name="tips_network_error">网络错误，请稍后重试</string>
+    <string name="tips_cookies_expire">登录信息过期，请重新登录</string>
+    <string name="tips_login_succeeded">登录成功</string>
+    <string name="tips_register_succeeded">注册成功</string>
 
 </resources>

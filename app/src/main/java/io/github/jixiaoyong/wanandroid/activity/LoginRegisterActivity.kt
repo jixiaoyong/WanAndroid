@@ -5,14 +5,21 @@ import android.os.Bundle
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import androidx.databinding.DataBindingUtil
+import cf.android666.applibrary.Logger
 import io.github.jixiaoyong.wanandroid.R
+import io.github.jixiaoyong.wanandroid.api.bean.CookieBean
 import io.github.jixiaoyong.wanandroid.base.BaseActivity
 import io.github.jixiaoyong.wanandroid.base.toast
 import io.github.jixiaoyong.wanandroid.databinding.ActivityLoginRegisterBinding
 import io.github.jixiaoyong.wanandroid.utils.InjectUtils
+import io.github.jixiaoyong.wanandroid.utils.NetUtils
 import io.github.jixiaoyong.wanandroid.utils.Utils
+import io.github.jixiaoyong.wanandroid.view.ProgressDialog
 import io.github.jixiaoyong.wanandroid.viewmodel.LoginAndRegisterViewModel
 import kotlinx.android.synthetic.main.view_input_group.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 /**
  * author: jixiaoyong
@@ -25,6 +32,8 @@ class LoginRegisterActivity : BaseActivity() {
 
     private lateinit var viewModel: LoginAndRegisterViewModel
     private lateinit var dataBinding: ActivityLoginRegisterBinding
+
+    private var progressView: ProgressDialog? = null
 
     private var showPwd = false
     private var showRePwd = false
@@ -42,6 +51,8 @@ class LoginRegisterActivity : BaseActivity() {
     }
 
     private fun initView() {
+        progressView = ProgressDialog(this)
+
         dataBinding.changeStateBtn.setOnClickListener {
             val isLoginPage = viewModel.isLogin.value ?: true
             viewModel.isLogin.value = !isLoginPage
@@ -122,7 +133,47 @@ class LoginRegisterActivity : BaseActivity() {
             return
         }
 
-        viewModel.login(userName, userPwd)
+        launch {
+            showProgress()
+            try {
+                val result = withContext(Dispatchers.IO) {
+                    Logger.d("开始联网尝试登录")
+                    viewModel.login(userName, userPwd)
+                }
+                if (result.errorCode == NetUtils.ErrorCode.SUCCEEDED) {
+                    toast(getString(R.string.tips_login_succeeded))
+                    onLoginRegisterSucceeded()
+                } else {
+                    dealWithErrorCode(result)
+                }
+            } catch (e: Exception) {
+                toast(getString(R.string.tips_network_error))
+            }
+            dismissProgress()
+        }
+    }
+
+    private fun onLoginRegisterSucceeded() {
+        startActivity(Intent(this@LoginRegisterActivity, MainActivity::class.java))
+        finish()
+    }
+
+    private fun showProgress(text: String? = null) {
+        progressView?.dismiss()
+        if (progressView == null) {
+            progressView = ProgressDialog(this, text)
+        } else {
+            progressView?.setProgressText(text)
+        }
+        progressView?.show()
+    }
+
+    private fun dismissProgress() {
+        progressView?.dismiss()
+    }
+
+    private fun dealWithErrorCode(result: CookieBean) {
+        Logger.e("error code:${result.errorCode}")
     }
 
 }

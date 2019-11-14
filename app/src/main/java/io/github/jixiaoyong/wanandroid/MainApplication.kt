@@ -4,6 +4,7 @@ import android.app.Application
 import cf.android666.applibrary.Logger
 import cf.android666.applibrary.view.Toast
 import io.github.jixiaoyong.wanandroid.utils.DatabaseUtils
+import io.github.jixiaoyong.wanandroid.utils.NetUtils
 
 /**
  * author: jixiaoyong
@@ -20,5 +21,6 @@ class MainApplication : Application() {
 
         DatabaseUtils.initDatabase(this)
         Toast.init(this)
+        NetUtils.init(this)
     }
 }

@@ -1,11 +1,17 @@
 package io.github.jixiaoyong.wanandroid.activity
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import cf.android666.applibrary.Logger
 import io.github.jixiaoyong.wanandroid.R
 import io.github.jixiaoyong.wanandroid.base.BaseActivity
-import kotlinx.coroutines.delay
+import io.github.jixiaoyong.wanandroid.base.toast
+import io.github.jixiaoyong.wanandroid.utils.DatabaseUtils
+import io.github.jixiaoyong.wanandroid.utils.NetUtils
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 /**
  * author: jixiaoyong
@@ -15,6 +21,8 @@ import kotlinx.coroutines.launch
  * description: 第一个启动的页面，显示APP版本信息
  */
 class LauncherActivity : BaseActivity() {
+
+    private lateinit var context: Context
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,12 +34,16 @@ class LauncherActivity : BaseActivity() {
 //        dialog.window?.setBackgroundDrawable(ColorDrawable(0))
 //        dialog.show()
 
-        val isLogin = false
-        val context = this
+        context = this
 
+    }
+
+    override fun onResume() {
+        super.onResume()
         launch {
-            //            delay(3_000)
-            delay(1_000)
+            val isLogin = withContext(Dispatchers.IO) {
+                isLogin()
+            }
 
             val intent = if (isLogin) {
                 Intent(context, MainActivity::class.java)
@@ -41,6 +53,27 @@ class LauncherActivity : BaseActivity() {
             startActivity(intent)
             finish()
         }
+    }
 
+    suspend fun isLogin(): Boolean {
+        val result = NetUtils.wanAndroidApi.getCoinInfo()
+        Logger.d("result:$result")
+        return try {
+            if (result.errorCode == NetUtils.ErrorCode.SUCCEEDED) {
+                Logger.e("is login")
+                true
+            } else {
+                Logger.e("failed to login,clean the cookies")
+                DatabaseUtils.database.cookiesDao().cleanAll()
+                withContext(Dispatchers.Main) {
+                    toast(getString(R.string.tips_cookies_expire))
+                }
+                false
+            }
+        } catch (e: Exception) {
+            Logger.e("network error")
+            e.printStackTrace()
+            false
+        }
     }
 }

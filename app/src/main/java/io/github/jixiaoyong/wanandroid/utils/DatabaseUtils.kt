@@ -13,7 +13,7 @@ import io.github.jixiaoyong.wanandroid.data.AppDatabase
  */
 object DatabaseUtils {
 
-    private lateinit var database: AppDatabase
+    lateinit var database: AppDatabase
 
     fun initDatabase(applicationContext: Context) {
         database = Room.databaseBuilder(applicationContext, AppDatabase::class.java, "wa_database")

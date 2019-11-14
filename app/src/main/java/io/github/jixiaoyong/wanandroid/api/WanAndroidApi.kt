@@ -124,8 +124,8 @@ interface WanAndroidService {
      */
     @POST("user/login")
     @FormUrlEncoded
-    fun login(@Field("username") userName: String,
-              @Field("password") userPwd: String): CookieBean
+    suspend fun login(@Field("username") userName: String,
+                      @Field("password") userPwd: String): CookieBean
 
 
     /**
@@ -136,15 +136,15 @@ interface WanAndroidService {
      */
     @POST("user/register")
     @FormUrlEncoded //for @Field parameters can only be used with form encoding.
-    fun register(@Field("username") userName: String,
-                 @Field("password") userPwd: String,
-                 @Field("repassword") userRePwd: String): CookieBean
+    suspend fun register(@Field("username") userName: String,
+                         @Field("password") userPwd: String,
+                         @Field("repassword") userRePwd: String): CookieBean
 
     /**
      * 退出
      */
     @GET("user/logout/json")
-    fun logout(): RemoteDataBean<Any>
+    suspend fun logout(): RemoteDataBean<Any>
 
     /**
      * 收藏文章列表
@@ -255,7 +255,7 @@ interface WanAndroidService {
      * 需要登录后访问
      */
     @GET("lg/coin/userinfo/json")
-    fun getCoinInfo(): RemoteDataBean<DataCoinParam>
+    suspend fun getCoinInfo(): RemoteDataBean<DataCoinParam>
 
     /**
      * 获取个人积分获取列表

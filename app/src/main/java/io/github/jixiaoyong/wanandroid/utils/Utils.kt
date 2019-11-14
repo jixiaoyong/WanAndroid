@@ -45,17 +45,17 @@ object Utils {
     }
 
     /**
-     * 最长不得超过7个汉字，或14个字节(数字，字母和下划线)
+     * 最长不得超过7个汉字，或50个字节(数字，字母和下划线)
      */
     fun isNameCorrect(name: String?): Boolean {
         val name = name?.trim()
-        return if (!name.isNullOrBlank()) {
+        return if (!name.isNullOrBlank() && name.length > 1) {
             val chineseRegex = Regex("[\\u4e00-\\u9fa5]*")
-            val numLetterRegex = Regex("[\\u4e00-\\u9fa5a-zA-Z0-9_]*")
+            val numLetterRegex = Regex("[\\u4e00-\\u9fa5a-zA-Z0-9_@.]+")
 
             if (chineseRegex.matches(name) && name.length <= 7) {
                 true
-            } else numLetterRegex.matches(name) && name.length <= 14
+            } else numLetterRegex.matches(name) && (name.length <= 50)
         } else {
             false
         }

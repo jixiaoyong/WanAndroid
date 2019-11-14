@@ -1,0 +1,46 @@
+package io.github.jixiaoyong.wanandroid.utils
+
+import android.content.Context
+import io.github.jixiaoyong.wanandroid.api.WanAndroidService
+import io.github.jixiaoyong.wanandroid.api.interceptor.AddCookiesInterceptor
+import io.github.jixiaoyong.wanandroid.api.interceptor.SaveCookiesInterceptor
+import okhttp3.OkHttpClient
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
+
+/**
+ * author: jixiaoyong
+ * email: jixiaoyong1995@gmail.com
+ * website: https://jixiaoyong.github.io
+ * date: 2019-11-14
+ * description: todo
+ */
+object NetUtils {
+
+    lateinit var wanAndroidApi: WanAndroidService
+
+    const val TIME_OUT_DURATION = 20L
+
+    fun init(applicationContext: Context) {
+        val httpClient = OkHttpClient.Builder()
+                .readTimeout(TIME_OUT_DURATION, TimeUnit.SECONDS)
+                .writeTimeout(TIME_OUT_DURATION, TimeUnit.SECONDS)
+                .addInterceptor(SaveCookiesInterceptor())
+                .addInterceptor(AddCookiesInterceptor())
+                .build()
+
+        val retrofit = Retrofit.Builder()
+                .client(httpClient)
+                .baseUrl(WanAndroidService.BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+
+        wanAndroidApi = retrofit.create(WanAndroidService::class.java)
+    }
+
+    object ErrorCode {
+        const val SUCCEEDED = 0
+    }
+
+}

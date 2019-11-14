@@ -1,5 +1,6 @@
 package io.github.jixiaoyong.wanandroid.utils
 
+import io.github.jixiaoyong.wanandroid.data.AccountRepository
 import io.github.jixiaoyong.wanandroid.viewmodel.LoginAndRegisterViewModel
 
 /**
@@ -12,6 +13,6 @@ import io.github.jixiaoyong.wanandroid.viewmodel.LoginAndRegisterViewModel
 object InjectUtils {
 
     fun provideLoginRegisterViewModel(): LoginAndRegisterViewModel {
-        return LoginAndRegisterViewModel()
+        return LoginAndRegisterViewModel(AccountRepository())
     }
 }
