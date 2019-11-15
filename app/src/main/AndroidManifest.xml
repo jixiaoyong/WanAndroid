@@ -27,6 +27,11 @@
         <activity android:name=".activity.LoginRegisterActivity" />
         <activity android:name=".activity.MainActivity" />
         <activity android:name=".activity.ContentActivity" />
+
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
+
     </application>
 
 </manifest>

@@ -1,10 +1,10 @@
 package io.github.jixiaoyong.wanandroid.viewmodel
 
 import androidx.lifecycle.Transformations.map
+import androidx.lifecycle.Transformations.switchMap
+import androidx.lifecycle.liveData
 import io.github.jixiaoyong.wanandroid.base.BaseViewModel
 import io.github.jixiaoyong.wanandroid.data.AccountRepository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
 
 /**
  * author: jixiaoyong
@@ -22,16 +22,15 @@ class MainViewModel(private val accountRepository: AccountRepository) : BaseView
         cookie != null && cookie.expirationDate >= System.currentTimeMillis()
     }
 
-    val coinInfo = map(isLogin) {
-        if (it) {
-            runBlocking(Dispatchers.IO) { accountRepository.getCoinInfo().data }
-        } else {
-            null
+    val coinInfo = switchMap(isLogin) {
+        liveData {
+            if (it) {
+                val result = accountRepository.getCoinInfo().data
+                emit(result)
+            } else {
+                emit(null)
+            }
         }
-    }
-
-
-    init {
 
     }
 

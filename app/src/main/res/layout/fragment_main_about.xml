@@ -124,12 +124,13 @@
 
             <TextView
                 android:id="@+id/versionTv"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:maxLines="1"
                 android:text="@string/app_version"
                 app:layout_constraintBottom_toBottomOf="@id/versionIcon"
+                app:layout_constraintEnd_toStartOf="@id/versionMore"
                 app:layout_constraintStart_toEndOf="@id/versionIcon"
                 app:layout_constraintTop_toTopOf="@id/versionIcon" />
 
@@ -165,12 +166,13 @@
 
             <TextView
                 android:id="@+id/webTv"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:maxLines="1"
                 android:text="@string/app_website"
                 app:layout_constraintBottom_toBottomOf="@id/webIcon"
+                app:layout_constraintEnd_toStartOf="@id/webMore"
                 app:layout_constraintStart_toStartOf="@id/versionTv"
                 app:layout_constraintTop_toTopOf="@id/webIcon" />
 
@@ -206,12 +208,13 @@
 
             <TextView
                 android:id="@+id/authorTv"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:maxLines="1"
                 android:text="@string/author_website"
                 app:layout_constraintBottom_toBottomOf="@id/authorIcon"
+                app:layout_constraintEnd_toStartOf="@id/authorMore"
                 app:layout_constraintStart_toStartOf="@id/versionTv"
                 app:layout_constraintTop_toTopOf="@id/authorIcon" />
 
@@ -247,12 +250,13 @@
 
             <TextView
                 android:id="@+id/upgradeTv"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:maxLines="1"
                 android:text="@string/try_upgrade"
                 app:layout_constraintBottom_toBottomOf="@id/upgradeIcon"
+                app:layout_constraintEnd_toStartOf="@id/upgradeMore"
                 app:layout_constraintStart_toStartOf="@id/versionTv"
                 app:layout_constraintTop_toTopOf="@id/upgradeIcon" />
 
@@ -276,7 +280,6 @@
                 app:layout_constraintStart_toStartOf="@id/versionIcon"
                 app:layout_constraintTop_toBottomOf="@id/upgradeIcon" />
 
-
             <ImageView
                 android:id="@+id/shareIcon"
                 android:layout_width="wrap_content"
@@ -288,12 +291,13 @@
 
             <TextView
                 android:id="@+id/shareTv"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:maxLines="1"
                 android:text="@string/share_app"
                 app:layout_constraintBottom_toBottomOf="@id/shareIcon"
+                app:layout_constraintEnd_toStartOf="@id/shareMore"
                 app:layout_constraintStart_toStartOf="@id/versionTv"
                 app:layout_constraintTop_toTopOf="@id/shareIcon" />
 

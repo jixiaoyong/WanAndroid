@@ -1,6 +1,8 @@
 package io.github.jixiaoyong.wanandroid.utils
 
 import android.content.Context
+import android.net.Uri
+import com.google.androidbrowserhelper.trusted.TwaLauncher
 import io.github.jixiaoyong.wanandroid.api.AppUpgradeApi
 import io.github.jixiaoyong.wanandroid.api.WanAndroidService
 import io.github.jixiaoyong.wanandroid.api.interceptor.CookieManager
@@ -45,10 +47,15 @@ object NetUtils {
 
         wanAndroidApi = retrofit.create(WanAndroidService::class.java)
         appUpgradeApi = upgradeRetrofit.create(AppUpgradeApi::class.java)
+
     }
 
     object ErrorCode {
         const val SUCCEEDED = 0
     }
 
+    fun loadUrl(context: Context, urlStr: String) {
+        val url = Uri.parse(urlStr)
+        TwaLauncher(context).launch(url)
+    }
 }

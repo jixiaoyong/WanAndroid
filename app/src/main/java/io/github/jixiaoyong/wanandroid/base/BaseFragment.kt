@@ -15,7 +15,12 @@ import kotlinx.coroutines.MainScope
 open class BaseFragment : Fragment(), CoroutineScope by MainScope()
 
 fun Fragment.toast(any: Any?) {
-    any?.toString()?.let {
-        Toast.show(it)
+    if (any is Int) {
+        Toast.show(requireContext().getString(any))
+    } else {
+        any?.toString()?.let {
+            Toast.show(it)
+        }
     }
+
 }
