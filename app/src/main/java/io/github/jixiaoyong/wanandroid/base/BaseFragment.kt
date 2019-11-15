@@ -1,6 +1,7 @@
 package io.github.jixiaoyong.wanandroid.base
 
 import androidx.fragment.app.Fragment
+import cf.android666.applibrary.view.Toast
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 
@@ -12,3 +13,9 @@ import kotlinx.coroutines.MainScope
  * description: todo
  */
 open class BaseFragment : Fragment(), CoroutineScope by MainScope()
+
+fun Fragment.toast(any: Any?) {
+    any?.toString()?.let {
+        Toast.show(it)
+    }
+}

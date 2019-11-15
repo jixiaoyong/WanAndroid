@@ -1,11 +1,27 @@
 package io.github.jixiaoyong.wanandroid.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProviders
+import cf.android666.applibrary.Logger
+import io.github.jixiaoyong.wanandroid.BuildConfig
 import io.github.jixiaoyong.wanandroid.R
+import io.github.jixiaoyong.wanandroid.activity.ContentActivity
 import io.github.jixiaoyong.wanandroid.base.BaseFragment
+import io.github.jixiaoyong.wanandroid.base.toast
+import io.github.jixiaoyong.wanandroid.databinding.FragmentMainAboutBinding
+import io.github.jixiaoyong.wanandroid.utils.CommonConstants
+import io.github.jixiaoyong.wanandroid.utils.InjectUtils
+import io.github.jixiaoyong.wanandroid.viewmodel.AboutViewModel
+import io.github.jixiaoyong.wanandroid.viewmodel.MainViewModel
+import kotlinx.android.synthetic.main.fragment_main_about.view.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 /**
  * author: jixiaoyong
@@ -15,13 +31,67 @@ import io.github.jixiaoyong.wanandroid.base.BaseFragment
  * description: 关于
  */
 class MainAboutFragment : BaseFragment() {
+
+    private lateinit var dataBinding: FragmentMainAboutBinding
+    private lateinit var mainViewModel: MainViewModel
+    private lateinit var aboutViewModel: AboutViewModel
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_main_about, container, false)
+        dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_main_about, container, false)
+        val view = dataBinding.root
+
+        mainViewModel = ViewModelProviders.of(requireActivity(),
+                InjectUtils.provideMainViewModelFactory()).get(MainViewModel::class.java)
+
+        aboutViewModel = ViewModelProviders.of(requireActivity(),
+                InjectUtils.provideAboutViewModelFactory()).get(AboutViewModel::class.java)
+
+        dataBinding.viewModel = mainViewModel
+        dataBinding.lifecycleOwner = this
+
         initView(view)
         return view
     }
 
     private fun initView(view: View) {
+        view.versionMore.text = "v${BuildConfig.VERSION_NAME}"
+        view.versionTv.setOnClickListener {
+            toast("${getString(R.string.app_version)}: ${view.versionMore.text}")
+        }
 
+        view.webTv.setOnClickListener {
+            goContentActivity(CommonConstants.WebSites.APP_URL)
+        }
+
+        view.authorTv.setOnClickListener {
+            goContentActivity(CommonConstants.WebSites.APP_URL)
+        }
+
+        view.upgradeTv.setOnClickListener {
+            launch {
+                //todo show start check upgrade tips
+                val upgradeInfo = withContext(Dispatchers.IO) {
+                    try {
+                        aboutViewModel.checkUpgrade()
+                    } catch (e: Exception) {
+                        Logger.e("check upgrade filed")
+                        e.printStackTrace()
+                        null
+                    }
+                }
+                upgradeInfo?.let {
+                    if (it.versionCode > BuildConfig.VERSION_CODE) {
+                        //todo show upgrade dialog
+                        Logger.d("new version comming!\n ${it.summary}")
+                    }
+                }
+            }
+        }
+    }
+
+    fun goContentActivity(url: String) {
+        val intent = Intent(requireContext(), ContentActivity::class.java)
+        intent.putExtra(CommonConstants.ACTION_URL, url)
+        startActivity(intent)
     }
 }

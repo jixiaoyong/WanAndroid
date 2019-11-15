@@ -1,5 +1,6 @@
 package io.github.jixiaoyong.wanandroid.data
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
@@ -16,6 +17,9 @@ interface CookiesDao {
 
     @Query("SELECT * FROM cookies")
     fun queryAllCookies(): List<CookiesBean>
+
+    @Query("SELECT * FROM cookies")
+    fun queryAllCookiesAsync(): LiveData<List<CookiesBean>>
 
     @Insert
     fun insert(vararg cookiesBean: CookiesBean)

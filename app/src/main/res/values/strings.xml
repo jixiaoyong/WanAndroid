@@ -17,5 +17,13 @@
     <string name="tips_cookies_expire">登录信息过期，请重新登录</string>
     <string name="tips_login_succeeded">登录成功</string>
     <string name="tips_register_succeeded">注册成功</string>
+    <string name="btn_login_register">登录/注册</string>
+    <string name="coin">积分</string>
+    <string name="app_version">应用版本</string>
+    <string name="app_website">应用在线地址</string>
+    <string name="author_website">作者网站</string>
+    <string name="try_upgrade">检查更新</string>
+    <string name="share_app">分享此应用</string>
+    <string name="this_is_bottom_line">这是底线啦</string>
 
 </resources>

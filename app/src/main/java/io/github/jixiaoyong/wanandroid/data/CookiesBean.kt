@@ -14,6 +14,8 @@ import androidx.room.PrimaryKey
 data class CookiesBean(
         var hostName: String? = "",
         var cookiesStr: String? = "",
+        var loginUserName: String? = "",//登录的用户名称
+        var expirationDate: Long = 0L,//过期日期，ms
         @PrimaryKey(autoGenerate = true)
         var _id: Int? = null
 )

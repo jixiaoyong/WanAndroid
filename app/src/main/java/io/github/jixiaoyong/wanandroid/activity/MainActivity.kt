@@ -1,10 +1,13 @@
 package io.github.jixiaoyong.wanandroid.activity
 
 import android.os.Bundle
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import androidx.navigation.ui.setupWithNavController
 import io.github.jixiaoyong.wanandroid.R
 import io.github.jixiaoyong.wanandroid.base.BaseActivity
+import io.github.jixiaoyong.wanandroid.utils.InjectUtils
+import io.github.jixiaoyong.wanandroid.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 
 /**
@@ -19,6 +22,9 @@ class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        val viewModel = ViewModelProviders.of(this,
+                InjectUtils.provideMainViewModelFactory()).get(MainViewModel::class.java)
 
         bottomNavView.setupWithNavController(Navigation.findNavController(this, R.id.fragmentNav))
     }

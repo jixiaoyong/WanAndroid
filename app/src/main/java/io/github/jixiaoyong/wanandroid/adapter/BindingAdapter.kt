@@ -3,8 +3,12 @@ package io.github.jixiaoyong.wanandroid.adapter
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
+import androidx.constraintlayout.widget.Group
 import androidx.databinding.BindingAdapter
 import io.github.jixiaoyong.wanandroid.R
+import io.github.jixiaoyong.wanandroid.api.bean.DataCoinParam
+import io.github.jixiaoyong.wanandroid.data.CookiesBean
+import io.github.jixiaoyong.wanandroid.utils.Utils
 
 /**
  * author: jixiaoyong
@@ -35,4 +39,39 @@ fun bindHintText(view: TextView, isLogin: Boolean) {
 fun bindChangeStateText(view: TextView, isLogin: Boolean) {
     val context = view.context
     view.text = context.resources.getString(if (isLogin) R.string.create_account else R.string.go_login)
+}
+
+
+@BindingAdapter("userName")
+fun bindUserName(view: TextView, cookies: List<CookiesBean>?) {
+    val name = cookies?.getOrNull(0)?.loginUserName
+    name?.let {
+        view.text = Utils.decodeUrlStr(it)
+    }
+}
+
+@BindingAdapter("coinInfo")
+fun bindCoinInfo(view: TextView, coinInfo: DataCoinParam?) {
+    val name = coinInfo?.coinCount
+    name?.let {
+        view.text = "$it " + view.context.getString(R.string.coin)
+    }
+}
+
+@BindingAdapter("app:isShow")
+fun bindIsVisibleView(view: View, isShow: Boolean) {
+    view.visibility = if (isShow) {
+        View.VISIBLE
+    } else {
+        View.GONE
+    }
+}
+
+@BindingAdapter("app:isShow")
+fun bindIsVisible(view: Group, isShow: Boolean) {
+    view.visibility = if (isShow) {
+        View.VISIBLE
+    } else {
+        View.GONE
+    }
 }

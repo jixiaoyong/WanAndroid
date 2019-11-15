@@ -30,4 +30,16 @@ class UtilsTest {
         assert(!Utils.isPasswordCorrect(errorPwd2))
         assert(Utils.isPasswordCorrect(correctPwd))
     }
+
+    /**
+     * 将URL特殊字符反转义
+     */
+    @Test
+    fun urlDecode() {
+        val str1 = "jixiaoyong1995%40gmail.com"
+        val str2 = "something%2Fbalabala"
+
+        assert(Utils.decodeUrlStr(str1) == "jixiaoyong1995@gmail.com")
+        assert(Utils.decodeUrlStr(str2) == "something/balabala")
+    }
 }

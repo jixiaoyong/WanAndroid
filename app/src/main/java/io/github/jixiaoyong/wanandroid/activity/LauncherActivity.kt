@@ -28,19 +28,17 @@ class LauncherActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_launcher)
 
-//        val dialog: AlertDialog = AlertDialog.Builder(this)
-//                .setView(R.layout.dialog_update)
-//                .create()
-//        dialog.window?.setBackgroundDrawable(ColorDrawable(0))
-//        dialog.show()
-
         context = this
-
     }
 
     override fun onResume() {
         super.onResume()
+        Logger.d("try in launch")
+
+        //todo check why app crash while without GlobalScope
         launch {
+            Logger.d("start in launch")
+
             val isLogin = withContext(Dispatchers.IO) {
                 isLogin()
             }
@@ -63,10 +61,14 @@ class LauncherActivity : BaseActivity() {
                 Logger.e("is login")
                 true
             } else {
-                Logger.e("failed to login,clean the cookies")
-                DatabaseUtils.database.cookiesDao().cleanAll()
-                withContext(Dispatchers.Main) {
-                    toast(getString(R.string.tips_cookies_expire))
+                val cookiesDao = DatabaseUtils.database.cookiesDao()
+                val localCookies = cookiesDao.queryAllCookies()
+                Logger.e("failed to login,clean the cookies,local cookies:$localCookies")
+                if (!localCookies.isNullOrEmpty()) {
+                    cookiesDao.cleanAll()
+                    withContext(Dispatchers.Main) {
+                        toast(getString(R.string.tips_cookies_expire))
+                    }
                 }
                 false
             }

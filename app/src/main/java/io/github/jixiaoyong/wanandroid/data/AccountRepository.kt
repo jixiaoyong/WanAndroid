@@ -1,5 +1,6 @@
 package io.github.jixiaoyong.wanandroid.data
 
+import io.github.jixiaoyong.wanandroid.utils.DatabaseUtils
 import io.github.jixiaoyong.wanandroid.utils.NetUtils
 
 /**
@@ -12,4 +13,8 @@ import io.github.jixiaoyong.wanandroid.utils.NetUtils
 class AccountRepository {
 
     suspend fun login(userName: String, password: String) = NetUtils.wanAndroidApi.login(userName, password)
+
+    fun getCookieBean() = DatabaseUtils.database.cookiesDao().queryAllCookiesAsync()
+
+    suspend fun getCoinInfo() = NetUtils.wanAndroidApi.getCoinInfo()
 }

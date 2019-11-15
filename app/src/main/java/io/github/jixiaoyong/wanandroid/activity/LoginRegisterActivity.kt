@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProviders
 import cf.android666.applibrary.Logger
 import io.github.jixiaoyong.wanandroid.R
 import io.github.jixiaoyong.wanandroid.api.bean.CookieBean
@@ -41,7 +42,8 @@ class LoginRegisterActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         dataBinding = DataBindingUtil.setContentView(this, R.layout.activity_login_register)
-        viewModel = InjectUtils.provideLoginRegisterViewModel()
+        viewModel = ViewModelProviders.of(this,
+                InjectUtils.provideLoginRegisterViewModelFactory()).get(LoginAndRegisterViewModel::class.java)
 
         dataBinding.viewModel = viewModel
         dataBinding.lifecycleOwner = this

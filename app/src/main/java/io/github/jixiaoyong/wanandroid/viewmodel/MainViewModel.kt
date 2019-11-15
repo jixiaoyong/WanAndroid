@@ -1,10 +1,10 @@
 package io.github.jixiaoyong.wanandroid.viewmodel
 
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations.map
-import androidx.lifecycle.Transformations.switchMap
 import io.github.jixiaoyong.wanandroid.base.BaseViewModel
+import io.github.jixiaoyong.wanandroid.data.AccountRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
 
 /**
  * author: jixiaoyong
@@ -13,31 +13,26 @@ import io.github.jixiaoyong.wanandroid.base.BaseViewModel
  * date: 2019-11-12
  * description: todo
  */
-class MainViewModel : BaseViewModel() {
+class MainViewModel(private val accountRepository: AccountRepository) : BaseViewModel() {
 
-    val live = MutableLiveData<String>()
-    val d = map(live) {
-        "this is $it"
+    val cookies = accountRepository.getCookieBean()
+
+    val isLogin = map(cookies) {
+        val cookie = it?.getOrNull(0)
+        cookie != null && cookie.expirationDate >= System.currentTimeMillis()
     }
-    val e = switchMap(live) {
-        return@switchMap when (it) {
-            "a" -> MutableLiveData<String>("a")
-            "b" -> MutableLiveData("b")
-            else -> MutableLiveData("else")
+
+    val coinInfo = map(isLogin) {
+        if (it) {
+            runBlocking(Dispatchers.IO) { accountRepository.getCoinInfo().data }
+        } else {
+            null
         }
     }
+
 
     init {
-        val mediatorLiveData = MediatorLiveData<String>()
-        mediatorLiveData.addSource(d) {
-            update(it, e.value)
-        }
-        mediatorLiveData.addSource(e) {
-            update(d.value, it)
-        }
-    }
-
-    fun update(a: String? = "", b: String? = "") {
 
     }
+
 }

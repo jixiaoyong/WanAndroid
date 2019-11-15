@@ -10,10 +10,6 @@ import retrofit2.http.*
  */
 interface WanAndroidService {
 
-    companion object {
-        const val BASE_URL = "https://www.wanandroid.com/"
-    }
-
     /**
      * 首页文章列表
      * 方法：GET

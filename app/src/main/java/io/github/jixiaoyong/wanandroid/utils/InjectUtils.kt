@@ -1,7 +1,10 @@
 package io.github.jixiaoyong.wanandroid.utils
 
 import io.github.jixiaoyong.wanandroid.data.AccountRepository
-import io.github.jixiaoyong.wanandroid.viewmodel.LoginAndRegisterViewModel
+import io.github.jixiaoyong.wanandroid.data.NetWorkRepository
+import io.github.jixiaoyong.wanandroid.viewmodel.AboutViewModelFactory
+import io.github.jixiaoyong.wanandroid.viewmodel.LoginRegisterViewModelFactory
+import io.github.jixiaoyong.wanandroid.viewmodel.MainViewModelFactory
 
 /**
  * author: jixiaoyong
@@ -12,7 +15,16 @@ import io.github.jixiaoyong.wanandroid.viewmodel.LoginAndRegisterViewModel
  */
 object InjectUtils {
 
-    fun provideLoginRegisterViewModel(): LoginAndRegisterViewModel {
-        return LoginAndRegisterViewModel(AccountRepository())
+    fun provideLoginRegisterViewModelFactory(): LoginRegisterViewModelFactory {
+        return LoginRegisterViewModelFactory(AccountRepository())
+    }
+
+
+    fun provideMainViewModelFactory(): MainViewModelFactory {
+        return MainViewModelFactory(AccountRepository())
+    }
+
+    fun provideAboutViewModelFactory(): AboutViewModelFactory {
+        return AboutViewModelFactory(NetWorkRepository())
     }
 }

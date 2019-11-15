@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.view.Window
 import android.view.WindowManager
 import androidx.core.view.ViewCompat
+import java.net.URLDecoder
 
 
 /**
@@ -72,5 +73,12 @@ object Utils {
         } else {
             false
         }
+    }
+
+    /**
+     * 转义URL中的特殊字符
+     */
+    fun decodeUrlStr(url: String, enc: String = Charsets.UTF_8.name()): String? {
+        return URLDecoder.decode(url, enc)
     }
 }

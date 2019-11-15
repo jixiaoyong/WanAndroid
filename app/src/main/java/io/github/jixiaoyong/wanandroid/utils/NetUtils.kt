@@ -1,9 +1,9 @@
 package io.github.jixiaoyong.wanandroid.utils
 
 import android.content.Context
+import io.github.jixiaoyong.wanandroid.api.AppUpgradeApi
 import io.github.jixiaoyong.wanandroid.api.WanAndroidService
-import io.github.jixiaoyong.wanandroid.api.interceptor.AddCookiesInterceptor
-import io.github.jixiaoyong.wanandroid.api.interceptor.SaveCookiesInterceptor
+import io.github.jixiaoyong.wanandroid.api.interceptor.CookieManager
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -19,6 +19,7 @@ import java.util.concurrent.TimeUnit
 object NetUtils {
 
     lateinit var wanAndroidApi: WanAndroidService
+    lateinit var appUpgradeApi: AppUpgradeApi
 
     const val TIME_OUT_DURATION = 20L
 
@@ -26,17 +27,24 @@ object NetUtils {
         val httpClient = OkHttpClient.Builder()
                 .readTimeout(TIME_OUT_DURATION, TimeUnit.SECONDS)
                 .writeTimeout(TIME_OUT_DURATION, TimeUnit.SECONDS)
-                .addInterceptor(SaveCookiesInterceptor())
-                .addInterceptor(AddCookiesInterceptor())
+                .cookieJar(CookieManager().cookieJar)
                 .build()
 
         val retrofit = Retrofit.Builder()
                 .client(httpClient)
-                .baseUrl(WanAndroidService.BASE_URL)
+                .baseUrl(CommonConstants.WebSites.BASE_URL_WANANDROID)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+
+
+        val upgradeRetrofit = Retrofit.Builder()
+                .client(httpClient)
+                .baseUrl(CommonConstants.WebSites.BASE_URL_UPGRADE)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
 
         wanAndroidApi = retrofit.create(WanAndroidService::class.java)
+        appUpgradeApi = upgradeRetrofit.create(AppUpgradeApi::class.java)
     }
 
     object ErrorCode {

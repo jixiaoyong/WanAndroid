@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import cf.android666.applibrary.view.Toast
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.cancel
 
 /**
  * author: jixiaoyong
@@ -13,7 +14,13 @@ import kotlinx.coroutines.MainScope
  * date: 2019-11-05
  * description: todo
  */
-open class BaseActivity : AppCompatActivity(), CoroutineScope by MainScope()
+open class BaseActivity : AppCompatActivity(), CoroutineScope by MainScope() {
+
+    override fun onDestroy() {
+        super.onDestroy()
+        cancel()
+    }
+}
 
 fun Activity.toast(any: Any?) {
     any?.toString()?.let {
