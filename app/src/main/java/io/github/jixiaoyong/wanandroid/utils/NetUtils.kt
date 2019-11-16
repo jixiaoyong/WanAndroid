@@ -54,6 +54,14 @@ object NetUtils {
         const val SUCCEEDED = 0
     }
 
+    sealed class NetworkState {
+        object Succeeded : NetworkState()
+        object Normal : NetworkState()
+        object Loading : NetworkState()
+        object Error : NetworkState()
+
+    }
+
     fun loadUrl(context: Context, urlStr: String) {
         val url = Uri.parse(urlStr)
         TwaLauncher(context).launch(url)

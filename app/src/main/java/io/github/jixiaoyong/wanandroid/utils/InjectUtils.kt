@@ -21,7 +21,7 @@ object InjectUtils {
 
 
     fun provideMainViewModelFactory(): MainViewModelFactory {
-        return MainViewModelFactory(AccountRepository())
+        return MainViewModelFactory(AccountRepository(), NetWorkRepository())
     }
 
     fun provideAboutViewModelFactory(): AboutViewModelFactory {

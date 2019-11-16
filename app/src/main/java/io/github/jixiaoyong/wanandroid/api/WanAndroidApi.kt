@@ -1,6 +1,7 @@
 package io.github.jixiaoyong.wanandroid.api
 
 import io.github.jixiaoyong.wanandroid.api.bean.*
+import retrofit2.Call
 import retrofit2.http.*
 
 /**
@@ -16,7 +17,7 @@ interface WanAndroidService {
      * 参数：页码，拼接在连接中，从0开始。
      */
     @GET("article/list/{page}/json")
-    fun getArticles(@Path("page") page: Int): RemoteDataBean<List<DataIndexPostParam>>
+    suspend fun getArticles(@Path("page") page: Int): RemoteDataBean<DataPageOf<DataIndexPostParam>>
 
     /**
      * 首页banner
@@ -156,7 +157,7 @@ interface WanAndroidService {
     参数： 文章id，拼接在链接中。
      */
     @POST("lg/collect/{id}/json")
-    fun collectPostById(@Path("id") id: Int): RemoteDataBean<Any>
+    fun collectPostById(@Path("id") id: Int): Call<RemoteDataBean<Any>>
 
     /**
      * 收藏站外文章
@@ -190,7 +191,7 @@ interface WanAndroidService {
     //originId = -1
     @POST("lg/uncollect/{id}/json")
     @FormUrlEncoded
-    fun uncollectById(@Path("id") id: Int, @Field("originId") originId: Int): RemoteDataBean<Any>
+    fun uncollectById(@Path("id") id: Int, @Field("originId") originId: Int = -1): Call<RemoteDataBean<Any>>
 
     /**
      * 收藏网站列表

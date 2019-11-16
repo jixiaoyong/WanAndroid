@@ -17,4 +17,9 @@ object CommonConstants {
         const val BASE_URL_WANANDROID = "https://www.wanandroid.com/"
         const val BASE_URL_UPGRADE = "https://jixiaoyong.github.io/"
     }
+
+    object Paging {
+        const val ENABLE_PLACEHOLDERS: Boolean = true
+        const val PAGE_SIZE = 20
+    }
 }

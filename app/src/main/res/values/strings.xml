@@ -27,5 +27,7 @@
     <string name="this_is_bottom_line">这是底线啦</string>
     <string name="tips_start_check_upgrade">开始检测更新，请稍候</string>
     <string name="tips_up_to_date">已经是最新的版本啦</string>
+    <string name="collected_yes">已收藏</string>
+    <string name="collected_no">未收藏</string>
 
 </resources>

@@ -1,9 +1,11 @@
 package io.github.jixiaoyong.wanandroid.data
 
-import androidx.lifecycle.LiveData
+import androidx.paging.DataSource
 import androidx.room.Dao
+import androidx.room.Insert
 import androidx.room.Query
-import io.github.jixiaoyong.wanandroid.api.bean.BaseArticlesBean
+import androidx.room.Update
+import io.github.jixiaoyong.wanandroid.api.bean.DataIndexPostParam
 
 /**
  * author: jixiaoyong
@@ -16,6 +18,15 @@ import io.github.jixiaoyong.wanandroid.api.bean.BaseArticlesBean
 interface BaseArticlesDao {
 
     @Query("SELECT * FROM baseArticles")
-    fun queryAllArticles(): LiveData<List<BaseArticlesBean>>
+    fun queryAllArticles(): DataSource.Factory<Int, DataIndexPostParam>
 
+    @Query("DELETE  FROM baseArticles")
+    fun deleteAllArticles()
+
+    @Insert
+    fun insert(baseArticlesBeans: List<DataIndexPostParam>)
+
+
+    @Update
+    fun update(vararg baseArticlesBeans: DataIndexPostParam)
 }

@@ -9,4 +9,5 @@
     <color name="colorItenewnd">#0288d1</color>
     <color name="colorNormalText">#FF8A8A8A</color>
     <color name="colorWhite">#ffffff</color>
+    <color name="colorCollected">#FFBF00</color>
 </resources>

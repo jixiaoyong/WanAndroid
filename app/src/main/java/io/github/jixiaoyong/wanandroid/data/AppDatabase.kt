@@ -2,7 +2,7 @@ package io.github.jixiaoyong.wanandroid.data
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import io.github.jixiaoyong.wanandroid.api.bean.BaseArticlesBean
+import io.github.jixiaoyong.wanandroid.api.bean.DataIndexPostParam
 
 /**
  * author: jixiaoyong
@@ -11,7 +11,7 @@ import io.github.jixiaoyong.wanandroid.api.bean.BaseArticlesBean
  * date: 2019-11-12
  * description: todo
  */
-@Database(entities = arrayOf(BaseArticlesBean::class, CookiesBean::class), version = 1)
+@Database(entities = arrayOf(DataIndexPostParam::class, CookiesBean::class), version = 1)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun baseArticlesDao(): BaseArticlesDao

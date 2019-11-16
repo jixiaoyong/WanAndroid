@@ -35,7 +35,6 @@ class LauncherActivity : BaseActivity() {
         super.onResume()
         Logger.d("try in launch")
 
-        //todo check why app crash while without GlobalScope
         launch {
             Logger.d("start in launch")
 
@@ -55,10 +54,9 @@ class LauncherActivity : BaseActivity() {
 
     suspend fun isLogin(): Boolean {
         val result = NetUtils.wanAndroidApi.getCoinInfo()
-        Logger.d("result:$result")
         return try {
             if (result.errorCode == NetUtils.ErrorCode.SUCCEEDED) {
-                Logger.e("is login")
+                Logger.e("has login")
                 true
             } else {
                 val cookiesDao = DatabaseUtils.database.cookiesDao()

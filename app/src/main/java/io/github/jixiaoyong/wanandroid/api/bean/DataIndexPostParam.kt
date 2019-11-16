@@ -1,7 +1,13 @@
 package io.github.jixiaoyong.wanandroid.api.bean
 
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import androidx.room.TypeConverter
+import androidx.room.TypeConverters
+import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
+import com.google.gson.reflect.TypeToken
 
 /**
  * author: jixiaoyong
@@ -46,6 +52,8 @@ import com.google.gson.annotations.SerializedName
 "zan": 0
 }
  */
+@TypeConverters(TagConvert::class)
+@Entity(tableName = "baseArticles")
 data class DataIndexPostParam(
         @SerializedName("apkLink")
         var apkLink: String = "",
@@ -104,7 +112,9 @@ data class DataIndexPostParam(
         @SerializedName("visible")
         var visible: Int = 0, // 1
         @SerializedName("zan")
-        var zan: Int = 0 // 0
+        var zan: Int = 0, // 0
+        @PrimaryKey(autoGenerate = true)
+        var _idDB: Int? = null
 ) {
     data class Tag(
             @SerializedName("name")
@@ -112,4 +122,23 @@ data class DataIndexPostParam(
             @SerializedName("url")
             var url: String = "" // /navi#272
     )
+}
+
+class TagConvert {
+
+    @TypeConverter
+    fun stringToObject(value: String): List<DataIndexPostParam.Tag> {
+        val listType = object : TypeToken<List<DataIndexPostParam.Tag>>() {
+
+        }.type
+        return Gson().fromJson(value, listType)
+    }
+
+    @TypeConverter
+    fun objectToString(list: List<DataIndexPostParam.Tag>): String {
+        val gson = Gson()
+        return gson.toJson(list)
+    }
+
+
 }

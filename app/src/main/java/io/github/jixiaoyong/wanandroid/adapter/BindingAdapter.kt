@@ -6,6 +6,7 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.Group
 import androidx.databinding.BindingAdapter
 import io.github.jixiaoyong.wanandroid.R
+import io.github.jixiaoyong.wanandroid.api.ApiCommondConstants
 import io.github.jixiaoyong.wanandroid.api.bean.DataCoinParam
 import io.github.jixiaoyong.wanandroid.data.CookiesBean
 import io.github.jixiaoyong.wanandroid.utils.Utils
@@ -64,6 +65,57 @@ fun bindIsVisibleView(view: View, isShow: Boolean) {
         View.VISIBLE
     } else {
         View.GONE
+    }
+}
+
+@BindingAdapter("app:isWechat")
+fun bindIsWechat(view: View, superChapterId: Int) {
+    view.visibility = if (superChapterId == ApiCommondConstants.SuperChapterId.WECHAT) {
+        View.VISIBLE
+    } else {
+        View.GONE
+    }
+}
+
+@BindingAdapter("app:isQuestion")
+fun bindIsQuestion(view: View, superChapterId: Int) {
+    view.visibility = if (superChapterId == ApiCommondConstants.SuperChapterId.QUESTION) {
+        View.VISIBLE
+    } else {
+        View.GONE
+    }
+}
+
+@BindingAdapter("app:isNew")
+fun bindIsNew(view: View, fresh: Boolean) {
+    view.visibility = if (fresh) {
+        View.VISIBLE
+    } else {
+        View.GONE
+    }
+}
+
+@BindingAdapter("app:isFavorite")
+fun bindIsFavorite(view: TextView, isFavorite: Boolean) {
+    val (text, color) = if (isFavorite) {
+        Pair(R.string.collected_yes, R.color.colorCollected)
+    } else {
+        Pair(R.string.collected_no, R.color.colorNormalText)
+    }
+    view.text = view.context.getString(text)
+    view.setTextColor(view.context.resources.getColor(color))
+}
+
+@BindingAdapter("app:chapterName", "app:superChapterName")
+fun bindChapterName(view: TextView, chapterName: String?, superChapterName: String?) {
+    view.text = if (!superChapterName.isNullOrEmpty() && !chapterName.isNullOrEmpty()) {
+        "$chapterName/$superChapterName"
+    } else if (!superChapterName.isNullOrEmpty()) {
+        "$superChapterName"
+    } else if (!chapterName.isNullOrEmpty()) {
+        "$chapterName"
+    } else {
+        ""
     }
 }
 

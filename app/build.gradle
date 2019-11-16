@@ -58,6 +58,7 @@ android {
         enabled = true
     }
 
+    //for com.google.androidbrowserhelper:androidbrowserhelper
     compileOptions {
         sourceCompatibility = 1.8
         targetCompatibility = 1.8
@@ -82,6 +83,8 @@ dependencies {
 
     implementation "androidx.navigation:navigation-fragment-ktx:$navigation_version"
     implementation "androidx.navigation:navigation-ui-ktx:$navigation_version"
+    implementation "androidx.paging:paging-runtime-ktx:$paging_version"
+//    implementation 'com.github.markomilos:paginate:0.5.1'
 
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_livedata_ktx_version"
@@ -90,13 +93,12 @@ dependencies {
     kapt "androidx.room:room-compiler:$room_version"
 
 //    implementation 'com.github.pinguo-zhouwei:MZBannerView:v2.0.0'
-    implementation 'com.github.jixiaoyong:library:0.0.1'
+    implementation 'com.github.jixiaoyong:library:0.0.2'
 
     //network
     implementation "com.squareup.retrofit2:retrofit:2.6.2"
     implementation "com.squareup.retrofit2:converter-gson:2.6.2"
 
-
-    //web view
+    //load url by chrome
     implementation 'com.google.androidbrowserhelper:androidbrowserhelper:0.1.0-alpha1'
 }

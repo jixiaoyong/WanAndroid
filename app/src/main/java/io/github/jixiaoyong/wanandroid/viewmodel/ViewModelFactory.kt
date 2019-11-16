@@ -11,9 +11,10 @@ import io.github.jixiaoyong.wanandroid.data.NetWorkRepository
  *  Description: ViewModelFactory
  */
 @Suppress("UNCHECKED_CAST")
-class MainViewModelFactory(private val accountRepository: AccountRepository) : ViewModelProvider.Factory {
+class MainViewModelFactory(private val accountRepository: AccountRepository,
+                           private val netWorkRepository: NetWorkRepository) : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return MainViewModel(accountRepository) as T
+        return MainViewModel(accountRepository, netWorkRepository) as T
     }
 }
 

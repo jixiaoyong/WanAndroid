@@ -1,13 +1,10 @@
 package io.github.jixiaoyong.wanandroid.api.bean
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
 
 /**
  * Created by jixiaoyong on 2018/3/11.
  * email:jixiaoyong1995@gmail.com
  */
-@Entity(tableName = "baseArticles")
 data class BaseArticlesBean(
         /**
         {
@@ -56,7 +53,6 @@ data class BaseArticlesBean(
         var courseId: Int = 0,
         var desc: String = "",
         var envelopePic: String = "",
-        @PrimaryKey
         var id: Int = 0,
         var link: String = "",
         var niceDate: String = "",
@@ -66,6 +62,4 @@ data class BaseArticlesBean(
         var title: String = "",
         var visible: Int = 0,
         var zan: Int = 0
-//        @PrimaryKey(autoGenerate = true)
-//        var _id: Int? = null
 )

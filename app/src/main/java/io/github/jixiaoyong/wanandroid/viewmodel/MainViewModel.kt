@@ -1,10 +1,18 @@
 package io.github.jixiaoyong.wanandroid.viewmodel
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations.map
 import androidx.lifecycle.Transformations.switchMap
 import androidx.lifecycle.liveData
+import androidx.paging.toLiveData
+import io.github.jixiaoyong.wanandroid.api.bean.DataIndexPostParam
 import io.github.jixiaoyong.wanandroid.base.BaseViewModel
 import io.github.jixiaoyong.wanandroid.data.AccountRepository
+import io.github.jixiaoyong.wanandroid.data.IndexPostBoundaryCallback
+import io.github.jixiaoyong.wanandroid.data.NetWorkRepository
+import io.github.jixiaoyong.wanandroid.utils.CommonConstants
+import io.github.jixiaoyong.wanandroid.utils.DatabaseUtils
+import io.github.jixiaoyong.wanandroid.utils.NetUtils
 
 /**
  * author: jixiaoyong
@@ -13,9 +21,12 @@ import io.github.jixiaoyong.wanandroid.data.AccountRepository
  * date: 2019-11-12
  * description: todo
  */
-class MainViewModel(private val accountRepository: AccountRepository) : BaseViewModel() {
+class MainViewModel(private val accountRepository: AccountRepository,
+                    private val netWorkRepository: NetWorkRepository) : BaseViewModel() {
+
 
     val cookies = accountRepository.getCookieBean()
+    val networkStateLiveData = MutableLiveData<NetUtils.NetworkState>(NetUtils.NetworkState.Normal)
 
     val isLogin = map(cookies) {
         val cookie = it?.getOrNull(0)
@@ -34,4 +45,17 @@ class MainViewModel(private val accountRepository: AccountRepository) : BaseView
 
     }
 
+    val allIndexPost = DatabaseUtils.database
+            .baseArticlesDao().queryAllArticles().toLiveData(
+                    pageSize = CommonConstants.Paging.PAGE_SIZE,
+                    boundaryCallback = IndexPostBoundaryCallback(netWorkRepository, coroutineContext)
+            )
+
+    suspend fun loadIndexPostFromZero() {
+        netWorkRepository.getIndexPostOnPage(0)
+    }
+
+    fun updateIndexPostCollectState(dataIndexPostParam: DataIndexPostParam) {
+//        netWorkRepository.updateIndexPostCollectState(dataIndexPostParam)
+    }
 }
