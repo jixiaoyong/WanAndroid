@@ -56,6 +56,6 @@ class MainViewModel(private val accountRepository: AccountRepository,
     }
 
     fun updateIndexPostCollectState(dataIndexPostParam: DataIndexPostParam) {
-//        netWorkRepository.updateIndexPostCollectState(dataIndexPostParam)
+        netWorkRepository.updateIndexPostCollectState(dataIndexPostParam)
     }
 }

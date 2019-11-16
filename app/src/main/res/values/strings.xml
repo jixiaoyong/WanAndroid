@@ -29,5 +29,9 @@
     <string name="tips_up_to_date">已经是最新的版本啦</string>
     <string name="collected_yes">已收藏</string>
     <string name="collected_no">未收藏</string>
+    <string name="label_wechat">公众号</string>
+    <string name="label_question">问答</string>
+    <string name="label_new">NEW</string>
+    <string name="label_top">TOP</string>
 
 </resources>

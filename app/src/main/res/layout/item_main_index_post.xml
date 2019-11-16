@@ -8,23 +8,28 @@
         <variable
             name="data"
             type="io.github.jixiaoyong.wanandroid.api.bean.DataIndexPostParam" />
+
+        <variable
+            name="superId"
+            type="io.github.jixiaoyong.wanandroid.api.ApiCommondConstants.SuperChapterId" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="5dp"
         android:layout_marginEnd="10dp">
 
         <TextView
             android:id="@+id/userNameTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+            android:padding="5dp"
             android:gravity="center"
             android:maxLength="10"
-            android:text="@{data.shareUser}"
+            android:text="@{(superId.WECHAT==data.superChapterId)?data.author:data.shareUser}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="ShaynJ" />
@@ -39,7 +44,7 @@
             android:gravity="center"
             android:paddingStart="5dp"
             android:paddingEnd="5dp"
-            android:text="公众号"
+            android:text="@string/label_wechat"
             android:textColor="#00BB57"
             app:isWechat="@{data.superChapterId}"
             app:layout_constraintBottom_toBottomOf="@id/userNameTv"
@@ -56,7 +61,7 @@
             android:gravity="center"
             android:paddingStart="5dp"
             android:paddingEnd="5dp"
-            android:text="TOP"
+            android:text="@string/label_top"
             android:textColor="#FF4B3F"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@id/userNameTv"
@@ -74,7 +79,7 @@
             android:gravity="center"
             android:paddingStart="5dp"
             android:paddingEnd="5dp"
-            android:text="NEW"
+            android:text="@string/label_new"
             android:textColor="#FF4B3F"
             app:isNew="@{data.fresh}"
             app:layout_constraintBottom_toBottomOf="@id/userNameTv"
@@ -91,7 +96,7 @@
             android:gravity="center"
             android:paddingStart="5dp"
             android:paddingEnd="5dp"
-            android:text="问答"
+            android:text="@string/label_question"
             android:textColor="#007AFF"
             app:isQuestion="@{data.superChapterId}"
             app:layout_constraintBottom_toBottomOf="@id/userNameTv"
