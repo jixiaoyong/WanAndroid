@@ -14,6 +14,7 @@ import kotlinx.coroutines.cancel
  */
 open class BaseViewModel : ViewModel(), CoroutineScope by MainScope() {
 
+
     override fun onCleared() {
         super.onCleared()
         cancel()

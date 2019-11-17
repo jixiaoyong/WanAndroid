@@ -4,13 +4,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.recyclerview.widget.DiffUtil
 import cf.android666.applibrary.Logger
 import io.github.jixiaoyong.wanandroid.R
 import io.github.jixiaoyong.wanandroid.api.bean.DataIndexPostParam
 import io.github.jixiaoyong.wanandroid.base.BasePagingAdapter
 import io.github.jixiaoyong.wanandroid.base.BaseViewHolder
-import io.github.jixiaoyong.wanandroid.databinding.ItemMainIndexPostBinding
+import io.github.jixiaoyong.wanandroid.databinding.ItemMainProjectBinding
 import io.github.jixiaoyong.wanandroid.utils.NetUtils
 import kotlinx.android.synthetic.main.item_main_index_post.view.*
 import kotlin.concurrent.thread
@@ -22,12 +21,12 @@ import kotlin.concurrent.thread
  * date: 2019-11-15
  * description: todo
  */
-class MainIndexPagingAdapter(private val updateIndexPostCollectState: (DataIndexPostParam) -> Unit,
-                             private val onViewHolder: ((View, DataIndexPostParam) -> Unit)? = null)
-    : BasePagingAdapter<DataIndexPostParam, MainIndexPagingAdapter.ViewHolder>(Diff()) {
+class MainProjectPagingAdapter(private val updateIndexPostCollectState: (DataIndexPostParam) -> Unit,
+                               private val onViewHolder: ((View, DataIndexPostParam) -> Unit)? = null)
+    : BasePagingAdapter<DataIndexPostParam, MainProjectPagingAdapter.ViewHolder>(Diff()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(DataBindingUtil.inflate(LayoutInflater.from(parent.context),
-                R.layout.item_main_index_post, parent, false))
+                R.layout.item_main_project, parent, false))
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -52,18 +51,5 @@ class MainIndexPagingAdapter(private val updateIndexPostCollectState: (DataIndex
         }
     }
 
-    class ViewHolder(val dataBinding: ItemMainIndexPostBinding) : BaseViewHolder(dataBinding.root)
-}
-
-class Diff : DiffUtil.ItemCallback<DataIndexPostParam>() {
-
-    override fun areItemsTheSame(oldItem: DataIndexPostParam, newItem: DataIndexPostParam): Boolean {
-        return oldItem.id == newItem.id
-    }
-
-    override fun areContentsTheSame(oldItem: DataIndexPostParam, newItem: DataIndexPostParam): Boolean {
-
-        return oldItem == newItem
-    }
-
+    class ViewHolder(val dataBinding: ItemMainProjectBinding) : BaseViewHolder(dataBinding.root)
 }

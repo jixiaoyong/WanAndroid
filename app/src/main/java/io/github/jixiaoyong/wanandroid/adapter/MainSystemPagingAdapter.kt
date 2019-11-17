@@ -3,7 +3,6 @@ package io.github.jixiaoyong.wanandroid.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import cf.android666.applibrary.Logger
 import io.github.jixiaoyong.wanandroid.R
 import io.github.jixiaoyong.wanandroid.api.bean.DataIndexPostParam
 import io.github.jixiaoyong.wanandroid.base.BasePagingAdapter
@@ -38,12 +37,8 @@ class MainSystemPagingAdapter(private val mainViewModel: MainViewModel)
             }
         }
         holder.itemView.favoriteTv.setOnClickListener {
-            Logger.d("before: data.collect ${data.collect},!data.collect:${!data.collect}")
             data.collect = !data.collect
-            Logger.d("before:  data.collect = !data.collect ${data.collect}")
-
             thread {
-                Logger.d("thread data.collect = !data.collect ${data.collect}")
                 mainViewModel.updateIndexPostCollectState(data)
             }
         }

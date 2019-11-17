@@ -2,10 +2,7 @@ package io.github.jixiaoyong.wanandroid.utils
 
 import io.github.jixiaoyong.wanandroid.data.AccountRepository
 import io.github.jixiaoyong.wanandroid.data.NetWorkRepository
-import io.github.jixiaoyong.wanandroid.viewmodel.AboutViewModelFactory
-import io.github.jixiaoyong.wanandroid.viewmodel.LoginRegisterViewModelFactory
-import io.github.jixiaoyong.wanandroid.viewmodel.MainViewModelFactory
-import io.github.jixiaoyong.wanandroid.viewmodel.SystemViewModelFactory
+import io.github.jixiaoyong.wanandroid.viewmodel.*
 
 /**
  * author: jixiaoyong
@@ -31,5 +28,9 @@ object InjectUtils {
 
     fun provideSystemViewModelFactory(): SystemViewModelFactory {
         return SystemViewModelFactory(NetWorkRepository())
+    }
+
+    fun provideProjectViewModelFactory(): ProjectViewModelFactory {
+        return ProjectViewModelFactory(NetWorkRepository())
     }
 }

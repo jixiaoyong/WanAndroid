@@ -45,7 +45,7 @@ class NetWorkRepository {
     /**
      * 获取项目分类列表
      */
-    fun getMainProjectList(): RemoteDataBean<List<DataProjectParam>> {
+    suspend fun getMainProjectList(): RemoteDataBean<List<DataProjectParam>> {
         return NetUtils.wanAndroidApi.getProjectList()
     }
 
@@ -73,6 +73,21 @@ class NetWorkRepository {
         } ?: listOf()
         if (page == 0) {
             DatabaseUtils.database.baseArticlesDao().deleteAllArticles(ApiCommondConstants.PostType.SystemPost)
+        }
+        DatabaseUtils.database.baseArticlesDao().insert(sysPostList)
+        return result
+    }
+
+    suspend fun getProjectPostOnPage(page: Int, cid: Int): RemoteDataBean<DataPageOf<DataIndexPostParam>> {
+        val result = NetUtils.wanAndroidApi.getProjectItems(page, cid)
+        Logger.d("sys list:($page,$cid) : getProjectPostOnPage ${result.data}")
+
+        val sysPostList = result.data?.datas?.map {
+            it._postType = ApiCommondConstants.PostType.ProjectPost
+            it
+        } ?: listOf()
+        if (page == 0) {
+            DatabaseUtils.database.baseArticlesDao().deleteAllArticles(ApiCommondConstants.PostType.ProjectPost)
         }
         DatabaseUtils.database.baseArticlesDao().insert(sysPostList)
         return result

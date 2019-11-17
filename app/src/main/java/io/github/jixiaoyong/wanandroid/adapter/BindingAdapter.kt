@@ -2,9 +2,11 @@ package io.github.jixiaoyong.wanandroid.adapter
 
 import android.view.View
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.Group
 import androidx.databinding.BindingAdapter
+import com.bumptech.glide.Glide
 import io.github.jixiaoyong.wanandroid.R
 import io.github.jixiaoyong.wanandroid.api.ApiCommondConstants
 import io.github.jixiaoyong.wanandroid.api.bean.DataCoinParam
@@ -122,6 +124,16 @@ fun bindChapterName(view: TextView, chapterName: String?, superChapterName: Stri
 @BindingAdapter("app:isShow")
 fun bindIsVisible(view: Group, isShow: Boolean) {
     view.visibility = if (isShow) {
+        View.VISIBLE
+    } else {
+        View.GONE
+    }
+}
+
+@BindingAdapter("imgUrl")
+fun bindIsVisible(view: ImageView, imgUrl: String) {
+    view.visibility = if (imgUrl.isNotBlank()) {
+        Glide.with(view).load(imgUrl).into(view)
         View.VISIBLE
     } else {
         View.GONE

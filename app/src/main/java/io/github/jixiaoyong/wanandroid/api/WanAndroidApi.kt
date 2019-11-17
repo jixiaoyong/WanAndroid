@@ -96,12 +96,13 @@ interface WanAndroidService {
      * 参数：无
      */
     @GET("project/tree/json")
-    fun getProjectList(): RemoteDataBean<List<DataProjectParam>>
+    suspend fun getProjectList(): RemoteDataBean<List<DataProjectParam>>
 
 
     /**
      * 项目列表数据
      * 方法：GET
+     * 某一个分类下项目列表数据，分页展示
     参数：
     cid 分类的id，上面项目分类接口
     页码：拼接在链接中，从1开始。
@@ -109,8 +110,8 @@ interface WanAndroidService {
     //下面Url中有?，所以不能用@Path，要用@Query
     //http://www.wanandroid.com/project/list/1/json?cid=294
     @GET("project/list/{page}/json")
-    fun getProjectItems(@Path("page") page: Int, @Query("cid") cid: Int)
-            : RemoteDataBean<List<DataIndexPostParam>>
+    suspend fun getProjectItems(@Path("page") page: Int, @Query("cid") cid: Int)
+            : RemoteDataBean<DataPageOf<DataIndexPostParam>>
 
 
     /**
