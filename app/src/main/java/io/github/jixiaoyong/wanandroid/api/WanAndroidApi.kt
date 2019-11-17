@@ -68,7 +68,7 @@ interface WanAndroidService {
      */
     @GET("article/list/{page}/json")
     suspend fun getSystemPost(@Path("page") page: Int, @Query("cid") cid: Int)
-            : RemoteDataBean<List<DataIndexPostParam>>
+            : RemoteDataBean<DataPageOf<DataIndexPostParam>>
 
     /**
      * 按照作者昵称搜索文章
@@ -317,6 +317,5 @@ interface WanAndroidService {
     @POST("lg/user_article/add/json")
     @FormUrlEncoded
     fun deletePublicPostOfMe(@Field("title") title: String, @Field("link") link: String): RemoteDataBean<Any>
-
 
 }

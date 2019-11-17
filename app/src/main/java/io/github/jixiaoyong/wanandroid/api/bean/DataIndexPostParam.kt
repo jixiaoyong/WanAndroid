@@ -8,6 +8,7 @@ import androidx.room.TypeConverters
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 import com.google.gson.reflect.TypeToken
+import io.github.jixiaoyong.wanandroid.api.ApiCommondConstants
 
 /**
  * author: jixiaoyong
@@ -114,7 +115,8 @@ data class DataIndexPostParam(
         @SerializedName("zan")
         var zan: Int = 0, // 0
         @PrimaryKey(autoGenerate = true)
-        var _idDB: Int? = null
+        var _idDB: Int? = null,
+        var _postType: Int = ApiCommondConstants.PostType.IndexPost
 ) {
     data class Tag(
             @SerializedName("name")

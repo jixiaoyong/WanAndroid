@@ -60,7 +60,7 @@ class MainIndexFragment : BaseFragment() {
             }
         }
 
-        val postAdapter = MainIndexPagingAdapter(mainViewModel)
+        val postAdapter = MainIndexPagingAdapter(mainViewModel::updateIndexPostCollectState)
         view.postRecyclerView.adapter = postAdapter
         view.postRecyclerView.addItemDecoration(DividerItemDecoration(requireContext(), RecyclerView.VERTICAL))
         mainViewModel.allIndexPost.observe(this, Observer(postAdapter::submitList))

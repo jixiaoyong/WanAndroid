@@ -1,9 +1,8 @@
 package io.github.jixiaoyong.wanandroid.data
 
-import io.github.jixiaoyong.wanandroid.api.bean.AppUpgradeBean
-import io.github.jixiaoyong.wanandroid.api.bean.DataIndexPostParam
-import io.github.jixiaoyong.wanandroid.api.bean.DataPageOf
-import io.github.jixiaoyong.wanandroid.api.bean.RemoteDataBean
+import cf.android666.applibrary.Logger
+import io.github.jixiaoyong.wanandroid.api.ApiCommondConstants
+import io.github.jixiaoyong.wanandroid.api.bean.*
 import io.github.jixiaoyong.wanandroid.utils.DatabaseUtils
 import io.github.jixiaoyong.wanandroid.utils.NetUtils
 
@@ -21,15 +20,16 @@ class NetWorkRepository {
     suspend fun getIndexPostOnPage(page: Int): RemoteDataBean<DataPageOf<DataIndexPostParam>> {
         val result = NetUtils.wanAndroidApi.getArticles(page)
         if (page == 0) {
-            DatabaseUtils.database.baseArticlesDao().deleteAllArticles()
+            DatabaseUtils.database.baseArticlesDao().deleteAllArticles(ApiCommondConstants.PostType.IndexPost)
         }
         DatabaseUtils.database.baseArticlesDao().insert(result.data?.datas ?: listOf())
         return result
     }
 
-    fun updateIndexPostCollectState(dataIndexPostParam: DataIndexPostParam) {
+    fun updatePostCollectState(dataIndexPostParam: DataIndexPostParam) {
+        Logger.d("dataIndexPostParam:$dataIndexPostParam")
         DatabaseUtils.database.baseArticlesDao().update(dataIndexPostParam)
-
+        //todo refresh collect state if network result filed
         val call = if (dataIndexPostParam.collect) {
             NetUtils.wanAndroidApi.collectPostById(dataIndexPostParam.id)
         } else {
@@ -40,5 +40,41 @@ class NetWorkRepository {
         } catch (e: Exception) {
             e.printStackTrace()
         }
+    }
+
+    /**
+     * 获取项目分类列表
+     */
+    fun getMainProjectList(): RemoteDataBean<List<DataProjectParam>> {
+        return NetUtils.wanAndroidApi.getProjectList()
+    }
+
+    /**
+     * 获取项目分类列表
+     */
+    suspend fun getMainSystemList(): RemoteDataBean<List<DataSystemParam<DataSystemParam<Any>>>> {
+        return NetUtils.wanAndroidApi.getTree()
+    }
+
+    /**
+     * 获取项目分类列表
+     */
+    fun cleanMainSystemPostList() {
+        DatabaseUtils.database.baseArticlesDao().deleteAllArticles(ApiCommondConstants.PostType.SystemPost)
+    }
+
+    suspend fun getSystemPostOnPage(page: Int, cid: Int): RemoteDataBean<DataPageOf<DataIndexPostParam>> {
+        val result = NetUtils.wanAndroidApi.getSystemPost(page, cid)
+        Logger.d("sys list:($page,$cid) : getSystemPostOnPage ${result.data?.datas}")
+
+        val sysPostList = result.data?.datas?.map {
+            it._postType = ApiCommondConstants.PostType.SystemPost
+            it
+        } ?: listOf()
+        if (page == 0) {
+            DatabaseUtils.database.baseArticlesDao().deleteAllArticles(ApiCommondConstants.PostType.SystemPost)
+        }
+        DatabaseUtils.database.baseArticlesDao().insert(sysPostList)
+        return result
     }
 }

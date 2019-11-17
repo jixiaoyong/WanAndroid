@@ -4,10 +4,6 @@ import androidx.annotation.MainThread
 import androidx.paging.PagedList
 import cf.android666.applibrary.Logger
 import io.github.jixiaoyong.wanandroid.api.bean.DataIndexPostParam
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlin.coroutines.CoroutineContext
 
 /**
  * author: jixiaoyong
@@ -17,9 +13,8 @@ import kotlin.coroutines.CoroutineContext
  * description: todo
  */
 
-class IndexPostBoundaryCallback(private val netWorkRepository: NetWorkRepository,
-                                coroutineContext: CoroutineContext)
-    : PagedList.BoundaryCallback<DataIndexPostParam>(), CoroutineScope by CoroutineScope(coroutineContext) {
+class IndexPostBoundaryCallback(private val loadFromWebToDb: (Int) -> Unit)
+    : PagedList.BoundaryCallback<DataIndexPostParam>() {
 
     private var currentPage = 0
 
@@ -30,7 +25,7 @@ class IndexPostBoundaryCallback(private val netWorkRepository: NetWorkRepository
     override fun onZeroItemsLoaded() {
         Logger.e("load zero data $currentPage")
         currentPage = 0
-        loadFromWebToDb()
+        loadFromWebToDb(currentPage)
     }
 
     /**
@@ -40,17 +35,11 @@ class IndexPostBoundaryCallback(private val netWorkRepository: NetWorkRepository
     override fun onItemAtEndLoaded(itemAtEnd: DataIndexPostParam) {
         Logger.e("load more data $currentPage")
         currentPage++
-        loadFromWebToDb()
+        loadFromWebToDb(currentPage)
     }
 
     override fun onItemAtFrontLoaded(itemAtFront: DataIndexPostParam) {
         // ignored, since we only ever append to what's in the DB
-    }
-
-    private fun loadFromWebToDb() {
-        launch(Dispatchers.IO) {
-            netWorkRepository.getIndexPostOnPage(currentPage)
-        }
     }
 
 }

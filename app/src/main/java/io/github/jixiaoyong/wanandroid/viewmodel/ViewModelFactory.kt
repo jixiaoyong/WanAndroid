@@ -31,3 +31,10 @@ class AboutViewModelFactory(private val netWorkRepository: NetWorkRepository) : 
         return AboutViewModel(netWorkRepository) as T
     }
 }
+
+@Suppress("UNCHECKED_CAST")
+class SystemViewModelFactory(private val netWorkRepository: NetWorkRepository) : ViewModelProvider.Factory {
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        return SystemViewModel(netWorkRepository) as T
+    }
+}

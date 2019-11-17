@@ -8,6 +8,7 @@
     <color name="colorCommonBgGrey">#C8ECECEC</color>
     <color name="colorItenewnd">#0288d1</color>
     <color name="colorNormalText">#FF8A8A8A</color>
+    <color name="colorGreenText">#00BB57</color>
     <color name="colorWhite">#ffffff</color>
     <color name="colorCollected">#FFBF00</color>
 </resources>

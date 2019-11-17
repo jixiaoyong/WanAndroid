@@ -5,6 +5,7 @@ import androidx.lifecycle.Transformations.map
 import androidx.lifecycle.Transformations.switchMap
 import androidx.lifecycle.liveData
 import androidx.paging.toLiveData
+import io.github.jixiaoyong.wanandroid.api.ApiCommondConstants
 import io.github.jixiaoyong.wanandroid.api.bean.DataIndexPostParam
 import io.github.jixiaoyong.wanandroid.base.BaseViewModel
 import io.github.jixiaoyong.wanandroid.data.AccountRepository
@@ -13,6 +14,8 @@ import io.github.jixiaoyong.wanandroid.data.NetWorkRepository
 import io.github.jixiaoyong.wanandroid.utils.CommonConstants
 import io.github.jixiaoyong.wanandroid.utils.DatabaseUtils
 import io.github.jixiaoyong.wanandroid.utils.NetUtils
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 /**
  * author: jixiaoyong
@@ -46,9 +49,13 @@ class MainViewModel(private val accountRepository: AccountRepository,
     }
 
     val allIndexPost = DatabaseUtils.database
-            .baseArticlesDao().queryAllArticles().toLiveData(
+            .baseArticlesDao().queryAllArticles(ApiCommondConstants.PostType.IndexPost).toLiveData(
                     pageSize = CommonConstants.Paging.PAGE_SIZE,
-                    boundaryCallback = IndexPostBoundaryCallback(netWorkRepository, coroutineContext)
+                    boundaryCallback = IndexPostBoundaryCallback { currentPage ->
+                        launch(Dispatchers.IO) {
+                            netWorkRepository.getIndexPostOnPage(currentPage)
+                        }
+                    }
             )
 
     suspend fun loadIndexPostFromZero() {
@@ -56,6 +63,6 @@ class MainViewModel(private val accountRepository: AccountRepository,
     }
 
     fun updateIndexPostCollectState(dataIndexPostParam: DataIndexPostParam) {
-        netWorkRepository.updateIndexPostCollectState(dataIndexPostParam)
+        netWorkRepository.updatePostCollectState(dataIndexPostParam)
     }
 }

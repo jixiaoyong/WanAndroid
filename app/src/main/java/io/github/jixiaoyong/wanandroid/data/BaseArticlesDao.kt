@@ -5,6 +5,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
+import io.github.jixiaoyong.wanandroid.api.ApiCommondConstants
 import io.github.jixiaoyong.wanandroid.api.bean.DataIndexPostParam
 
 /**
@@ -16,12 +17,17 @@ import io.github.jixiaoyong.wanandroid.api.bean.DataIndexPostParam
  */
 @Dao
 interface BaseArticlesDao {
+//
+//    @Query("SELECT * FROM baseArticles WHERE _postType == ${ApiCommondConstants.PostType.IndexPost}")
+//    fun queryAllArticles(): DataSource.Factory<Int, DataIndexPostParam>
 
-    @Query("SELECT * FROM baseArticles")
-    fun queryAllArticles(): DataSource.Factory<Int, DataIndexPostParam>
 
-    @Query("DELETE  FROM baseArticles")
-    fun deleteAllArticles()
+    @Query("SELECT * FROM baseArticles WHERE _postType == :postType")
+    fun queryAllArticles(postType: Int)
+            : DataSource.Factory<Int, DataIndexPostParam>
+
+    @Query("DELETE  FROM baseArticles WHERE _postType == :postType")
+    fun deleteAllArticles(postType: Int = ApiCommondConstants.PostType.IndexPost)
 
     @Insert
     fun insert(baseArticlesBeans: List<DataIndexPostParam>)

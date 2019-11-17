@@ -100,7 +100,7 @@ fun bindIsFavorite(view: TextView, isFavorite: Boolean) {
     val (text, color) = if (isFavorite) {
         Pair(R.string.collected_yes, R.color.colorCollected)
     } else {
-        Pair(R.string.collected_no, R.color.colorNormalText)
+        Pair(R.string.collected_no, R.color.colorGreenText)
     }
     view.text = view.context.getString(text)
     view.setTextColor(view.context.resources.getColor(color))
