@@ -9,7 +9,11 @@
         android:id="@+id/mainIndexFragment"
         android:name="io.github.jixiaoyong.wanandroid.fragment.MainIndexFragment"
         android:label="MainIndexFragment"
-        tools:layout="@layout/fragment_main_index" />
+        tools:layout="@layout/fragment_main_index">
+        <action
+            android:id="@+id/action_mainIndexFragment_to_moreFragment"
+            app:destination="@id/moreFragment" />
+    </fragment>
     <fragment
         android:id="@+id/mainSystemFragment"
         android:name="io.github.jixiaoyong.wanandroid.fragment.MainSystemFragment"
@@ -30,4 +34,9 @@
         android:name="io.github.jixiaoyong.wanandroid.fragment.MainAboutFragment"
         android:label="MainAboutFragment"
         tools:layout="@layout/fragment_main_about" />
+    <fragment
+        android:id="@+id/moreFragment"
+        android:name="io.github.jixiaoyong.wanandroid.fragment.MoreFragment"
+        android:label="MoreFragment"
+        tools:layout="@layout/fragment_more" />
 </navigation>

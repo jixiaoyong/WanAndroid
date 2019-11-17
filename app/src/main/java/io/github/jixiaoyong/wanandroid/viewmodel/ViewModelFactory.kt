@@ -45,3 +45,10 @@ class ProjectViewModelFactory(private val netWorkRepository: NetWorkRepository) 
         return ProjectViewModel(netWorkRepository) as T
     }
 }
+
+@Suppress("UNCHECKED_CAST")
+class MoreViewModelFactory(private val netWorkRepository: NetWorkRepository, private val action: Int) : ViewModelProvider.Factory {
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        return MoreViewModel(netWorkRepository, action) as T
+    }
+}

@@ -33,4 +33,8 @@ object InjectUtils {
     fun provideProjectViewModelFactory(): ProjectViewModelFactory {
         return ProjectViewModelFactory(NetWorkRepository())
     }
+
+    fun provideMoreViewModelFactory(action: Int): MoreViewModelFactory {
+        return MoreViewModelFactory(NetWorkRepository(), action)
+    }
 }

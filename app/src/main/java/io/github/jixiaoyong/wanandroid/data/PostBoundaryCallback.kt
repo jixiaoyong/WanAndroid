@@ -10,10 +10,10 @@ import io.github.jixiaoyong.wanandroid.api.bean.DataIndexPostParam
  * email: jixiaoyong1995@gmail.com
  * website: https://jixiaoyong.github.io
  * date: 2019-11-16
- * description: todo
+ * description: Paging分页加载库 加载数据
  */
 
-class IndexPostBoundaryCallback(private val loadFromWebToDb: (Int) -> Unit)
+class PostBoundaryCallback(private val loadFromWebToDb: (Int) -> Unit)
     : PagedList.BoundaryCallback<DataIndexPostParam>() {
 
     private var currentPage = 0

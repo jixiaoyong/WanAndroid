@@ -150,7 +150,7 @@ interface WanAndroidService {
     参数： 页码：拼接在链接中，从0开始。
      */
     @GET("lg/collect/list/{page}/json")
-    fun getCollect(@Path("page") page: Int): RemoteDataBean<List<DataIndexPostParam>>
+    suspend fun getCollect(@Path("page") page: Int): RemoteDataBean<DataPageOf<DataIndexPostParam>>
 
     /**
      * 收藏站内文章
@@ -275,7 +275,7 @@ interface WanAndroidService {
     可能出现返回列表数据<每页数据，因为有自见的文章被过滤掉了。
      */
     @GET("user_article/list/{page}/json")
-    fun getPulicPlacePosts(@Path("page") page: Int): RemoteDataBean<DataPageOf<DataIndexPostParam>>
+    suspend fun getPulicPlacePosts(@Path("page") page: Int): RemoteDataBean<DataPageOf<DataIndexPostParam>>
 
     /**
      * 分享人对应列表数据
@@ -318,5 +318,26 @@ interface WanAndroidService {
     @POST("lg/user_article/add/json")
     @FormUrlEncoded
     fun deletePublicPostOfMe(@Field("title") title: String, @Field("link") link: String): RemoteDataBean<Any>
+
+
+    /**
+     * 获取公众号列表
+     * 方法：GET
+     * 参数：无
+     */
+    @GET("wxarticle/chapters/json")
+    suspend fun getWechatList(): RemoteDataBean<List<DataSystemParam<Any>>>
+
+    /**
+     * 查看某个公众号历史数据
+    https://wanandroid.com/wxarticle/list/408/1/json
+    方法：GET
+    参数：
+    公众号 ID：拼接在 url 中，eg:405
+    公众号页码：拼接在url 中，eg:1
+     */
+    @GET("wxarticle/list/{wechatId}/{page}/json")
+    suspend fun getWechatPost(@Path("wechatId") wechatId: Int, @Path("page") page: Int)
+            : RemoteDataBean<DataPageOf<DataIndexPostParam>>
 
 }

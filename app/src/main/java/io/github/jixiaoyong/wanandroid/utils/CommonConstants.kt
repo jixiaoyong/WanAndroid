@@ -3,7 +3,7 @@ package io.github.jixiaoyong.wanandroid.utils
 /**
  *  Created by jixiaoyong1995@gmail.com
  *  Data: 2019/11/15.
- *  Description:
+ *  Description: 通用的一些常量
  */
 object CommonConstants {
 
@@ -21,5 +21,14 @@ object CommonConstants {
     object Paging {
         const val ENABLE_PLACEHOLDERS: Boolean = true
         const val PAGE_SIZE = 20
+    }
+
+    object Action {
+
+        const val KEY = "action"
+
+        const val WECHAT = 0
+        const val FAVORITE = 1
+        const val PEOPLE = 2
     }
 }

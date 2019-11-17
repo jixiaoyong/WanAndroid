@@ -30,7 +30,7 @@
                     android:layout_margin="10dp"
                     android:background="@drawable/background_round"
                     android:backgroundTint="#fff"
-                    app:queryHint="点击搜索文章" />
+                    app:queryHint="@string/edit_to_search" />
 
             </androidx.appcompat.widget.Toolbar>
 
@@ -60,7 +60,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="收藏"
+                android:text="@string/favortie"
                 app:layout_constraintEnd_toEndOf="@id/favoriteBtn"
                 app:layout_constraintStart_toStartOf="@id/favoriteBtn"
                 app:layout_constraintTop_toBottomOf="@id/favoriteBtn" />
@@ -83,7 +83,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="微信"
+                android:text="@string/wechat"
                 app:layout_constraintEnd_toEndOf="@id/weChatBtn"
                 app:layout_constraintStart_toStartOf="@id/weChatBtn"
                 app:layout_constraintTop_toBottomOf="@id/weChatBtn" />
@@ -106,7 +106,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="广场"
+                android:text="@string/square"
                 app:layout_constraintEnd_toEndOf="@id/peopleBtn"
                 app:layout_constraintStart_toStartOf="@id/peopleBtn"
                 app:layout_constraintTop_toBottomOf="@id/peopleBtn" />
@@ -134,7 +134,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:text="热门文章"
+                android:text="@string/hot_post"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="@id/hotImg"
                 app:layout_constraintStart_toEndOf="@id/hotImg"

@@ -1,6 +1,5 @@
 package io.github.jixiaoyong.wanandroid.data
 
-import cf.android666.applibrary.Logger
 import io.github.jixiaoyong.wanandroid.api.ApiCommondConstants
 import io.github.jixiaoyong.wanandroid.api.bean.*
 import io.github.jixiaoyong.wanandroid.utils.DatabaseUtils
@@ -9,7 +8,7 @@ import io.github.jixiaoyong.wanandroid.utils.NetUtils
 /**
  *  Created by jixiaoyong1995@gmail.com
  *  Data: 2019/11/15.
- *  Description:
+ *  Description: 网络相关操作类
  */
 class NetWorkRepository {
 
@@ -27,7 +26,6 @@ class NetWorkRepository {
     }
 
     fun updatePostCollectState(dataIndexPostParam: DataIndexPostParam) {
-        Logger.d("dataIndexPostParam:$dataIndexPostParam")
         DatabaseUtils.database.baseArticlesDao().update(dataIndexPostParam)
         //todo refresh collect state if network result filed
         val call = if (dataIndexPostParam.collect) {
@@ -65,7 +63,6 @@ class NetWorkRepository {
 
     suspend fun getSystemPostOnPage(page: Int, cid: Int): RemoteDataBean<DataPageOf<DataIndexPostParam>> {
         val result = NetUtils.wanAndroidApi.getSystemPost(page, cid)
-        Logger.d("sys list:($page,$cid) : getSystemPostOnPage ${result.data?.datas}")
 
         val sysPostList = result.data?.datas?.map {
             it._postType = ApiCommondConstants.PostType.SystemPost
@@ -80,7 +77,6 @@ class NetWorkRepository {
 
     suspend fun getProjectPostOnPage(page: Int, cid: Int): RemoteDataBean<DataPageOf<DataIndexPostParam>> {
         val result = NetUtils.wanAndroidApi.getProjectItems(page, cid)
-        Logger.d("sys list:($page,$cid) : getProjectPostOnPage ${result.data}")
 
         val sysPostList = result.data?.datas?.map {
             it._postType = ApiCommondConstants.PostType.ProjectPost
@@ -92,4 +88,54 @@ class NetWorkRepository {
         DatabaseUtils.database.baseArticlesDao().insert(sysPostList)
         return result
     }
+
+    suspend fun getPeoplePostOnPage(currentPage: Int): RemoteDataBean<DataPageOf<DataIndexPostParam>> {
+        val result = NetUtils.wanAndroidApi.getPulicPlacePosts(currentPage)
+
+        val wechatPostList = result.data?.datas?.map {
+            it._postType = ApiCommondConstants.PostType.PeoplePost
+            it
+        } ?: listOf()
+        if (currentPage == 0) {
+            DatabaseUtils.database.baseArticlesDao().deleteAllArticles(ApiCommondConstants.PostType.PeoplePost)
+        }
+        DatabaseUtils.database.baseArticlesDao().insert(wechatPostList)
+        return result
+    }
+
+    suspend fun getFavoritePostOnPage(currentPage: Int): RemoteDataBean<DataPageOf<DataIndexPostParam>> {
+        val result = NetUtils.wanAndroidApi.getCollect(currentPage)
+
+        val wechatPostList = result.data?.datas?.map {
+            it._postType = ApiCommondConstants.PostType.FavoritePost
+            it
+        } ?: listOf()
+        if (currentPage == 0) {
+            DatabaseUtils.database.baseArticlesDao().deleteAllArticles(ApiCommondConstants.PostType.FavoritePost)
+        }
+        DatabaseUtils.database.baseArticlesDao().insert(wechatPostList)
+        return result
+    }
+
+    /**
+     * 获取微信公众号列表
+     */
+    suspend fun getWechatList(): RemoteDataBean<List<DataSystemParam<Any>>> {
+        return NetUtils.wanAndroidApi.getWechatList()
+    }
+
+    suspend fun getWechatPostOnPage(page: Int, cid: Int): RemoteDataBean<DataPageOf<DataIndexPostParam>> {
+        val result = NetUtils.wanAndroidApi.getWechatPost(cid, page)
+
+        val wechatPostList = result.data?.datas?.map {
+            it._postType = ApiCommondConstants.PostType.WechatPost
+            it
+        } ?: listOf()
+        if (page == 0) {
+            DatabaseUtils.database.baseArticlesDao().deleteAllArticles(ApiCommondConstants.PostType.WechatPost)
+        }
+        DatabaseUtils.database.baseArticlesDao().insert(wechatPostList)
+        return result
+    }
+
 }

@@ -33,5 +33,10 @@
     <string name="label_question">问答</string>
     <string name="label_new">NEW</string>
     <string name="label_top">TOP</string>
+    <string name="edit_to_search">点击搜索文章</string>
+    <string name="favortie">收藏</string>
+    <string name="wechat">微信</string>
+    <string name="square">广场</string>
+    <string name="hot_post">热门文章</string>
 
 </resources>

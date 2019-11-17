@@ -9,8 +9,8 @@ import io.github.jixiaoyong.wanandroid.api.ApiCommondConstants
 import io.github.jixiaoyong.wanandroid.api.bean.DataIndexPostParam
 import io.github.jixiaoyong.wanandroid.base.BaseViewModel
 import io.github.jixiaoyong.wanandroid.data.AccountRepository
-import io.github.jixiaoyong.wanandroid.data.IndexPostBoundaryCallback
 import io.github.jixiaoyong.wanandroid.data.NetWorkRepository
+import io.github.jixiaoyong.wanandroid.data.PostBoundaryCallback
 import io.github.jixiaoyong.wanandroid.utils.CommonConstants
 import io.github.jixiaoyong.wanandroid.utils.DatabaseUtils
 import io.github.jixiaoyong.wanandroid.utils.NetUtils
@@ -51,7 +51,7 @@ class MainViewModel(private val accountRepository: AccountRepository,
     val allIndexPost = DatabaseUtils.database
             .baseArticlesDao().queryAllArticles(ApiCommondConstants.PostType.IndexPost).toLiveData(
                     pageSize = CommonConstants.Paging.PAGE_SIZE,
-                    boundaryCallback = IndexPostBoundaryCallback { currentPage ->
+                    boundaryCallback = PostBoundaryCallback { currentPage ->
                         launch(Dispatchers.IO) {
                             netWorkRepository.getIndexPostOnPage(currentPage)
                         }

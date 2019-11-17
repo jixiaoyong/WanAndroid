@@ -7,11 +7,13 @@ import android.view.*
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import io.github.jixiaoyong.wanandroid.R
 import io.github.jixiaoyong.wanandroid.adapter.MainIndexPagingAdapter
 import io.github.jixiaoyong.wanandroid.base.BaseFragment
+import io.github.jixiaoyong.wanandroid.utils.CommonConstants
 import io.github.jixiaoyong.wanandroid.utils.InjectUtils
 import io.github.jixiaoyong.wanandroid.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
@@ -65,6 +67,21 @@ class MainIndexFragment : BaseFragment() {
         view.postRecyclerView.addItemDecoration(DividerItemDecoration(requireContext(), RecyclerView.VERTICAL))
         mainViewModel.allIndexPost.observe(this, Observer(postAdapter::submitList))
 
+        view.weChatBtn.setOnClickListener {
+            goMoreFragment(view, CommonConstants.Action.WECHAT)
+        }
+        view.favoriteBtn.setOnClickListener {
+            goMoreFragment(view, CommonConstants.Action.FAVORITE)
+        }
+        view.peopleBtn.setOnClickListener {
+            goMoreFragment(view, CommonConstants.Action.PEOPLE)
+        }
+    }
+
+    private fun goMoreFragment(view: View, action: Int) {
+        val args = Bundle()
+        args.putInt(CommonConstants.Action.KEY, action)
+        view.findNavController().navigate(R.id.action_mainIndexFragment_to_moreFragment, args)
     }
 
     //是否需要拦截postRecyclerView向上滑动

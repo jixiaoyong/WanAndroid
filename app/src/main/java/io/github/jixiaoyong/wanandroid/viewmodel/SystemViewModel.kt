@@ -11,8 +11,8 @@ import io.github.jixiaoyong.wanandroid.api.ApiCommondConstants
 import io.github.jixiaoyong.wanandroid.api.bean.DataIndexPostParam
 import io.github.jixiaoyong.wanandroid.api.bean.DataSystemParam
 import io.github.jixiaoyong.wanandroid.base.BaseViewModel
-import io.github.jixiaoyong.wanandroid.data.IndexPostBoundaryCallback
 import io.github.jixiaoyong.wanandroid.data.NetWorkRepository
+import io.github.jixiaoyong.wanandroid.data.PostBoundaryCallback
 import io.github.jixiaoyong.wanandroid.utils.CommonConstants
 import io.github.jixiaoyong.wanandroid.utils.DatabaseUtils
 import kotlinx.coroutines.Dispatchers
@@ -24,7 +24,7 @@ import kotlinx.coroutines.withContext
  * email: jixiaoyong1995@gmail.com
  * website: https://jixiaoyong.github.io
  * date: 2019-11-16
- * description: todo
+ * description: 体系页面
  */
 class SystemViewModel(val netWorkRepository: NetWorkRepository) : BaseViewModel() {
 
@@ -80,7 +80,7 @@ class SystemViewModel(val netWorkRepository: NetWorkRepository) : BaseViewModel(
             DatabaseUtils.database
                     .baseArticlesDao().queryAllArticles(ApiCommondConstants.PostType.SystemPost).toLiveData(
                             pageSize = CommonConstants.Paging.PAGE_SIZE,
-                            boundaryCallback = IndexPostBoundaryCallback { currentPage ->
+                            boundaryCallback = PostBoundaryCallback { currentPage ->
                                 launch(Dispatchers.IO) {
                                     Logger.e("sys list : start load $currentPage")
                                     netWorkRepository.getSystemPostOnPage(currentPage, it.id)

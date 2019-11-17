@@ -8,7 +8,7 @@ import io.github.jixiaoyong.wanandroid.utils.NetUtils
  * email: jixiaoyong1995@gmail.com
  * website: https://jixiaoyong.github.io
  * date: 2019-11-14
- * description: todo
+ * description: 与账号相关的操作类
  */
 class AccountRepository {
 
