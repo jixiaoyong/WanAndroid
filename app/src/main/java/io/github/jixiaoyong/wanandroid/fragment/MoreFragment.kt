@@ -15,6 +15,7 @@ import com.google.android.material.tabs.TabLayout
 import io.github.jixiaoyong.wanandroid.R
 import io.github.jixiaoyong.wanandroid.adapter.MainIndexPagingAdapter
 import io.github.jixiaoyong.wanandroid.base.BaseFragment
+import io.github.jixiaoyong.wanandroid.utils.BottomNabControl
 import io.github.jixiaoyong.wanandroid.utils.CommonConstants
 import io.github.jixiaoyong.wanandroid.utils.InjectUtils
 import io.github.jixiaoyong.wanandroid.viewmodel.MoreViewModel
@@ -68,6 +69,24 @@ class MoreFragment : BaseFragment() {
 
         if (CommonConstants.Action.WECHAT == action) {
             initTabView(view)
+        }
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        changBottomNabViewVisible(false)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        changBottomNabViewVisible(true)
+    }
+
+    private fun changBottomNabViewVisible(isVisible: Boolean) {
+        val activity = requireActivity()
+        if (activity is BottomNabControl) {
+            activity.changBottomNavViewVisibility(isVisible)
         }
     }
 

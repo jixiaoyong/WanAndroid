@@ -46,8 +46,8 @@
 
             <ImageButton
                 android:id="@+id/favoriteBtn"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_marginTop="15dp"
                 android:background="@drawable/ic_favorite"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -68,8 +68,8 @@
 
             <ImageButton
                 android:id="@+id/weChatBtn"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="30dp"
+                android:layout_height="33dp"
                 android:layout_marginEnd="30dp"
                 android:background="@drawable/ic_wechat"
                 app:layout_constraintBottom_toBottomOf="@id/favoriteBtn"
@@ -91,8 +91,8 @@
 
             <ImageButton
                 android:id="@+id/peopleBtn"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_marginStart="30dp"
                 android:background="@drawable/ic_people"
                 app:layout_constraintBottom_toBottomOf="@id/favoriteBtn"
@@ -110,7 +110,6 @@
                 app:layout_constraintEnd_toEndOf="@id/peopleBtn"
                 app:layout_constraintStart_toStartOf="@id/peopleBtn"
                 app:layout_constraintTop_toBottomOf="@id/peopleBtn" />
-
 
             <View
                 android:id="@+id/dividerAfterFavoriteBtn"
@@ -152,7 +151,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/postRecyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="300dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/dividerAfterHotImg"
