@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.MotionEvent
 import androidx.core.widget.NestedScrollView
+import kotlin.math.abs
 
 /**
  * author: jixiaoyong
@@ -17,13 +18,46 @@ class DispatchNestedScrollView @JvmOverloads constructor(context: Context,
                                                          defStyleAttr: Int = 0)
     : NestedScrollView(context, attrs, defStyleAttr) {
 
+    /**
+     * 判断是否拦截子View点击事件的方法，由外部实现
+     */
+    var isNeedInterceptActionMove: ((ev: MotionEvent?, direction: Int) -> Boolean)? = null
 
-    var isNeedInterceptActionMove: (() -> Boolean)? = null
+    private var moveDirection = Direction.NONE
+    private var lastPoint = Pair(0F, 0F)
 
+    /**
+     * 是否拦截子View的点击事件
+     * 返回true则拦截，否则不拦截
+     */
     override fun onInterceptTouchEvent(ev: MotionEvent?): Boolean {
-        if (MotionEvent.ACTION_MOVE == ev?.action) {
-            return isNeedInterceptActionMove?.invoke() ?: false
+
+        when (ev?.action) {
+            MotionEvent.ACTION_DOWN -> {
+                lastPoint = Pair(ev.rawX, ev.rawY)
+            }
+            MotionEvent.ACTION_MOVE -> {
+                val currentPoint = Pair(ev.rawX, ev.rawY)
+                moveDirection = if (abs(currentPoint.first - lastPoint.first) >
+                        (abs(currentPoint.second - lastPoint.second))) {
+                    Direction.HORIZONTAL
+                } else {
+                    Direction.VERTICAL
+                }
+                lastPoint = Pair(ev.rawX, ev.rawY)
+                return isNeedInterceptActionMove?.invoke(ev, moveDirection) ?: false
+            }
         }
+
         return super.onInterceptTouchEvent(ev)
+    }
+
+    companion object {
+
+        object Direction {
+            const val NONE = -1
+            const val VERTICAL = 0
+            const val HORIZONTAL = 1
+        }
     }
 }
