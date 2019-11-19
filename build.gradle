@@ -18,10 +18,9 @@ buildscript {
         maven { url 'https://maven.aliyun.com/repository/jcenter' }
         maven { url 'https://maven.aliyun.com/repository/google' }
         maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+        maven { url 'https://dl.bintray.com/jixiaoyong/maven/' }
         google()
         jcenter()
-        maven { url 'https://dl.bintray.com/jixiaoyong/maven/' }
-        maven { url 'https://jitpack.io' }//for MZBannerView,PersistentCookieJar
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.5.2'
@@ -39,10 +38,9 @@ allprojects {
         maven { url 'https://maven.aliyun.com/repository/jcenter' }
         maven { url 'https://maven.aliyun.com/repository/google' }
         maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+        maven { url 'https://dl.bintray.com/jixiaoyong/maven/' }
         google()
         jcenter()
-        maven { url 'https://dl.bintray.com/jixiaoyong/maven/' }
-        maven { url 'https://jitpack.io' }
     }
 }
 

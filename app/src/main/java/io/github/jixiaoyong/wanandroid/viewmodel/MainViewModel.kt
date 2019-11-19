@@ -5,7 +5,9 @@ import androidx.lifecycle.Transformations.map
 import androidx.lifecycle.Transformations.switchMap
 import androidx.lifecycle.liveData
 import androidx.paging.toLiveData
+import cf.android666.applibrary.Logger
 import io.github.jixiaoyong.wanandroid.api.ApiCommondConstants
+import io.github.jixiaoyong.wanandroid.api.bean.DataBannerParam
 import io.github.jixiaoyong.wanandroid.api.bean.DataIndexPostParam
 import io.github.jixiaoyong.wanandroid.base.BaseViewModel
 import io.github.jixiaoyong.wanandroid.data.AccountRepository
@@ -16,6 +18,7 @@ import io.github.jixiaoyong.wanandroid.utils.DatabaseUtils
 import io.github.jixiaoyong.wanandroid.utils.NetUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlin.concurrent.thread
 
 /**
  * author: jixiaoyong
@@ -28,6 +31,7 @@ class MainViewModel(private val accountRepository: AccountRepository,
                     private val netWorkRepository: NetWorkRepository) : BaseViewModel() {
 
 
+    val bannerListLiveData = MutableLiveData<List<DataBannerParam>?>()
     val cookies = accountRepository.getCookieBean()
     val networkStateLiveData = MutableLiveData<NetUtils.NetworkState>(NetUtils.NetworkState.Normal)
 
@@ -57,6 +61,15 @@ class MainViewModel(private val accountRepository: AccountRepository,
                         }
                     }
             )
+
+    init {
+
+        thread {
+            Logger.d("")
+            val bannerList = netWorkRepository.getBannerListSync()
+            bannerListLiveData.postValue(bannerList)
+        }
+    }
 
     suspend fun loadIndexPostFromZero() {
         netWorkRepository.getIndexPostOnPage(0)

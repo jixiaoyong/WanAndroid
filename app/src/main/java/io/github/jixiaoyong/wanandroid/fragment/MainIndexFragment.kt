@@ -10,11 +10,14 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
+import cf.android666.applibrary.view.BannerViewHelper
+import com.bumptech.glide.Glide
 import io.github.jixiaoyong.wanandroid.R
 import io.github.jixiaoyong.wanandroid.adapter.MainIndexPagingAdapter
 import io.github.jixiaoyong.wanandroid.base.BaseFragment
 import io.github.jixiaoyong.wanandroid.utils.CommonConstants
 import io.github.jixiaoyong.wanandroid.utils.InjectUtils
+import io.github.jixiaoyong.wanandroid.utils.NetUtils
 import io.github.jixiaoyong.wanandroid.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_main_index.view.*
@@ -66,6 +69,23 @@ class MainIndexFragment : BaseFragment() {
         view.postRecyclerView.adapter = postAdapter
         view.postRecyclerView.addItemDecoration(DividerItemDecoration(requireContext(), RecyclerView.VERTICAL))
         mainViewModel.allIndexPost.observe(this, Observer(postAdapter::submitList))
+
+        mainViewModel.bannerListLiveData.observe(this, Observer {
+            it?.let { dataList ->
+
+                val fragments = BannerViewHelper.initImageBannerOf(
+                        requireContext(), dataList.size) { imageView, i ->
+                    val imgUrl = dataList.getOrNull(i)?.imagePath
+                    imageView.setOnClickListener {
+                        dataList.getOrNull(i)?.url?.let {
+                            NetUtils.loadUrl(requireContext(), it)
+                        }
+                    }
+                    Glide.with(imageView).load(imgUrl).into(imageView)
+                }
+                view.banner.setViewsAndIndicator(requireFragmentManager(), fragments)
+            }
+        })
 
         view.weChatBtn.setOnClickListener {
             goMoreFragment(view, CommonConstants.Action.WECHAT)

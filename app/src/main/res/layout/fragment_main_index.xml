@@ -34,14 +34,11 @@
 
             </androidx.appcompat.widget.Toolbar>
 
-            <ImageView
+            <cf.android666.applibrary.view.BannerView
                 android:id="@+id/banner"
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:layout_marginStart="20dp"
+                android:layout_height="200dp"
                 android:layout_marginTop="10dp"
-                android:layout_marginEnd="20dp"
-                android:background="#AAAAAA"
                 app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
             <ImageButton

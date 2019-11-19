@@ -25,7 +25,7 @@ interface WanAndroidService {
      * 参数：无
      */
     @GET("banner/json")
-    fun getBanner(): RemoteDataBean<List<DataBannerParam>>
+    fun getBanner(): Call<RemoteDataBean<List<DataBannerParam>>>
 
     /**
      * 常用网站

@@ -138,4 +138,17 @@ class NetWorkRepository {
         return result
     }
 
+    /**
+     * 获取Banner列表
+     */
+    fun getBannerListSync(): List<DataBannerParam>? {
+        val respone = try {
+            NetUtils.wanAndroidApi.getBanner().execute()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+        return respone?.body()?.data
+    }
+
 }

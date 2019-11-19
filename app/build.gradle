@@ -91,8 +91,7 @@ dependencies {
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
 
-//    implementation 'com.github.pinguo-zhouwei:MZBannerView:v2.0.0'
-    implementation 'com.github.jixiaoyong:library:0.0.2'
+    implementation 'com.github.jixiaoyong:library:0.0.3'
 
     //network
     implementation "com.squareup.retrofit2:retrofit:2.6.2"
