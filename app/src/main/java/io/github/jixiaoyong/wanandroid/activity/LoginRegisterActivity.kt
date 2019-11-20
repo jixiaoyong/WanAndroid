@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
+import androidx.core.widget.doOnTextChanged
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import cf.android666.applibrary.Logger
@@ -65,6 +66,19 @@ class LoginRegisterActivity : BaseActivity() {
             finish()
         }
 
+        userNameEditText.doOnTextChanged { text, start, count, after ->
+            viewModel.nameInputLength.value = text?.length ?: 0
+        }
+
+        pwdEditText.doOnTextChanged { text, start, count, after ->
+            viewModel.pwdInputLength.value = text?.length ?: 0
+        }
+
+        pwdReEditText.doOnTextChanged { text, start, count, after ->
+            viewModel.repwdInputLength.value = text?.length ?: 0
+        }
+
+
         loginRegisterBtn.setOnClickListener {
             val userName = userNameEditText.text.toString()
             val userPwd = pwdEditText.text.toString()
@@ -97,6 +111,7 @@ class LoginRegisterActivity : BaseActivity() {
             }
             showRePwd = !showRePwd
         }
+
 
     }
 

@@ -9,6 +9,10 @@
         <variable
             name="isLogin"
             type="Boolean" />
+
+        <variable
+            name="canButtonEnable"
+            type="Boolean" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -85,11 +89,13 @@
             android:layout_height="90dp"
             android:layout_marginTop="30dp"
             android:layout_marginBottom="30dp"
-            android:background="@drawable/btn_disbale"
+            android:background="@drawable/ic_btn_bg_selector"
+            android:enabled="@{canButtonEnable}"
             android:gravity="center"
             android:paddingBottom="7dp"
+            android:shadowColor="@color/colorCommonBgGrey"
             android:textColor="#fff"
-            android:textSize="26sp"
+            android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/pwdReEditText"

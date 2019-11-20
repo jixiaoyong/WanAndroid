@@ -10,15 +10,16 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
-import cf.android666.applibrary.Logger
 import cf.android666.applibrary.view.BannerViewHelper
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import io.github.jixiaoyong.wanandroid.R
 import io.github.jixiaoyong.wanandroid.adapter.MainIndexPagingAdapter
 import io.github.jixiaoyong.wanandroid.base.BaseFragment
 import io.github.jixiaoyong.wanandroid.utils.CommonConstants
 import io.github.jixiaoyong.wanandroid.utils.InjectUtils
 import io.github.jixiaoyong.wanandroid.utils.NetUtils
+import io.github.jixiaoyong.wanandroid.utils.Utils
 import io.github.jixiaoyong.wanandroid.view.DispatchNestedScrollView
 import io.github.jixiaoyong.wanandroid.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
@@ -72,8 +73,8 @@ class MainIndexFragment : BaseFragment() {
         view.postRecyclerView.addItemDecoration(DividerItemDecoration(requireContext(), RecyclerView.VERTICAL))
         mainViewModel.allIndexPost.observe(this, Observer(postAdapter::submitList))
 
-        mainViewModel.bannerListLiveData.observe(this, Observer {
-            it?.let { dataList ->
+        mainViewModel.bannerListLiveData.observe(this, Observer { list ->
+            list?.let { dataList ->
 
                 val fragments = BannerViewHelper.initImageBannerOf(
                         requireContext(), dataList.size) { imageView, i ->
@@ -83,9 +84,15 @@ class MainIndexFragment : BaseFragment() {
                             NetUtils.loadUrl(requireContext(), it)
                         }
                     }
-                    Glide.with(imageView).load(imgUrl).into(imageView)
+                    Glide.with(imageView)
+                            .load(imgUrl)
+                            .diskCacheStrategy(DiskCacheStrategy.ALL)
+                            .centerCrop()
+                            .into(imageView)
                 }
-                view.banner.setViewsAndIndicator(requireFragmentManager(), fragments)
+                view.banner.setViewsAndIndicator(requireFragmentManager(), fragments, dataList.map {
+                    it.title
+                })
             }
         })
 
@@ -108,17 +115,16 @@ class MainIndexFragment : BaseFragment() {
 
     //DispatchNestedScrollView是否需要拦截子View的滑动事件
     private fun isNeedIntercept(ev: MotionEvent?, direction: Int): Boolean {
-        Logger.d("direction(0V,1H):$direction")
         ev?.let { event ->
             view?.postRecyclerView?.let {
-                if (isInViewScope(it, ev.rawX, ev.rawY)
+                if (Utils.isInViewScope(it, ev.rawX, ev.rawY)
                         && (0 >= (view!!.dividerAfterHotImg!!.y - view!!.nestedScrollView!!.scrollY))
                         && direction == DispatchNestedScrollView.Companion.Direction.VERTICAL) {
                     return false
                 }
             }
             view?.banner?.let {
-                if (isInViewScope(it, ev.rawX, ev.rawY)
+                if (Utils.isInViewScope(it, ev.rawX, ev.rawY)
                         && direction == DispatchNestedScrollView.Companion.Direction.HORIZONTAL) {
                     return false
                 }
@@ -127,17 +133,6 @@ class MainIndexFragment : BaseFragment() {
         return true
     }
 
-    fun isInViewScope(view: View, x: Float, y: Float): Boolean {
-        val locationInfo = IntArray(2)
-        view.getLocationOnScreen(locationInfo)
-        //(left,right,top,bottom)
-        val left = locationInfo[0]
-        val right = left + view.measuredWidth
-        val top = locationInfo[1]
-        val bottom = top + view.measuredHeight
-
-        return x.toInt() in left..right && y.toInt() in top..bottom
-    }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_main_index, menu)

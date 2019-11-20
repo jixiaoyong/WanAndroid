@@ -81,4 +81,20 @@ object Utils {
     fun decodeUrlStr(url: String, enc: String = Charsets.UTF_8.name()): String? {
         return URLDecoder.decode(url, enc)
     }
+
+    /**
+     * 指定坐标([x],[y])是否在[view]的范围内
+     */
+    fun isInViewScope(view: View, x: Float, y: Float): Boolean {
+        val locationInfo = IntArray(2)
+        view.getLocationOnScreen(locationInfo)
+        //(left,right,top,bottom)
+        val left = locationInfo[0]
+        val right = left + view.measuredWidth
+        val top = locationInfo[1]
+        val bottom = top + view.measuredHeight
+
+        return x.toInt() in left..right && y.toInt() in top..bottom
+    }
+
 }
