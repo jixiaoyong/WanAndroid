@@ -30,6 +30,7 @@ class SystemViewModel(val netWorkRepository: NetWorkRepository) : BaseViewModel(
 
     val mainTabs: LiveData<List<DataSystemParam<DataSystemParam<Any>>>?> = liveData(coroutineContext) {
         val result = netWorkRepository.getMainSystemList().data
+
         emit(result)
     }
 

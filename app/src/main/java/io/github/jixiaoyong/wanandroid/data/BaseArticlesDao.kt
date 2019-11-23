@@ -21,6 +21,9 @@ interface BaseArticlesDao {
 //    @Query("SELECT * FROM baseArticles WHERE _postType == ${ApiCommondConstants.PostType.IndexPost}")
 //    fun queryAllArticles(): DataSource.Factory<Int, DataIndexPostParam>
 
+    @Query("SELECT * FROM baseArticles WHERE id == :postId")
+    fun queryArticlesByPostId(postId: Int): DataIndexPostParam
+
 
     @Query("SELECT * FROM baseArticles WHERE _postType == :postType")
     fun queryAllArticles(postType: Int)

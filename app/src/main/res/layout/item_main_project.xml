@@ -115,6 +115,7 @@
             android:paddingEnd="5dp"
             android:textColor="#FFBF00"
             android:textSize="12sp"
+            app:title="@{data.title}"
             app:isFavorite="@{data.collect}"
             app:layout_constraintBottom_toBottomOf="@id/userNameTv"
             app:layout_constraintEnd_toEndOf="parent"

@@ -1,5 +1,6 @@
 package io.github.jixiaoyong.wanandroid.data
 
+import cf.android666.applibrary.Logger
 import io.github.jixiaoyong.wanandroid.api.ApiCommondConstants
 import io.github.jixiaoyong.wanandroid.api.bean.*
 import io.github.jixiaoyong.wanandroid.utils.DatabaseUtils
@@ -27,6 +28,8 @@ class NetWorkRepository {
 
     fun updatePostCollectState(dataIndexPostParam: DataIndexPostParam) {
         DatabaseUtils.database.baseArticlesDao().update(dataIndexPostParam)
+        Logger.d("update zan state database:${DatabaseUtils.database.baseArticlesDao().queryArticlesByPostId(dataIndexPostParam.id)}")
+
         //todo refresh collect state if network result filed
         val call = if (dataIndexPostParam.collect) {
             NetUtils.wanAndroidApi.collectPostById(dataIndexPostParam.id)

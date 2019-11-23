@@ -23,6 +23,10 @@ import kotlin.concurrent.thread
  */
 class ProjectViewModel(netWorkRepository: NetWorkRepository) : BaseViewModel() {
 
+    //    val mainTabs: LiveData<List<DataProjectParam>?> = liveData(coroutineContext) {
+//        val result = netWorkRepository.getMainProjectList().data
+//        emit(result)
+//    }
     val mainTabs: LiveData<List<DataProjectParam>?> = liveData(coroutineContext) {
         val result = netWorkRepository.getMainProjectList().data
         emit(result)
