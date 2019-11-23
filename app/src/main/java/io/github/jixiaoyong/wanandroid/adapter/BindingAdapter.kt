@@ -6,7 +6,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.Group
 import androidx.databinding.BindingAdapter
-import cf.android666.applibrary.Logger
 import com.bumptech.glide.Glide
 import io.github.jixiaoyong.wanandroid.R
 import io.github.jixiaoyong.wanandroid.api.ApiCommondConstants
@@ -98,10 +97,8 @@ fun bindIsNew(view: View, fresh: Boolean) {
     }
 }
 
-@BindingAdapter("app:isFavorite", "app:title")
-fun bindIsFavorite(view: TextView, isFavorite: Boolean, title: String) {
-    Logger.d("Title:$title,isF:$isFavorite")
-
+@BindingAdapter("app:isFavorite")
+fun bindIsFavorite(view: TextView, isFavorite: Boolean) {
     val (text, color) = if (isFavorite) {
         Pair(R.string.collected_yes, R.color.colorCollected)
     } else {

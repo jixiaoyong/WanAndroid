@@ -45,8 +45,7 @@ class MainProjectFragment : BaseFragment() {
             }
         })
 
-        val adapter = MainProjectPagingAdapter({
-        })
+        val adapter = MainProjectPagingAdapter(viewModel::updateIndexPostCollectState)
         view.postRecyclerView.adapter = adapter
         view.postRecyclerView.addItemDecoration(DividerItemDecoration(requireContext(), RecyclerView.VERTICAL))
         viewModel.allProjectPost.observe(this, Observer(adapter::submitList))
@@ -65,4 +64,5 @@ class MainProjectFragment : BaseFragment() {
             }
         })
     }
+
 }

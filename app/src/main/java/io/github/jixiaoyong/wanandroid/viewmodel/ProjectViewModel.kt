@@ -4,6 +4,7 @@ import androidx.lifecycle.*
 import androidx.paging.toLiveData
 import cf.android666.applibrary.Logger
 import io.github.jixiaoyong.wanandroid.api.ApiCommondConstants
+import io.github.jixiaoyong.wanandroid.api.bean.DataIndexPostParam
 import io.github.jixiaoyong.wanandroid.api.bean.DataProjectParam
 import io.github.jixiaoyong.wanandroid.base.BaseViewModel
 import io.github.jixiaoyong.wanandroid.data.NetWorkRepository
@@ -21,7 +22,7 @@ import kotlin.concurrent.thread
  * date: 2019-11-16
  * description: 项目
  */
-class ProjectViewModel(netWorkRepository: NetWorkRepository) : BaseViewModel() {
+class ProjectViewModel(private val netWorkRepository: NetWorkRepository) : BaseViewModel() {
 
     //    val mainTabs: LiveData<List<DataProjectParam>?> = liveData(coroutineContext) {
 //        val result = netWorkRepository.getMainProjectList().data
@@ -68,5 +69,9 @@ class ProjectViewModel(netWorkRepository: NetWorkRepository) : BaseViewModel() {
                             }
                     )
         }
+    }
+
+    fun updateIndexPostCollectState(dataIndexPostParam: DataIndexPostParam) {
+        netWorkRepository.updatePostCollectState(dataIndexPostParam)
     }
 }
