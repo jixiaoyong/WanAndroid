@@ -16,6 +16,7 @@ import io.github.jixiaoyong.wanandroid.R
 import io.github.jixiaoyong.wanandroid.adapter.MainIndexPagingAdapter
 import io.github.jixiaoyong.wanandroid.base.BaseFragment
 import io.github.jixiaoyong.wanandroid.utils.InjectUtils
+import io.github.jixiaoyong.wanandroid.utils.NetUtils
 import io.github.jixiaoyong.wanandroid.viewmodel.SystemViewModel
 import kotlinx.android.synthetic.main.fragment_main_system.view.*
 import kotlinx.android.synthetic.main.item_main_index_post.view.*
@@ -114,6 +115,17 @@ class MainSystemFragment : BaseFragment() {
         view.postRecyclerView.adapter = adapter
         view.postRecyclerView.addItemDecoration(DividerItemDecoration(requireContext(), RecyclerView.VERTICAL))
         viewModel.allSystemPost.observe(this, Observer(adapter::submitList))
+
+        view.swipeRefreshLayout.setOnRefreshListener {
+            viewModel.refreshSubTabsData()
+        }
+
+        viewModel.netState.observe(this, Observer {
+            view.swipeRefreshLayout.isRefreshing = when (it) {
+                NetUtils.NetworkState.Loading -> true
+                else -> false
+            }
+        })
     }
 
     private fun updateSubTabItemStatus(it: TextView, isSelect: Boolean = true) {

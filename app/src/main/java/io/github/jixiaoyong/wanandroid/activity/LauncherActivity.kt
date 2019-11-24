@@ -53,8 +53,8 @@ class LauncherActivity : BaseActivity() {
     }
 
     suspend fun isLogin(): Boolean {
-        val result = NetUtils.wanAndroidApi.getCoinInfo()
         return try {
+            val result = NetUtils.wanAndroidApi.getCoinInfo()
             if (result.errorCode == NetUtils.ErrorCode.SUCCEEDED) {
                 Logger.e("has login")
                 true

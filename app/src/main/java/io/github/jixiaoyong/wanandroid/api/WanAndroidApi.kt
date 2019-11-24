@@ -56,7 +56,7 @@ interface WanAndroidService {
      * 参数：无
      */
     @GET("tree/json")
-    suspend fun getTree(): RemoteDataBean<List<DataSystemParam<DataSystemParam<Any>>>>
+    fun getTree(): Call<RemoteDataBean<List<DataSystemParam<DataSystemParam<Any>>>>>
 
     /**
      * 知识体系下的文章
@@ -96,7 +96,7 @@ interface WanAndroidService {
      * 参数：无
      */
     @GET("project/tree/json")
-    suspend fun getProjectList(): RemoteDataBean<List<DataProjectParam>>
+    fun getProjectList(): Call<RemoteDataBean<List<DataProjectParam>>>
 
 
     /**

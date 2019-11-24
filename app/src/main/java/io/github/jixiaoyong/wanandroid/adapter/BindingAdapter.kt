@@ -133,7 +133,7 @@ fun bindIsVisible(view: Group, isShow: Boolean) {
 @BindingAdapter("imgUrl")
 fun bindIsVisible(view: ImageView, imgUrl: String) {
     view.visibility = if (imgUrl.isNotBlank()) {
-        Glide.with(view).load(imgUrl).into(view)
+        Glide.with(view).load(imgUrl).centerCrop().into(view)
         View.VISIBLE
     } else {
         View.GONE

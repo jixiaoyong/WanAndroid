@@ -1,16 +1,22 @@
 package io.github.jixiaoyong.wanandroid.viewmodel
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import androidx.paging.toLiveData
 import cf.android666.applibrary.Logger
+import com.google.gson.Gson
 import io.github.jixiaoyong.wanandroid.api.ApiCommondConstants
 import io.github.jixiaoyong.wanandroid.api.bean.DataIndexPostParam
 import io.github.jixiaoyong.wanandroid.api.bean.DataProjectParam
 import io.github.jixiaoyong.wanandroid.base.BaseViewModel
 import io.github.jixiaoyong.wanandroid.data.NetWorkRepository
 import io.github.jixiaoyong.wanandroid.data.PostBoundaryCallback
+import io.github.jixiaoyong.wanandroid.data.Preference
 import io.github.jixiaoyong.wanandroid.utils.CommonConstants
 import io.github.jixiaoyong.wanandroid.utils.DatabaseUtils
+import io.github.jixiaoyong.wanandroid.utils.jsonToListOf
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlin.concurrent.thread
@@ -24,17 +30,17 @@ import kotlin.concurrent.thread
  */
 class ProjectViewModel(private val netWorkRepository: NetWorkRepository) : BaseViewModel() {
 
-    //    val mainTabs: LiveData<List<DataProjectParam>?> = liveData(coroutineContext) {
-//        val result = netWorkRepository.getMainProjectList().data
-//        emit(result)
-//    }
-    val mainTabs: LiveData<List<DataProjectParam>?> = liveData(coroutineContext) {
-        val result = netWorkRepository.getMainProjectList().data
-        emit(result)
+    private val mainTabsPreference: LiveData<Preference?> by lazy {
+        DatabaseUtils.database
+                .preferenceDao().queryPreferenceByKey(CommonConstants.PreferenceKey.PROJECT_TABS)
+    }
+
+    val mainTabs = Transformations.map(mainTabsPreference) {
+        formatStringToTabs(it?.value)
     }
 
     val currentMainTabIndex = MutableLiveData(0)
-    val currentMainTabItem = MediatorLiveData<DataProjectParam?>()
+    private val currentMainTabItem = MediatorLiveData<DataProjectParam?>()
 
 
     init {
@@ -48,7 +54,7 @@ class ProjectViewModel(private val netWorkRepository: NetWorkRepository) : BaseV
 
     }
 
-    fun updateCurrentTabItem(mainTabs: List<DataProjectParam>?, index: Int) {
+    private fun updateCurrentTabItem(mainTabs: List<DataProjectParam>?, index: Int) {
         thread {
             DatabaseUtils.database.baseArticlesDao().deleteAllArticles(ApiCommondConstants.PostType.ProjectPost)
             currentMainTabItem.postValue(mainTabs?.getOrNull(index))
@@ -58,6 +64,7 @@ class ProjectViewModel(private val netWorkRepository: NetWorkRepository) : BaseV
     val allProjectPost = Transformations.switchMap(currentMainTabItem) { tabItem ->
         Logger.d("currentSubTabItem change${tabItem?.name} ${tabItem?.id}")
         tabItem?.let {
+            val key = ApiCommondConstants.PostType.ProjectPost
             DatabaseUtils.database
                     .baseArticlesDao().queryAllArticles(ApiCommondConstants.PostType.ProjectPost).toLiveData(
                             pageSize = CommonConstants.Paging.PAGE_SIZE,
@@ -73,5 +80,29 @@ class ProjectViewModel(private val netWorkRepository: NetWorkRepository) : BaseV
 
     fun updateIndexPostCollectState(dataIndexPostParam: DataIndexPostParam) {
         netWorkRepository.updatePostCollectState(dataIndexPostParam)
+    }
+
+    private fun formatStringToTabs(string: String?): List<DataProjectParam>? {
+        return if (!string.isNullOrBlank()) {
+            string.jsonToListOf()
+        } else {
+            thread {
+                try {
+                    val result = netWorkRepository.getMainProjectList().execute().body()?.data
+                    val jsonString = Gson().toJson(result)
+                    val preference = Preference(CommonConstants.PreferenceKey.PROJECT_TABS, jsonString)
+                    DatabaseUtils.database.preferenceDao().insert(preference)
+                } catch (e: Exception) {
+                    Logger.e("获取PROJECT tabs失败", e)
+                }
+            }
+            null
+        }
+    }
+
+    fun refreshProjectList() {
+        thread {
+            DatabaseUtils.database.baseArticlesDao().deleteAllArticles(ApiCommondConstants.PostType.ProjectPost)
+        }
     }
 }

@@ -3,21 +3,27 @@ package io.github.jixiaoyong.wanandroid.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations.map
 import androidx.lifecycle.Transformations.switchMap
-import androidx.lifecycle.liveData
 import androidx.paging.toLiveData
 import cf.android666.applibrary.Logger
+import com.google.gson.Gson
 import io.github.jixiaoyong.wanandroid.api.ApiCommondConstants
 import io.github.jixiaoyong.wanandroid.api.bean.DataIndexPostParam
 import io.github.jixiaoyong.wanandroid.api.bean.DataSystemParam
 import io.github.jixiaoyong.wanandroid.base.BaseViewModel
 import io.github.jixiaoyong.wanandroid.data.NetWorkRepository
 import io.github.jixiaoyong.wanandroid.data.PostBoundaryCallback
+import io.github.jixiaoyong.wanandroid.data.Preference
 import io.github.jixiaoyong.wanandroid.utils.CommonConstants
 import io.github.jixiaoyong.wanandroid.utils.DatabaseUtils
+import io.github.jixiaoyong.wanandroid.utils.NetUtils
+import io.github.jixiaoyong.wanandroid.utils.jsonToListOfDataSys
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlin.concurrent.thread
+
 
 /**
  * author: jixiaoyong
@@ -28,17 +34,23 @@ import kotlinx.coroutines.withContext
  */
 class SystemViewModel(val netWorkRepository: NetWorkRepository) : BaseViewModel() {
 
-    val mainTabs: LiveData<List<DataSystemParam<DataSystemParam<Any>>>?> = liveData(coroutineContext) {
-        val result = netWorkRepository.getMainSystemList().data
+    val netState = MutableLiveData<NetUtils.NetworkState>(NetUtils.NetworkState.Normal)
 
-        emit(result)
+    private val mainTabsPreference: LiveData<Preference?> by lazy {
+        netState.postValue(NetUtils.NetworkState.Loading)
+        DatabaseUtils.database
+                .preferenceDao().queryPreferenceByKey(CommonConstants.PreferenceKey.SYSTEM_TABS)
+    }
+
+    val mainTabs = map(mainTabsPreference) {
+        formatStringToTabs(it?.value)
     }
 
     val currentMainTabIndex = MutableLiveData(0)
     val currentSubTabIndex = MutableLiveData(0)
 
-    val currentMainTabItem = MediatorLiveData<DataSystemParam<DataSystemParam<Any>>?>()
-    val currentSubTabItem = MediatorLiveData<DataSystemParam<Any>?>()
+    private val currentMainTabItem = MediatorLiveData<DataSystemParam<DataSystemParam<Any>>?>()
+    private val currentSubTabItem = MediatorLiveData<DataSystemParam<Any>?>()
     val currentSubTabItems = MediatorLiveData<List<DataSystemParam<Any>?>?>()
 
 
@@ -84,7 +96,9 @@ class SystemViewModel(val netWorkRepository: NetWorkRepository) : BaseViewModel(
                             boundaryCallback = PostBoundaryCallback { currentPage ->
                                 launch(Dispatchers.IO) {
                                     Logger.e("sys list : start load $currentPage")
+                                    netState.postValue(NetUtils.NetworkState.Loading)
                                     netWorkRepository.getSystemPostOnPage(currentPage, it.id)
+                                    netState.postValue(NetUtils.NetworkState.Succeeded)
                                 }
                             }
                     )
@@ -93,5 +107,32 @@ class SystemViewModel(val netWorkRepository: NetWorkRepository) : BaseViewModel(
 
     fun updateISystemPostCollectState(systemPostParam: DataIndexPostParam) {
         netWorkRepository.updatePostCollectState(systemPostParam)
+    }
+
+    fun refreshSubTabsData() {
+        thread {
+            DatabaseUtils.database.baseArticlesDao().deleteAllArticles(ApiCommondConstants.PostType.SystemPost)
+        }
+    }
+
+    private fun formatStringToTabs(string: String?): List<DataSystemParam<DataSystemParam<Any>>>? {
+        return if (!string.isNullOrBlank()) {
+            val result = string.jsonToListOfDataSys()
+            netState.postValue(NetUtils.NetworkState.Succeeded)
+            result
+        } else {
+            thread {
+                try {
+                    val result = netWorkRepository.getMainSystemList().execute().body()?.data
+                    val jsonString = Gson().toJson(result)
+                    val preference = Preference(CommonConstants.PreferenceKey.SYSTEM_TABS, jsonString)
+                    DatabaseUtils.database.preferenceDao().insert(preference)
+                    netState.postValue(NetUtils.NetworkState.Succeeded)
+                } catch (e: Exception) {
+                    Logger.e("获取SYS tabs失败", e)
+                }
+            }
+            null
+        }
     }
 }

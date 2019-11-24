@@ -48,7 +48,11 @@ class MainProjectFragment : BaseFragment() {
         val adapter = MainProjectPagingAdapter(viewModel::updateIndexPostCollectState)
         view.postRecyclerView.adapter = adapter
         view.postRecyclerView.addItemDecoration(DividerItemDecoration(requireContext(), RecyclerView.VERTICAL))
-        viewModel.allProjectPost.observe(this, Observer(adapter::submitList))
+        viewModel.allProjectPost.observe(this, Observer {
+            view.swipeRefreshLayout.isRefreshing = false
+            adapter.submitList(it)
+        })
+
         view.tabLayout.addOnTabSelectedListener(object : TabLayout.BaseOnTabSelectedListener<TabLayout.Tab> {
             override fun onTabReselected(p0: TabLayout.Tab?) {
 
@@ -63,6 +67,10 @@ class MainProjectFragment : BaseFragment() {
                 viewModel.currentMainTabIndex.value = index ?: 0
             }
         })
+
+        view.swipeRefreshLayout.setOnRefreshListener {
+            viewModel.refreshProjectList()
+        }
     }
 
 }

@@ -90,7 +90,7 @@ class MainIndexFragment : BaseFragment() {
                             .centerCrop()
                             .into(imageView)
                 }
-                view.banner.setViewsAndIndicator(requireFragmentManager(), fragments, dataList.map {
+                view.banner.setViewsAndIndicator(childFragmentManager, fragments, dataList.map {
                     it.title
                 })
             }

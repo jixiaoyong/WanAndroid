@@ -16,8 +16,8 @@ import androidx.room.Update
 @Dao
 interface PreferenceDao {
 
-    @Query("SELECT * FROM preference")
-    fun queryAllArticles(): LiveData<Preference>
+    @Query("SELECT * FROM preference WHERE `key` == :key")
+    fun queryPreferenceByKey(key: String): LiveData<Preference?>
 
     @Query("DELETE  FROM preference")
     fun deleteAllArticles()

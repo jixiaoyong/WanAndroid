@@ -31,4 +31,10 @@ object CommonConstants {
         const val FAVORITE = 1
         const val PEOPLE = 2
     }
+
+    object PreferenceKey {
+        const val SYSTEM_TABS = "system_tabs"
+        const val PROJECT_TABS = "project_tabs"
+        const val WECHAT_TABS = "wechat_tabs"
+    }
 }

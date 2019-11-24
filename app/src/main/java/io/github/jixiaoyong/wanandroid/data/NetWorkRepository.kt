@@ -5,6 +5,7 @@ import io.github.jixiaoyong.wanandroid.api.ApiCommondConstants
 import io.github.jixiaoyong.wanandroid.api.bean.*
 import io.github.jixiaoyong.wanandroid.utils.DatabaseUtils
 import io.github.jixiaoyong.wanandroid.utils.NetUtils
+import retrofit2.Call
 
 /**
  *  Created by jixiaoyong1995@gmail.com
@@ -46,14 +47,14 @@ class NetWorkRepository {
     /**
      * 获取项目分类列表
      */
-    suspend fun getMainProjectList(): RemoteDataBean<List<DataProjectParam>> {
+    fun getMainProjectList(): Call<RemoteDataBean<List<DataProjectParam>>> {
         return NetUtils.wanAndroidApi.getProjectList()
     }
 
     /**
      * 获取项目分类列表
      */
-    suspend fun getMainSystemList(): RemoteDataBean<List<DataSystemParam<DataSystemParam<Any>>>> {
+    fun getMainSystemList(): Call<RemoteDataBean<List<DataSystemParam<DataSystemParam<Any>>>>> {
         return NetUtils.wanAndroidApi.getTree()
     }
 
