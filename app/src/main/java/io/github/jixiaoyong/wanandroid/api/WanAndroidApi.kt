@@ -326,7 +326,7 @@ interface WanAndroidService {
      * 参数：无
      */
     @GET("wxarticle/chapters/json")
-    suspend fun getWechatList(): RemoteDataBean<List<DataSystemParam<Any>>>
+    fun getWechatList(): Call<RemoteDataBean<List<DataSystemParam<Any>>>>
 
     /**
      * 查看某个公众号历史数据

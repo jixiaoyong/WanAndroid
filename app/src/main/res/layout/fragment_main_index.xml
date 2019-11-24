@@ -34,7 +34,7 @@
 
             </androidx.appcompat.widget.Toolbar>
 
-            <cf.android666.applibrary.view.BannerView
+            <io.github.jixiaoyong.wanandroid.view.BannerView
                 android:id="@+id/banner"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
@@ -58,6 +58,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:text="@string/favortie"
+                android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="@id/favoriteBtn"
                 app:layout_constraintStart_toStartOf="@id/favoriteBtn"
                 app:layout_constraintTop_toBottomOf="@id/favoriteBtn" />
@@ -66,7 +67,7 @@
             <ImageButton
                 android:id="@+id/weChatBtn"
                 android:layout_width="30dp"
-                android:layout_height="28dp"
+                android:layout_height="26dp"
                 android:layout_marginEnd="30dp"
                 android:background="@drawable/ic_wechat"
                 app:layout_constraintBottom_toBottomOf="@id/favoriteBtn"
@@ -81,6 +82,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:text="@string/wechat"
+                android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="@id/weChatBtn"
                 app:layout_constraintStart_toStartOf="@id/weChatBtn"
                 app:layout_constraintTop_toBottomOf="@id/weChatBtn" />
@@ -104,6 +106,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:text="@string/square"
+                android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="@id/peopleBtn"
                 app:layout_constraintStart_toStartOf="@id/peopleBtn"
                 app:layout_constraintTop_toBottomOf="@id/peopleBtn" />

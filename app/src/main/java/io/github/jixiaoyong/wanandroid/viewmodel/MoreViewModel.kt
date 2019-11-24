@@ -3,16 +3,20 @@ package io.github.jixiaoyong.wanandroid.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations.map
 import androidx.lifecycle.Transformations.switchMap
-import androidx.lifecycle.liveData
 import androidx.paging.toLiveData
+import cf.android666.applibrary.Logger
+import com.google.gson.Gson
 import io.github.jixiaoyong.wanandroid.api.ApiCommondConstants
-import io.github.jixiaoyong.wanandroid.api.bean.DataSystemParam
+import io.github.jixiaoyong.wanandroid.api.bean.DataProjectParam
 import io.github.jixiaoyong.wanandroid.base.BaseViewModel
 import io.github.jixiaoyong.wanandroid.data.NetWorkRepository
 import io.github.jixiaoyong.wanandroid.data.PostBoundaryCallback
+import io.github.jixiaoyong.wanandroid.data.Preference
 import io.github.jixiaoyong.wanandroid.utils.CommonConstants
 import io.github.jixiaoyong.wanandroid.utils.DatabaseUtils
+import io.github.jixiaoyong.wanandroid.utils.jsonToListOf
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlin.concurrent.thread
@@ -24,20 +28,23 @@ import kotlin.concurrent.thread
  * date: 2019-11-16
  * description: 项目
  */
-class MoreViewModel(netWorkRepository: NetWorkRepository, action: Int) : BaseViewModel() {
+class MoreViewModel(private val netWorkRepository: NetWorkRepository, action: Int) : BaseViewModel() {
 
-    val mainTabs: LiveData<List<DataSystemParam<Any>>?>? = if (action == CommonConstants.Action.WECHAT) {
-        liveData(coroutineContext) {
-            val result = netWorkRepository.getWechatList().data
-            emit(result)
+    private val mainTabsPreference: LiveData<Preference?> by lazy {
+        DatabaseUtils.database
+                .preferenceDao().queryPreferenceByKey(CommonConstants.PreferenceKey.WECHAT_TABS)
+    }
+
+    val mainTabs: LiveData<List<DataProjectParam>?>? = if (action == CommonConstants.Action.WECHAT) {
+        map(mainTabsPreference) {
+            formatStringToTabs(it?.value)
         }
     } else {
         null
     }
 
     val currentMainTabIndex = MutableLiveData(0)
-    val currentMainTabItem = MediatorLiveData<DataSystemParam<Any>?>()
-
+    private val currentMainTabItem = MediatorLiveData<DataProjectParam?>()
 
     init {
         mainTabs?.let {
@@ -51,7 +58,7 @@ class MoreViewModel(netWorkRepository: NetWorkRepository, action: Int) : BaseVie
         }
     }
 
-    fun updateCurrentTabItem(mainTabs: List<DataSystemParam<Any>>?, index: Int) {
+    private fun updateCurrentTabItem(mainTabs: List<DataProjectParam>?, index: Int) {
         thread {
             DatabaseUtils.database.baseArticlesDao().deleteAllArticles(ApiCommondConstants.PostType.WechatPost)
             currentMainTabItem.postValue(mainTabs?.getOrNull(index))
@@ -100,4 +107,28 @@ class MoreViewModel(netWorkRepository: NetWorkRepository, action: Int) : BaseVie
 
                 }
             }
+
+    private fun formatStringToTabs(string: String?): List<DataProjectParam>? {
+        return if (!string.isNullOrBlank()) {
+            string.jsonToListOf()
+        } else {
+            thread {
+                try {
+                    val result = netWorkRepository.getWechatList().execute().body()?.data
+                    val jsonString = Gson().toJson(result)
+                    val preference = Preference(CommonConstants.PreferenceKey.WECHAT_TABS, jsonString)
+                    DatabaseUtils.database.preferenceDao().insert(preference)
+                } catch (e: Exception) {
+                    Logger.e("获取WECHAT tabs失败", e)
+                }
+            }
+            null
+        }
+    }
+
+    fun refreshWechatList() {
+        thread {
+            DatabaseUtils.database.baseArticlesDao().deleteAllArticles(ApiCommondConstants.PostType.WechatPost)
+        }
+    }
 }

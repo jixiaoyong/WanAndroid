@@ -65,7 +65,7 @@ class MainViewModel(private val accountRepository: AccountRepository,
     init {
 
         thread {
-            Logger.d("")
+            Logger.d("开始请求BannerView 数据")
             val bannerList = netWorkRepository.getBannerListSync()
             bannerListLiveData.postValue(bannerList)
         }

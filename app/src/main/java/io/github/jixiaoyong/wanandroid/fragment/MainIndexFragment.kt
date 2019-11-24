@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
-import cf.android666.applibrary.view.BannerViewHelper
+import cf.android666.applibrary.Logger
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import io.github.jixiaoyong.wanandroid.R
@@ -20,6 +20,7 @@ import io.github.jixiaoyong.wanandroid.utils.CommonConstants
 import io.github.jixiaoyong.wanandroid.utils.InjectUtils
 import io.github.jixiaoyong.wanandroid.utils.NetUtils
 import io.github.jixiaoyong.wanandroid.utils.Utils
+import io.github.jixiaoyong.wanandroid.view.BannerViewHelper
 import io.github.jixiaoyong.wanandroid.view.DispatchNestedScrollView
 import io.github.jixiaoyong.wanandroid.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
@@ -75,7 +76,7 @@ class MainIndexFragment : BaseFragment() {
 
         mainViewModel.bannerListLiveData.observe(this, Observer { list ->
             list?.let { dataList ->
-
+                Logger.d("banner data list $dataList")
                 val fragments = BannerViewHelper.initImageBannerOf(
                         requireContext(), dataList.size) { imageView, i ->
                     val imgUrl = dataList.getOrNull(i)?.imagePath

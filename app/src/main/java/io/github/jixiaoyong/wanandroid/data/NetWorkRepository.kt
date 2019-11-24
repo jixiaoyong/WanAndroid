@@ -124,7 +124,7 @@ class NetWorkRepository {
     /**
      * 获取微信公众号列表
      */
-    suspend fun getWechatList(): RemoteDataBean<List<DataSystemParam<Any>>> {
+    fun getWechatList(): Call<RemoteDataBean<List<DataSystemParam<Any>>>> {
         return NetUtils.wanAndroidApi.getWechatList()
     }
 
