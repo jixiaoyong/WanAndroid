@@ -64,7 +64,7 @@ class BannerView : RelativeLayout {
         newFragmentList.add(0, prefixFragment)
         newFragmentList.add(suffixFragment)
 
-        viewPager.removeAllViews()
+//        viewPager.removeAllViews()
         viewPager.adapter = VpAdapter(fragmentMng, newFragmentList)
         viewPager.currentItem = 1
         viewPager.addOnPageChangeListener(object : androidx.viewpager.widget.ViewPager.OnPageChangeListener {

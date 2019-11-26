@@ -38,5 +38,6 @@
     <string name="wechat">微信</string>
     <string name="square">广场</string>
     <string name="hot_post">热门文章</string>
+    <string name="tips_plz_login">请先登录</string>
 
 </resources>

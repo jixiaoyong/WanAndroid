@@ -28,12 +28,23 @@ object BannerViewHelper {
         return fragmentList
     }
 
-    class ImageViewFragment(private val loadImageViewResource: (ImageView, Int) -> Unit,
-                            private val index: Int) : Fragment() {
+    class ImageViewFragment : Fragment {
+
+        private var loadImageViewResource: ((ImageView, Int) -> Unit)? = null
+        private var index = 0
+
+        constructor() : super()
+
+        constructor(loadImageViewResource: (ImageView, Int) -> Unit,
+                    index: Int) : super() {
+            this.loadImageViewResource = loadImageViewResource
+            this.index = index
+        }
+
 
         override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
             val view = inflater.inflate(R.layout.view_banner_image_fragment, null, false)
-            loadImageViewResource.invoke(view.image, index)
+            loadImageViewResource?.invoke(view.image, index)
             return view
         }
     }

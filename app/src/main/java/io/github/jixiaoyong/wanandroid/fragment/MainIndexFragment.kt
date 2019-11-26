@@ -16,6 +16,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import io.github.jixiaoyong.wanandroid.R
 import io.github.jixiaoyong.wanandroid.adapter.MainIndexPagingAdapter
 import io.github.jixiaoyong.wanandroid.base.BaseFragment
+import io.github.jixiaoyong.wanandroid.base.toast
 import io.github.jixiaoyong.wanandroid.utils.CommonConstants
 import io.github.jixiaoyong.wanandroid.utils.InjectUtils
 import io.github.jixiaoyong.wanandroid.utils.NetUtils
@@ -105,13 +106,18 @@ class MainIndexFragment : BaseFragment() {
             goMoreFragment(view, CommonConstants.Action.WECHAT)
         }
         view.favoriteBtn.setOnClickListener {
-            goMoreFragment(view, CommonConstants.Action.FAVORITE)
+            if (mainViewModel.isLogin.value == true) {
+                goMoreFragment(view, CommonConstants.Action.FAVORITE)
+            } else {
+                toast(getString(R.string.tips_plz_login))
+            }
         }
         view.peopleBtn.setOnClickListener {
             goMoreFragment(view, CommonConstants.Action.PEOPLE)
         }
     }
 
+    @Synchronized
     private fun goMoreFragment(view: View, action: Int) {
         val args = Bundle()
         args.putInt(CommonConstants.Action.KEY, action)

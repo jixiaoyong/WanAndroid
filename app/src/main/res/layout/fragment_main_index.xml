@@ -41,17 +41,6 @@
                 app:indicatorType="text"
                 app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
-            <!--            <com.zhouwei.mzbanner.MZBannerView-->
-            <!--                android:id="@+id/bannerView"-->
-            <!--                android:layout_width="match_parent"-->
-            <!--                android:layout_height="200dp"-->
-            <!--                android:layout_marginTop="10dp"-->
-            <!--                app:open_mz_mode="true"-->
-            <!--                app:canLoop="true"-->
-            <!--                app:indicatorAlign="center"-->
-            <!--                app:indicatorPaddingLeft="10dp"-->
-            <!--                app:layout_constraintTop_toBottomOf="@id/toolbar"-->
-            <!--                />-->
 
             <ImageButton
                 android:id="@+id/favoriteBtn"
