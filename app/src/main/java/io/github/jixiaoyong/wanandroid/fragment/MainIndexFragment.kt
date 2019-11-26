@@ -29,6 +29,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+
 /**
  * author: jixiaoyong
  * email: jixiaoyong1995@gmail.com
@@ -78,7 +79,7 @@ class MainIndexFragment : BaseFragment() {
             list?.let { dataList ->
                 Logger.d("banner data list $dataList")
                 val fragments = BannerViewHelper.initImageBannerOf(
-                        requireContext(), dataList.size) { imageView, i ->
+                        dataList.size) { imageView, i ->
                     val imgUrl = dataList.getOrNull(i)?.imagePath
                     imageView.setOnClickListener {
                         dataList.getOrNull(i)?.url?.let {
@@ -88,9 +89,12 @@ class MainIndexFragment : BaseFragment() {
                     Glide.with(imageView)
                             .load(imgUrl)
                             .diskCacheStrategy(DiskCacheStrategy.ALL)
+                            .placeholder(R.drawable.ic_loading)
+                            .error(R.drawable.ic_loading)
                             .centerCrop()
                             .into(imageView)
                 }
+
                 view.banner.setViewsAndIndicator(childFragmentManager, fragments, dataList.map {
                     it.title
                 })
@@ -116,7 +120,7 @@ class MainIndexFragment : BaseFragment() {
 
     //DispatchNestedScrollView是否需要拦截子View的滑动事件
     private fun isNeedIntercept(ev: MotionEvent?, direction: Int): Boolean {
-        ev?.let { event ->
+        ev?.let {
             view?.postRecyclerView?.let {
                 if (Utils.isInViewScope(it, ev.rawX, ev.rawY)
                         && (0 >= (view!!.dividerAfterHotImg!!.y - view!!.nestedScrollView!!.scrollY))
@@ -133,7 +137,6 @@ class MainIndexFragment : BaseFragment() {
         }
         return true
     }
-
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_main_index, menu)

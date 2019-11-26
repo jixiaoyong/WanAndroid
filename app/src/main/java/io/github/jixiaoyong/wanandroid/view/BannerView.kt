@@ -64,6 +64,7 @@ class BannerView : RelativeLayout {
         newFragmentList.add(0, prefixFragment)
         newFragmentList.add(suffixFragment)
 
+        viewPager.removeAllViews()
         viewPager.adapter = VpAdapter(fragmentMng, newFragmentList)
         viewPager.currentItem = 1
         viewPager.addOnPageChangeListener(object : androidx.viewpager.widget.ViewPager.OnPageChangeListener {
@@ -97,6 +98,11 @@ class BannerView : RelativeLayout {
             false
         }
         setupIndicator(fragments.size, indicatorValue)
+    }
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        viewPagerHandler.removeCallbacksAndMessages(null)
     }
 
     fun onIndicatorSelected(position: Int, indicatorValue: List<String>? = null) {
@@ -183,8 +189,7 @@ class BannerView : RelativeLayout {
     }
 
     class VpAdapter(fragmentManager: FragmentManager, private val fragments: List<Fragment>)
-        : androidx.fragment.app.FragmentPagerAdapter(fragmentManager) {
-
+        : androidx.fragment.app.FragmentPagerAdapter(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
         override fun getItem(position: Int): Fragment {
             return fragments[position]

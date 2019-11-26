@@ -1,6 +1,5 @@
 package io.github.jixiaoyong.wanandroid.view
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +7,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import io.github.jixiaoyong.wanandroid.R
+import kotlinx.android.synthetic.main.view_banner_image_fragment.view.*
 
 /**
  * author: jixiaoyong
@@ -18,34 +19,22 @@ import androidx.fragment.app.FragmentManager
  */
 object BannerViewHelper {
 
-    fun initImageBannerOf(context: Context, size: Int = 0,
-                          loadImageViewResource: (ImageView, Int) -> Unit): ArrayList<Fragment> {
+    fun initImageBannerOf(size: Int = 0, loadImageViewResource: (ImageView, Int) -> Unit): ArrayList<Fragment> {
         val fragmentList = arrayListOf<Fragment>()
         for (i in 0 until size) {
-            val imageView = ImageView(context)
-            loadImageViewResource.invoke(imageView, i)
-            val fragment = ImageViewFragment()
-            fragment.imageView = imageView
+            val fragment = ImageViewFragment(loadImageViewResource, i)
             fragmentList.add(fragment)
         }
         return fragmentList
     }
 
-
-    class ImageViewFragment : Fragment() {
-
-        var imageView: View? = null
+    class ImageViewFragment(private val loadImageViewResource: (ImageView, Int) -> Unit,
+                            private val index: Int) : Fragment() {
 
         override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-            return if (imageView != null) imageView else super.onCreateView(inflater, container, savedInstanceState)
-        }
-
-        companion object {
-            fun getFragment(imageView: View?): ImageViewFragment {
-                val fragment = ImageViewFragment()
-                fragment.imageView = imageView
-                return fragment
-            }
+            val view = inflater.inflate(R.layout.view_banner_image_fragment, null, false)
+            loadImageViewResource.invoke(view.image, index)
+            return view
         }
     }
 

@@ -9,7 +9,7 @@ buildscript {
         lifecycle_version = "2.1.0"
         paging_version = "2.1.0"
         lifecycle_livedata_ktx_version = "2.2.0-rc02"
-        room_version = "2.2.1"
+        room_version = "2.2.2"
     }
 
     repositories {
