@@ -20,6 +20,7 @@ import io.github.jixiaoyong.wanandroid.utils.DatabaseUtils
 import io.github.jixiaoyong.wanandroid.utils.NetUtils
 import io.github.jixiaoyong.wanandroid.utils.jsonToListOfDataSys
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlin.concurrent.thread
@@ -87,6 +88,8 @@ class SystemViewModel(val netWorkRepository: NetWorkRepository) : BaseViewModel(
         }
     }
 
+    val d = GlobalScope
+
     val allSystemPost = switchMap(currentSubTabItem) { subTabItem ->
         Logger.d("currentSubTabItem change${subTabItem?.name} ${subTabItem?.id}")
         subTabItem?.let {
@@ -99,6 +102,7 @@ class SystemViewModel(val netWorkRepository: NetWorkRepository) : BaseViewModel(
                                     netState.postValue(NetUtils.NetworkState.Loading)
                                     netWorkRepository.getSystemPostOnPage(currentPage, it.id)
                                     netState.postValue(NetUtils.NetworkState.Succeeded)
+                                    Logger.e("sys list : finish load $currentPage")
                                 }
                             }
                     )

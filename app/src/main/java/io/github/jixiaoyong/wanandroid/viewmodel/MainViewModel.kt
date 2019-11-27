@@ -57,7 +57,7 @@ class MainViewModel(private val accountRepository: AccountRepository,
                     pageSize = CommonConstants.Paging.PAGE_SIZE,
                     boundaryCallback = PostBoundaryCallback { currentPage ->
                         launch(Dispatchers.IO) {
-                            netWorkRepository.getIndexPostOnPage(currentPage)
+                            netWorkRepository.getIndexPostOnPage(currentPage).errorCode == NetUtils.ErrorCode.SUCCEEDED
                         }
                     }
             )

@@ -16,6 +16,7 @@ import io.github.jixiaoyong.wanandroid.data.PostBoundaryCallback
 import io.github.jixiaoyong.wanandroid.data.Preference
 import io.github.jixiaoyong.wanandroid.utils.CommonConstants
 import io.github.jixiaoyong.wanandroid.utils.DatabaseUtils
+import io.github.jixiaoyong.wanandroid.utils.NetUtils
 import io.github.jixiaoyong.wanandroid.utils.jsonToListOf
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -29,6 +30,8 @@ import kotlin.concurrent.thread
  * description: 项目
  */
 class ProjectViewModel(private val netWorkRepository: NetWorkRepository) : BaseViewModel() {
+
+    val netState = MutableLiveData<NetUtils.NetworkState>(NetUtils.NetworkState.Normal)
 
     private val mainTabsPreference: LiveData<Preference?> by lazy {
         DatabaseUtils.database
@@ -64,14 +67,18 @@ class ProjectViewModel(private val netWorkRepository: NetWorkRepository) : BaseV
     val allProjectPost = Transformations.switchMap(currentMainTabItem) { tabItem ->
         Logger.d("currentSubTabItem change${tabItem?.name} ${tabItem?.id}")
         tabItem?.let {
-            val key = ApiCommondConstants.PostType.ProjectPost
-            DatabaseUtils.database
-                    .baseArticlesDao().queryAllArticles(ApiCommondConstants.PostType.ProjectPost).toLiveData(
+            DatabaseUtils.database.baseArticlesDao()
+                    .queryAllArticles(ApiCommondConstants.PostType.ProjectPost).toLiveData(
                             pageSize = CommonConstants.Paging.PAGE_SIZE,
-                            boundaryCallback = PostBoundaryCallback { currentPage ->
+                            boundaryCallback = PostBoundaryCallback { page ->
+                                //project page start from 1
+                                val currentPage = page + 1
                                 launch(Dispatchers.IO) {
                                     Logger.e("project list : start load $currentPage")
+                                    netState.postValue(NetUtils.NetworkState.Loading)
                                     netWorkRepository.getProjectPostOnPage(currentPage, it.id)
+                                    netState.postValue(NetUtils.NetworkState.Succeeded)
+                                    Logger.e("project list : finish load $currentPage")
                                 }
                             }
                     )

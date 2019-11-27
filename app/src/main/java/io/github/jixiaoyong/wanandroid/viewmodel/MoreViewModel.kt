@@ -97,7 +97,8 @@ class MoreViewModel(private val netWorkRepository: NetWorkRepository, action: In
                                             pageSize = CommonConstants.Paging.PAGE_SIZE,
                                             boundaryCallback = PostBoundaryCallback { currentPage ->
                                                 launch(Dispatchers.IO) {
-                                                    netWorkRepository.getWechatPostOnPage(currentPage, it.id)
+                                                    //wechat page start from 1
+                                                    netWorkRepository.getWechatPostOnPage(currentPage + 1, it.id)
                                                 }
                                             }
                                     )

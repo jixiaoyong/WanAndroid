@@ -25,7 +25,7 @@ class PostBoundaryCallback(private val loadFromWebToDb: (Int) -> Unit)
     override fun onZeroItemsLoaded() {
         Logger.e("load zero data $currentPage")
         currentPage = 0
-        loadFromWebToDb(currentPage)
+        loadFromWebToDb(currentPage++)
     }
 
     /**
@@ -33,9 +33,8 @@ class PostBoundaryCallback(private val loadFromWebToDb: (Int) -> Unit)
      */
     @MainThread
     override fun onItemAtEndLoaded(itemAtEnd: DataIndexPostParam) {
-        Logger.e("load more data $currentPage")
-        currentPage++
-        loadFromWebToDb(currentPage)
+        Logger.e("load more data ${currentPage + 1}")
+        loadFromWebToDb(currentPage++)
     }
 
     override fun onItemAtFrontLoaded(itemAtFront: DataIndexPostParam) {

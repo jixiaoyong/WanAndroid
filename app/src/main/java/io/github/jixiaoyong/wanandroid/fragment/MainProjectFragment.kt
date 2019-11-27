@@ -13,6 +13,7 @@ import io.github.jixiaoyong.wanandroid.R
 import io.github.jixiaoyong.wanandroid.adapter.MainProjectPagingAdapter
 import io.github.jixiaoyong.wanandroid.base.BaseFragment
 import io.github.jixiaoyong.wanandroid.utils.InjectUtils
+import io.github.jixiaoyong.wanandroid.utils.NetUtils
 import io.github.jixiaoyong.wanandroid.viewmodel.ProjectViewModel
 import kotlinx.android.synthetic.main.fragment_main_project.view.*
 
@@ -48,10 +49,7 @@ class MainProjectFragment : BaseFragment() {
         val adapter = MainProjectPagingAdapter(viewModel::updateIndexPostCollectState)
         view.postRecyclerView.adapter = adapter
         view.postRecyclerView.addItemDecoration(DividerItemDecoration(requireContext(), RecyclerView.VERTICAL))
-        viewModel.allProjectPost.observe(this, Observer {
-            view.swipeRefreshLayout.isRefreshing = false
-            adapter.submitList(it)
-        })
+        viewModel.allProjectPost.observe(this, Observer(adapter::submitList))
 
         view.tabLayout.addOnTabSelectedListener(object : TabLayout.BaseOnTabSelectedListener<TabLayout.Tab> {
             override fun onTabReselected(p0: TabLayout.Tab?) {
@@ -71,6 +69,13 @@ class MainProjectFragment : BaseFragment() {
         view.swipeRefreshLayout.setOnRefreshListener {
             viewModel.refreshProjectList()
         }
+
+        viewModel.netState.observe(this, Observer {
+            view.swipeRefreshLayout.isRefreshing = when (it) {
+                NetUtils.NetworkState.Loading -> true
+                else -> false
+            }
+        })
     }
 
 }
