@@ -14,6 +14,7 @@ import io.github.jixiaoyong.wanandroid.adapter.MainProjectPagingAdapter
 import io.github.jixiaoyong.wanandroid.base.BaseFragment
 import io.github.jixiaoyong.wanandroid.utils.InjectUtils
 import io.github.jixiaoyong.wanandroid.utils.NetUtils
+import io.github.jixiaoyong.wanandroid.viewmodel.MainViewModel
 import io.github.jixiaoyong.wanandroid.viewmodel.ProjectViewModel
 import kotlinx.android.synthetic.main.fragment_main_project.view.*
 
@@ -26,12 +27,16 @@ import kotlinx.android.synthetic.main.fragment_main_project.view.*
  */
 class MainProjectFragment : BaseFragment() {
 
+    private lateinit var mainViewModel: MainViewModel
     private lateinit var viewModel: ProjectViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_main_project, container, false)
         viewModel = ViewModelProviders.of(this,
                 InjectUtils.provideProjectViewModelFactory()).get(ProjectViewModel::class.java)
+        mainViewModel = ViewModelProviders.of(requireActivity(),
+                InjectUtils.provideMainViewModelFactory()).get(MainViewModel::class.java)
+
         initView(view)
         return view
     }
@@ -46,7 +51,8 @@ class MainProjectFragment : BaseFragment() {
             }
         })
 
-        val adapter = MainProjectPagingAdapter(viewModel::updateIndexPostCollectState)
+        val adapter = MainProjectPagingAdapter(viewModel::updateIndexPostCollectState,
+                isLogin = mainViewModel::isLogin)
         view.postRecyclerView.adapter = adapter
         view.postRecyclerView.addItemDecoration(DividerItemDecoration(requireContext(), RecyclerView.VERTICAL))
         viewModel.allProjectPost.observe(this, Observer(adapter::submitList))

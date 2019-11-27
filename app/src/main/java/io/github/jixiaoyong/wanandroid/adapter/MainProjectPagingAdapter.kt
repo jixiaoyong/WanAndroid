@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import cf.android666.applibrary.view.Toast
 import io.github.jixiaoyong.wanandroid.R
 import io.github.jixiaoyong.wanandroid.api.bean.DataIndexPostParam
 import io.github.jixiaoyong.wanandroid.base.BasePagingAdapter
@@ -21,7 +22,8 @@ import kotlin.concurrent.thread
  * description: todo
  */
 class MainProjectPagingAdapter(private val updateIndexPostCollectState: (DataIndexPostParam) -> Unit,
-                               private val onViewHolder: ((View, DataIndexPostParam) -> Unit)? = null)
+                               private val onViewHolder: ((View, DataIndexPostParam) -> Unit)? = null,
+                               private val isLogin: (() -> Boolean)? = null)
     : BasePagingAdapter<DataIndexPostParam, MainProjectPagingAdapter.ViewHolder>(Diff()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(DataBindingUtil.inflate(LayoutInflater.from(parent.context),
@@ -39,10 +41,15 @@ class MainProjectPagingAdapter(private val updateIndexPostCollectState: (DataInd
             }
         }
         holder.itemView.favoriteTv.setOnClickListener {
-            thread {
-                val newData = data.copy(collect = !data.collect)
-                updateIndexPostCollectState(newData)
+            if (isLogin?.invoke() == true) {
+                thread {
+                    val newData = data.copy(collect = !data.collect)
+                    updateIndexPostCollectState(newData)
+                }
+            } else {
+                Toast.show(it.context.getString(R.string.tips_plz_login))
             }
+
         }
     }
 

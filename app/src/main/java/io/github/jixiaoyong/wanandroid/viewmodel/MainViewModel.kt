@@ -78,4 +78,8 @@ class MainViewModel(private val accountRepository: AccountRepository,
     fun updateIndexPostCollectState(dataIndexPostParam: DataIndexPostParam) {
         netWorkRepository.updatePostCollectState(dataIndexPostParam)
     }
+
+    fun isLogin(): Boolean {
+        return isLogin.value == true
+    }
 }

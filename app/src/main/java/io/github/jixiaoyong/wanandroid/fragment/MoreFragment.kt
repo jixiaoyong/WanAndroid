@@ -18,6 +18,7 @@ import io.github.jixiaoyong.wanandroid.base.BaseFragment
 import io.github.jixiaoyong.wanandroid.utils.BottomNabControl
 import io.github.jixiaoyong.wanandroid.utils.CommonConstants
 import io.github.jixiaoyong.wanandroid.utils.InjectUtils
+import io.github.jixiaoyong.wanandroid.viewmodel.MainViewModel
 import io.github.jixiaoyong.wanandroid.viewmodel.MoreViewModel
 import kotlinx.android.synthetic.main.fragment_more.view.*
 
@@ -31,6 +32,7 @@ import kotlinx.android.synthetic.main.fragment_more.view.*
  */
 class MoreFragment : BaseFragment() {
 
+    private lateinit var mainViewModel: MainViewModel
     private lateinit var viewModel: MoreViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -39,6 +41,9 @@ class MoreFragment : BaseFragment() {
         Logger.d("action:$action")
         viewModel = ViewModelProviders.of(this,
                 InjectUtils.provideMoreViewModelFactory(action)).get(MoreViewModel::class.java)
+        mainViewModel = ViewModelProviders.of(requireActivity(),
+                InjectUtils.provideMainViewModelFactory()).get(MainViewModel::class.java)
+
         initView(view, action)
         return view
     }
@@ -62,7 +67,7 @@ class MoreFragment : BaseFragment() {
             }
         })
 
-        val adapter = MainIndexPagingAdapter({})
+        val adapter = MainIndexPagingAdapter({}, isLogin = mainViewModel::isLogin)
         view.postRecyclerView.adapter = adapter
         view.postRecyclerView.addItemDecoration(DividerItemDecoration(requireContext(), RecyclerView.VERTICAL))
         viewModel.allProjectPost.observe(this, Observer(adapter::submitList))

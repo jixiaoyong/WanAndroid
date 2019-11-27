@@ -17,6 +17,7 @@ import io.github.jixiaoyong.wanandroid.adapter.MainIndexPagingAdapter
 import io.github.jixiaoyong.wanandroid.base.BaseFragment
 import io.github.jixiaoyong.wanandroid.utils.InjectUtils
 import io.github.jixiaoyong.wanandroid.utils.NetUtils
+import io.github.jixiaoyong.wanandroid.viewmodel.MainViewModel
 import io.github.jixiaoyong.wanandroid.viewmodel.SystemViewModel
 import kotlinx.android.synthetic.main.fragment_main_system.view.*
 import kotlinx.android.synthetic.main.item_main_index_post.view.*
@@ -31,12 +32,16 @@ import kotlin.random.Random
  */
 class MainSystemFragment : BaseFragment() {
 
+    private lateinit var mainViewModel: MainViewModel
     private lateinit var viewModel: SystemViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_main_system, container, false)
         viewModel = ViewModelProviders.of(this,
                 InjectUtils.provideSystemViewModelFactory()).get(SystemViewModel::class.java)
+        mainViewModel = ViewModelProviders.of(requireActivity(),
+                InjectUtils.provideMainViewModelFactory()).get(MainViewModel::class.java)
+
         initView(view)
         return view
     }
@@ -109,9 +114,10 @@ class MainSystemFragment : BaseFragment() {
 
         })
 
-        val adapter = MainIndexPagingAdapter(viewModel::updateISystemPostCollectState) { itemView, data ->
-            itemView.classTv.visibility = View.GONE
-        }
+        val adapter = MainIndexPagingAdapter(viewModel::updateISystemPostCollectState,
+                { itemView, data ->
+                    itemView.classTv.visibility = View.GONE
+                }, mainViewModel::isLogin)
         view.postRecyclerView.adapter = adapter
         view.postRecyclerView.addItemDecoration(DividerItemDecoration(requireContext(), RecyclerView.VERTICAL))
         viewModel.allSystemPost.observe(this, Observer(adapter::submitList))
