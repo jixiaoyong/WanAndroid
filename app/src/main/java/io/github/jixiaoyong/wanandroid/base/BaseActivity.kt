@@ -4,10 +4,12 @@ import android.app.Activity
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import cf.android666.applibrary.Logger
+import cf.android666.applibrary.utils.ImmersiveUtils
 import cf.android666.applibrary.view.Toast
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
+
 
 /**
  * author: jixiaoyong
@@ -21,6 +23,8 @@ open class BaseActivity : AppCompatActivity(), CoroutineScope by MainScope() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        ImmersiveUtils.setTransparentStateBar(window)
+
         Logger.d("Activity($this) onCreate")
     }
 

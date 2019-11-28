@@ -37,6 +37,8 @@ class MainProjectFragment : BaseFragment() {
         mainViewModel = ViewModelProviders.of(requireActivity(),
                 InjectUtils.provideMainViewModelFactory()).get(MainViewModel::class.java)
 
+        setupFakeStateBar(view.stateBarView)
+
         initView(view)
         return view
     }

@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import io.github.jixiaoyong.wanandroid.R
 import io.github.jixiaoyong.wanandroid.base.BaseFragment
+import kotlinx.android.synthetic.main.fragment_main_todo.view.*
 
 /**
  * author: jixiaoyong
@@ -17,6 +18,8 @@ import io.github.jixiaoyong.wanandroid.base.BaseFragment
 class MainTodoFragment : BaseFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_main_todo, container, false)
+        setupFakeStateBar(view.stateBarView)
+
         initView(view)
         return view
     }

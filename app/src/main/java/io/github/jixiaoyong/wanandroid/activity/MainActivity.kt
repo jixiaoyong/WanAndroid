@@ -30,7 +30,10 @@ class MainActivity : BaseActivity(), BottomNabControl {
                 InjectUtils.provideMainViewModelFactory()).get(MainViewModel::class.java)
 
         bottomNavView.setupWithNavController(Navigation.findNavController(this, R.id.fragmentNav))
+
     }
+
+
 
     override fun changBottomNavViewVisibility(isVisible: Boolean) {
         bottomNavView.visibility = if (isVisible) View.VISIBLE else View.GONE

@@ -43,6 +43,7 @@ class MoreFragment : BaseFragment() {
                 InjectUtils.provideMoreViewModelFactory(action)).get(MoreViewModel::class.java)
         mainViewModel = ViewModelProviders.of(requireActivity(),
                 InjectUtils.provideMainViewModelFactory()).get(MainViewModel::class.java)
+        setupFakeStateBar(view.stateBarView)
 
         initView(view, action)
         return view
