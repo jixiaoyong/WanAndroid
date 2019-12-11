@@ -2,6 +2,7 @@ package io.github.jixiaoyong.wanandroid.base
 
 import android.app.Activity
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import cf.android666.applibrary.Logger
 import cf.android666.applibrary.utils.ImmersiveUtils
@@ -42,6 +43,18 @@ open class BaseActivity : AppCompatActivity(), CoroutineScope by MainScope() {
         super.onDestroy()
         Logger.d("Activity($this) onDestroy")
         cancel()
+    }
+
+
+    private fun getStateBarHeight(): Int {
+        val resourceId: Int = resources.getIdentifier("status_bar_height", "dimen", "android")
+        return resources.getDimensionPixelSize(resourceId)
+    }
+
+    protected fun setupFakeStateBar(stateBarView: View) {
+        val lp = stateBarView.layoutParams
+        lp.height = getStateBarHeight()
+        stateBarView.layoutParams = lp
     }
 }
 

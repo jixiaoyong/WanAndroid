@@ -16,6 +16,7 @@
         <item name="color_post_item_background">#f2f2f2</item>
         <item name="color_bottom_background">#e7ececec</item>
         <item name="color_bottom_tint">#e8303030</item>
+        <item name="colorControlNormal">@color/colorWhite</item>
 
     </style>
 
@@ -36,5 +37,9 @@
         <item name="android:colorControlActivated">@color/colorPrimary</item>
     </style>
 
+    <style name="OverflowMenuStyle" parent="Widget.AppCompat.Light.PopupMenu.Overflow">
+        <!--把该属性改为false即可使menu位置位于toolbar之下-->
+        <item name="overlapAnchor">false</item>
+    </style>
 
 </resources>

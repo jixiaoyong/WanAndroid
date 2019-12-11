@@ -48,7 +48,7 @@ open class BaseFragment : Fragment(), CoroutineScope by MainScope() {
         immersiveStateBar.setBackgroundColor(resources.getColor(colorId))
     }
 
-    protected fun getStateBarHeight(): Int {
+    private fun getStateBarHeight(): Int {
         val resourceId: Int = resources.getIdentifier("status_bar_height", "dimen", "android")
         return resources.getDimensionPixelSize(resourceId)
     }

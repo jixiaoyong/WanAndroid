@@ -1,8 +1,11 @@
 package io.github.jixiaoyong.wanandroid.utils
 
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import com.google.androidbrowserhelper.trusted.TwaLauncher
+import com.google.androidbrowserhelper.trusted.TwaProviderPicker
+import io.github.jixiaoyong.wanandroid.activity.ContentActivity
 import io.github.jixiaoyong.wanandroid.api.AppUpgradeApi
 import io.github.jixiaoyong.wanandroid.api.WanAndroidService
 import io.github.jixiaoyong.wanandroid.api.interceptor.CookieManager
@@ -62,8 +65,19 @@ object NetUtils {
 
     }
 
+    /**
+     * 有Chrome适配模式的话就用，否则就使用自己的WebView打开页面
+     */
     fun loadUrl(context: Context, urlStr: String) {
         val url = Uri.parse(urlStr)
-        TwaLauncher(context).launch(url)
+        if (TwaProviderPicker.pickProvider(context.packageManager).launchMode
+                == TwaProviderPicker.LaunchMode.BROWSER) {
+            val twaLauncher = TwaLauncher(context)
+            twaLauncher.launch(url)
+        } else {
+            val intent = Intent(context, ContentActivity::class.java)
+            intent.putExtra(CommonConstants.ACTION_URL, urlStr)
+            context.startActivity(intent)
+        }
     }
 }
