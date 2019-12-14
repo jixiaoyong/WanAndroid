@@ -50,7 +50,8 @@ android {
     //格式化输出文件名称
     applicationVariants.all { variant ->
         variant.outputs.all {
-            outputFileName = "WanAndroid-${variant.flavorName}-v${variant.versionName}-${variant.buildType.name}-${releaseTime()}.apk"
+            /*渠道名: ${variant.flavorName}-*/
+            outputFileName = "WanAndroid-v${variant.versionName}-${variant.buildType.name}-${releaseTime()}.apk"
         }
     }
 
