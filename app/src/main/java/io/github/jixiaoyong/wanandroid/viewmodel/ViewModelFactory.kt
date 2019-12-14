@@ -33,6 +33,13 @@ class AboutViewModelFactory(private val netWorkRepository: NetWorkRepository) : 
 }
 
 @Suppress("UNCHECKED_CAST")
+class SearchViewModelFactory(private val netWorkRepository: NetWorkRepository) : ViewModelProvider.Factory {
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        return SearchViewModel(netWorkRepository) as T
+    }
+}
+
+@Suppress("UNCHECKED_CAST")
 class SystemViewModelFactory(private val netWorkRepository: NetWorkRepository) : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         return SystemViewModel(netWorkRepository) as T
@@ -47,8 +54,9 @@ class ProjectViewModelFactory(private val netWorkRepository: NetWorkRepository) 
 }
 
 @Suppress("UNCHECKED_CAST")
-class MoreViewModelFactory(private val netWorkRepository: NetWorkRepository, private val action: Int) : ViewModelProvider.Factory {
+class MoreViewModelFactory(private val netWorkRepository: NetWorkRepository, private val action: Int,
+                           private val searchArgs: String?) : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return MoreViewModel(netWorkRepository, action) as T
+        return MoreViewModel(netWorkRepository, action, searchArgs) as T
     }
 }

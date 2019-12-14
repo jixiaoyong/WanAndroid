@@ -26,6 +26,10 @@ object InjectUtils {
         return AboutViewModelFactory(NetWorkRepository())
     }
 
+    fun provideSearchModelFactory(): SearchViewModelFactory {
+        return SearchViewModelFactory(NetWorkRepository())
+    }
+
     fun provideSystemViewModelFactory(): SystemViewModelFactory {
         return SystemViewModelFactory(NetWorkRepository())
     }
@@ -34,7 +38,7 @@ object InjectUtils {
         return ProjectViewModelFactory(NetWorkRepository())
     }
 
-    fun provideMoreViewModelFactory(action: Int): MoreViewModelFactory {
-        return MoreViewModelFactory(NetWorkRepository(), action)
+    fun provideMoreViewModelFactory(action: Int, searchArgs: String?): MoreViewModelFactory {
+        return MoreViewModelFactory(NetWorkRepository(), action, searchArgs)
     }
 }

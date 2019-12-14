@@ -5,6 +5,7 @@ import android.content.Context
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.widget.SearchView
+import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
@@ -15,15 +16,14 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import io.github.jixiaoyong.wanandroid.R
 import io.github.jixiaoyong.wanandroid.adapter.MainIndexPagingAdapter
+import io.github.jixiaoyong.wanandroid.adapter.SearchAdapter
 import io.github.jixiaoyong.wanandroid.base.BaseFragment
 import io.github.jixiaoyong.wanandroid.base.toast
-import io.github.jixiaoyong.wanandroid.utils.CommonConstants
-import io.github.jixiaoyong.wanandroid.utils.InjectUtils
-import io.github.jixiaoyong.wanandroid.utils.NetUtils
-import io.github.jixiaoyong.wanandroid.utils.Utils
+import io.github.jixiaoyong.wanandroid.utils.*
 import io.github.jixiaoyong.wanandroid.view.BannerViewHelper
 import io.github.jixiaoyong.wanandroid.view.DispatchNestedScrollView
 import io.github.jixiaoyong.wanandroid.viewmodel.MainViewModel
+import io.github.jixiaoyong.wanandroid.viewmodel.SearchViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_main_index.view.*
 import kotlinx.coroutines.Dispatchers
@@ -41,11 +41,14 @@ import kotlinx.coroutines.withContext
 class MainIndexFragment : BaseFragment() {
 
     private lateinit var mainViewModel: MainViewModel
+    private lateinit var searchViewModel: SearchViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_main_index, container, false)
         mainViewModel = ViewModelProviders.of(requireActivity(),
                 InjectUtils.provideMainViewModelFactory()).get(MainViewModel::class.java)
+        searchViewModel = ViewModelProviders.of(requireActivity(),
+                InjectUtils.provideSearchModelFactory()).get(SearchViewModel::class.java)
 
         setupFakeStateBar(view.stateBarView)
 
@@ -118,12 +121,63 @@ class MainIndexFragment : BaseFragment() {
         view.peopleBtn.setOnClickListener {
             goMoreFragment(view, CommonConstants.Action.PEOPLE)
         }
+
+        view.searchView.setOnQueryTextFocusChangeListener { v, hasFocus ->
+            refreshSearchView()
+            if (hasFocus) {
+                launch {
+                    view.progressBar.visibility = View.VISIBLE
+                    val hotKeyWords = withContext(Dispatchers.IO) {
+                        searchViewModel.getHotSearchWords()
+                    }
+                    view.searchList.adapter = SearchAdapter(hotKeyWords, this@MainIndexFragment::searchKeyWord)
+                    view.progressBar.visibility = View.GONE
+                }
+            }
+        }
+
+        view.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                Logger.d("onQueryTextSubmit:$query")
+                view.searchView.setQuery("", false)
+                searchKeyWord(query)
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return false
+            }
+        })
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        refreshSearchView()
+    }
+
+    private fun refreshSearchView() {
+        requireView().searchList.visibility = if (requireView().searchView.hasFocus()) View.VISIBLE else View.GONE
+        Logger.d("refreshSearchView:${requireView().searchView.hasFocus()}\n" +
+                "searchViewLayout.visibility:${requireView().searchList.visibility}")
+    }
+
+    private fun searchKeyWord(query: String?) {
+        query?.run {
+            ImmUtils.hideImm(requireActivity())
+            val bundle = bundleOf(Pair(CommonConstants.KEYS.SEARCH_ARGS, this))
+            goMoreFragment(requireView(), CommonConstants.Action.SEARCH, bundle)
+            requireView().searchList.visibility = View.GONE
+        }
     }
 
     @Synchronized
-    private fun goMoreFragment(view: View, action: Int) {
+    private fun goMoreFragment(view: View, action: Int, bundle: Bundle? = null) {
         val args = Bundle()
         args.putInt(CommonConstants.Action.KEY, action)
+        bundle?.let {
+            args.putAll(it)
+        }
         view.findNavController().navigate(R.id.action_mainIndexFragment_to_moreFragment, args)
     }
 

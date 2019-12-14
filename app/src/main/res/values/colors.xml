@@ -11,4 +11,5 @@
     <color name="colorGreenText">#00BB57</color>
     <color name="colorWhite">#ffffff</color>
     <color name="colorCollected">#FFBF00</color>
+    <color name="colorTransl">#00FFFFFF</color>
 </resources>

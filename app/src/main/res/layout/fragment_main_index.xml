@@ -37,7 +37,8 @@
                     android:layout_height="match_parent"
                     android:layout_margin="10dp"
                     android:background="@drawable/background_round"
-                    android:backgroundTint="#fff"
+                    android:backgroundTint="#F0EFEF"
+                    app:iconifiedByDefault="false"
                     app:queryHint="@string/edit_to_search" />
 
             </androidx.appcompat.widget.Toolbar>
@@ -167,6 +168,29 @@
                 tools:listitem="@layout/item_main_index_post" />
 
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/searchList"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:background="@color/colorWhite"
+                android:visibility="gone"
+                app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/toolbar"
+                tools:listitem="@layout/item_textview" />
+
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </io.github.jixiaoyong.wanandroid.view.DispatchNestedScrollView>
 

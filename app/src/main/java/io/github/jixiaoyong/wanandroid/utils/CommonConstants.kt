@@ -30,6 +30,13 @@ object CommonConstants {
         const val WECHAT = 0
         const val FAVORITE = 1
         const val PEOPLE = 2
+        const val SEARCH = 3
+    }
+
+    object KEYS {
+
+        const val SEARCH_ARGS = "search_args"
+
     }
 
     object PreferenceKey {

@@ -50,7 +50,7 @@ android {
     //格式化输出文件名称
     applicationVariants.all { variant ->
         variant.outputs.all {
-            outputFileName = "${variant.flavorName}-v${variant.versionName}-${variant.buildType.name}-${releaseTime()}.apk"
+            outputFileName = "WanAndroid-${variant.flavorName}-v${variant.versionName}-${variant.buildType.name}-${releaseTime()}.apk"
         }
     }
 
@@ -104,4 +104,5 @@ dependencies {
 
     //load url by chrome
     implementation 'com.google.androidbrowserhelper:androidbrowserhelper:0.1.0-alpha1'
+
 }

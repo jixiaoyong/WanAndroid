@@ -21,5 +21,6 @@ object ApiCommondConstants {
         const val FavoritePost = 3
         const val PeoplePost = 4
         const val ProjectPost = 5
+        const val SearchPost = 6
     }
 }

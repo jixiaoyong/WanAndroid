@@ -38,27 +38,29 @@ class MoreFragment : BaseFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_more, container, false)
         val action = arguments?.getInt(CommonConstants.Action.KEY) ?: CommonConstants.Action.WECHAT
+        val searchArgs = arguments?.getString(CommonConstants.KEYS.SEARCH_ARGS)
         Logger.d("action:$action")
         viewModel = ViewModelProviders.of(this,
-                InjectUtils.provideMoreViewModelFactory(action)).get(MoreViewModel::class.java)
+                InjectUtils.provideMoreViewModelFactory(action, searchArgs)).get(MoreViewModel::class.java)
         mainViewModel = ViewModelProviders.of(requireActivity(),
                 InjectUtils.provideMainViewModelFactory()).get(MainViewModel::class.java)
         setupFakeStateBar(view.stateBarView)
 
-        initView(view, action)
+        initView(view, action, searchArgs)
         return view
     }
 
-    private fun initView(view: View, action: Int) {
+    private fun initView(view: View, action: Int, searchArgs: String?) {
 
         val title = when (action) {
-            CommonConstants.Action.WECHAT -> R.string.wechat
-            CommonConstants.Action.FAVORITE -> R.string.favortie
-            CommonConstants.Action.PEOPLE -> R.string.square
+            CommonConstants.Action.WECHAT -> getString(R.string.wechat)
+            CommonConstants.Action.FAVORITE -> getString(R.string.favortie)
+            CommonConstants.Action.PEOPLE -> getString(R.string.square)
+            CommonConstants.Action.SEARCH -> getString(R.string.search) + " " + (searchArgs ?: "")
             else -> null
         }
 
-        view.toolbar.title = title?.let { getString(it) }
+        view.toolbar.title = title
         view.toolbar.setNavigationOnClickListener {
             onBackPressed()
         }

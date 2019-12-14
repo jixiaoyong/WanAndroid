@@ -36,11 +36,12 @@ object Utils {
             //设置系统状态栏处于可见状态
             window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_VISIBLE
         }
+
         //view不根据系统窗口来调整自己的布局
         val mContentView = window.findViewById(Window.ID_ANDROID_CONTENT) as ViewGroup
         val mChildView = mContentView.getChildAt(0)
         if (mChildView != null) {
-            ViewCompat.setFitsSystemWindows(mChildView, false)
+            mChildView.fitsSystemWindows = true
             ViewCompat.requestApplyInsets(mChildView)
         }
     }

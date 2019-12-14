@@ -121,6 +121,20 @@ class NetWorkRepository {
         return result
     }
 
+    suspend fun getSearchPostOnPage(key: String, currentPage: Int): RemoteDataBean<DataPageOf<DataIndexPostParam>> {
+        val result = NetUtils.wanAndroidApi.search(currentPage, key)
+
+        val wechatPostList = result.data?.datas?.map {
+            it._postType = ApiCommondConstants.PostType.SearchPost
+            it
+        } ?: listOf()
+        if (currentPage == 0) {
+            DatabaseUtils.database.baseArticlesDao().deleteAllArticles(ApiCommondConstants.PostType.SearchPost)
+        }
+        DatabaseUtils.database.baseArticlesDao().insert(wechatPostList)
+        return result
+    }
+
     /**
      * 获取微信公众号列表
      */
@@ -155,4 +169,17 @@ class NetWorkRepository {
         return respone?.body()?.data
     }
 
+
+    /**
+     * get hot search key list
+     */
+    fun getHotSearchKeyList(): List<DataHotKeyParam>? {
+        val respone = try {
+            NetUtils.wanAndroidApi.getHotKey().execute()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+        return respone?.body()?.data
+    }
 }

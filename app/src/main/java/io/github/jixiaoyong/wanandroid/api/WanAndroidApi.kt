@@ -41,7 +41,7 @@ interface WanAndroidService {
      * 即目前搜索最多的关键词
      */
     @GET("hotkey/json")
-    fun getHotKey(): RemoteDataBean<List<DataHotKeyParam>>
+    fun getHotKey(): Call<RemoteDataBean<List<DataHotKeyParam>>>
 
     /**
      * 置顶文章
@@ -244,7 +244,7 @@ interface WanAndroidService {
      */
     @POST("article/query/{page}/json")
     @FormUrlEncoded
-    fun search(@Path("page") page: Int, @Field("k") key: String)
+    suspend fun search(@Path("page") page: Int, @Field("k") key: String)
             : RemoteDataBean<DataPageOf<DataIndexPostParam>>
 
 

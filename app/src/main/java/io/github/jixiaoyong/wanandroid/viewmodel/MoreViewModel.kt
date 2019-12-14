@@ -28,7 +28,7 @@ import kotlin.concurrent.thread
  * date: 2019-11-16
  * description: 项目
  */
-class MoreViewModel(private val netWorkRepository: NetWorkRepository, action: Int) : BaseViewModel() {
+class MoreViewModel(private val netWorkRepository: NetWorkRepository, action: Int, searchArgs: String?) : BaseViewModel() {
 
     private val mainTabsPreference: LiveData<Preference?> by lazy {
         DatabaseUtils.database
@@ -85,6 +85,18 @@ class MoreViewModel(private val netWorkRepository: NetWorkRepository, action: In
                                     boundaryCallback = PostBoundaryCallback { currentPage ->
                                         launch(Dispatchers.IO) {
                                             netWorkRepository.getFavoritePostOnPage(currentPage)
+                                        }
+                                    }
+                            )
+                }
+                CommonConstants.Action.SEARCH -> {
+                    DatabaseUtils.database
+                            .baseArticlesDao().queryAllArticles(ApiCommondConstants.PostType.SearchPost).toLiveData(
+                                    pageSize = CommonConstants.Paging.PAGE_SIZE,
+                                    boundaryCallback = PostBoundaryCallback { currentPage ->
+                                        launch(Dispatchers.IO) {
+                                            netWorkRepository.getSearchPostOnPage(searchArgs
+                                                    ?: "", currentPage)
                                         }
                                     }
                             )

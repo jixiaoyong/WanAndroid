@@ -1,1 +1,19 @@
-[{"outputType":{"type":"APK"},"apkInfo":{"type":"MAIN","splits":[],"versionCode":1},"path":"app-release.apk","properties":{"packageId":"cf.android666.wanandroid","split":"","minSdkVersion":"21"}}]
+[
+  {
+    "outputType": {
+      "type": "APK"
+    },
+    "apkData": {
+      "type": "MAIN",
+      "splits": [],
+      "versionCode": 20191207,
+      "versionName": "2.0.0",
+      "enabled": true,
+      "outputFile": "-v2.0.0-release-20191207.apk",
+      "fullName": "release",
+      "baseName": "release"
+    },
+    "path": "-v2.0.0-release-20191207.apk",
+    "properties": {}
+  }
+]
