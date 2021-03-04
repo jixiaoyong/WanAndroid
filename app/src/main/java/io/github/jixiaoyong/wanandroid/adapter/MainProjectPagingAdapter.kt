@@ -11,7 +11,6 @@ import io.github.jixiaoyong.wanandroid.base.BasePagingAdapter
 import io.github.jixiaoyong.wanandroid.base.BaseViewHolder
 import io.github.jixiaoyong.wanandroid.databinding.ItemMainProjectBinding
 import io.github.jixiaoyong.wanandroid.utils.NetUtils
-import kotlinx.android.synthetic.main.item_main_index_post.view.*
 import kotlin.concurrent.thread
 
 /**
@@ -21,13 +20,19 @@ import kotlin.concurrent.thread
  * date: 2019-11-15
  * description: todo
  */
-class MainProjectPagingAdapter(private val updateIndexPostCollectState: (DataIndexPostParam) -> Unit,
-                               private val onViewHolder: ((View, DataIndexPostParam) -> Unit)? = null,
-                               private val isLogin: (() -> Boolean)? = null)
-    : BasePagingAdapter<DataIndexPostParam, MainProjectPagingAdapter.ViewHolder>(Diff()) {
+class MainProjectPagingAdapter(
+    private val updateIndexPostCollectState: (DataIndexPostParam) -> Unit,
+    private val onViewHolder: ((View, DataIndexPostParam) -> Unit)? = null,
+    private val isLogin: (() -> Boolean)? = null
+) :
+    BasePagingAdapter<DataIndexPostParam, MainProjectPagingAdapter.ViewHolder>(Diff()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(DataBindingUtil.inflate(LayoutInflater.from(parent.context),
-                R.layout.item_main_project, parent, false))
+        return ViewHolder(
+            DataBindingUtil.inflate(
+                LayoutInflater.from(parent.context),
+                R.layout.item_main_project, parent, false
+            )
+        )
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -36,11 +41,11 @@ class MainProjectPagingAdapter(private val updateIndexPostCollectState: (DataInd
         onViewHolder?.invoke(holder.itemView, data)
 
         if (!data.link.isNullOrBlank()) {
-            holder.itemView.titleTv.setOnClickListener {
+            holder.dataBinding.titleTv.setOnClickListener {
                 NetUtils.loadUrl(holder.itemView.context, data.link)
             }
         }
-        holder.itemView.favoriteTv.setOnClickListener {
+        holder.dataBinding.favoriteTv.setOnClickListener {
             if (isLogin?.invoke() == true) {
                 thread {
                     val newData = data.copy(collect = !data.collect)
@@ -49,7 +54,6 @@ class MainProjectPagingAdapter(private val updateIndexPostCollectState: (DataInd
             } else {
                 Toast.show(it.context.getString(R.string.tips_plz_login))
             }
-
         }
     }
 

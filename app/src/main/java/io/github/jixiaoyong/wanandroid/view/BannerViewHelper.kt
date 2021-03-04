@@ -8,7 +8,6 @@ import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import io.github.jixiaoyong.wanandroid.R
-import kotlinx.android.synthetic.main.view_banner_image_fragment.view.*
 
 /**
  * author: jixiaoyong
@@ -35,20 +34,20 @@ object BannerViewHelper {
 
         constructor() : super()
 
-        constructor(loadImageViewResource: (ImageView, Int) -> Unit,
-                    index: Int) : super() {
+        constructor(
+            loadImageViewResource: (ImageView, Int) -> Unit,
+            index: Int
+        ) : super() {
             this.loadImageViewResource = loadImageViewResource
             this.index = index
         }
 
-
         override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
             val view = inflater.inflate(R.layout.view_banner_image_fragment, null, false)
-            loadImageViewResource?.invoke(view.image, index)
+            loadImageViewResource?.invoke(view.findViewById(R.id.image), index)
             return view
         }
     }
-
 
     class Builder(private val bannerView: BannerView) {
 
@@ -78,5 +77,4 @@ object BannerViewHelper {
             bannerView.setViewsAndIndicator(fragmentManager, fragments, indicatorDescList)
         }
     }
-
 }

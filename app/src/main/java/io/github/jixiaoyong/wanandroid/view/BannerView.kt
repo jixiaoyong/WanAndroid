@@ -16,7 +16,6 @@ import androidx.fragment.app.FragmentManager
 import cf.android666.applibrary.Logger
 import cf.android666.applibrary.view.BannerViewHelper
 import io.github.jixiaoyong.wanandroid.R
-import kotlinx.android.synthetic.main.view_banner.view.*
 
 /**
  * author: jixiaoyong
@@ -45,8 +44,8 @@ class BannerView : RelativeLayout {
 
     private fun initView(context: Context, attrs: AttributeSet?, defStyleAttr: Int, defStyleRes: Int = 0) {
         val view = LayoutInflater.from(context).inflate(R.layout.view_banner, this, true)
-        viewPager = view.viewPager
-        indicatorLayout = view.bottomView
+        viewPager = view.findViewById(R.id.viewPager)
+        indicatorLayout = view.findViewById(R.id.bottomView)
         val a = context.obtainStyledAttributes(attrs, R.styleable.BannerView, defStyleAttr, defStyleRes)
         indicatorType = a.getInt(R.styleable.BannerView_indicatorType, IndicatorType.POINT)
         a.recycle()

@@ -5,10 +5,12 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.View
+import androidx.databinding.DataBindingUtil
 import cf.android666.applibrary.Logger
 import io.github.jixiaoyong.wanandroid.R
 import io.github.jixiaoyong.wanandroid.base.BaseActivity
 import io.github.jixiaoyong.wanandroid.base.toast
+import io.github.jixiaoyong.wanandroid.databinding.ActivityLauncherBinding
 import io.github.jixiaoyong.wanandroid.utils.DatabaseUtils
 import io.github.jixiaoyong.wanandroid.utils.NetUtils
 import kotlinx.coroutines.Dispatchers
@@ -24,6 +26,7 @@ import kotlinx.coroutines.withContext
  */
 class LauncherActivity : BaseActivity() {
 
+    private lateinit var binding: ActivityLauncherBinding
     private lateinit var context: Context
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,8 +34,8 @@ class LauncherActivity : BaseActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         }
-
-        setContentView(R.layout.activity_launcher)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_launcher)
+        binding.lifecycleOwner = this
 
         context = this
     }

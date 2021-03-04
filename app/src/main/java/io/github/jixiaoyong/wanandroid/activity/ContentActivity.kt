@@ -13,12 +13,13 @@ import android.webkit.WebChromeClient
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import androidx.databinding.DataBindingUtil
 import cf.android666.applibrary.Logger
 import io.github.jixiaoyong.wanandroid.R
 import io.github.jixiaoyong.wanandroid.base.BaseActivity
 import io.github.jixiaoyong.wanandroid.base.toast
+import io.github.jixiaoyong.wanandroid.databinding.ActivityContentBinding
 import io.github.jixiaoyong.wanandroid.utils.CommonConstants
-import kotlinx.android.synthetic.main.activity_content.*
 
 /**
  * author: jixiaoyong
@@ -30,38 +31,40 @@ import kotlinx.android.synthetic.main.activity_content.*
 class ContentActivity : BaseActivity() {
 
     private var clipboardManager: ClipboardManager? = null
+    private lateinit var binding: ActivityContentBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_content)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_content)
+        binding.lifecycleOwner = this
 
         clipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager?
 
-        setupFakeStateBar(stateBarView)
-        toolbar.setNavigationOnClickListener {
+        setupFakeStateBar(binding.stateBarView)
+        binding.toolbar.setNavigationOnClickListener {
             onBackPressed()
         }
 
-        toolbar.dismissPopupMenus()
-        toolbar.setOnMenuItemClickListener {
+        binding.toolbar.dismissPopupMenus()
+        binding.toolbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.contentRefresh -> {
-                    webView.reload()
+                    binding.webView.reload()
                 }
                 R.id.contentCopy -> {
-                    val clipData = ClipData.newPlainText("Label", webView.url)
+                    val clipData = ClipData.newPlainText("Label", binding.webView.url)
                     clipboardManager?.setPrimaryClip(clipData)
                     toast(getString(R.string.copy_succeeded))
                 }
                 R.id.contentShare -> {
                     val intent = Intent(Intent.ACTION_SEND)
                     intent.type = "text/plain"
-                    intent.putExtra(Intent.EXTRA_TEXT, webView.url)
+                    intent.putExtra(Intent.EXTRA_TEXT, binding.webView.url)
                     startActivity(intent)
                 }
                 R.id.contentOpen -> {
                     val intent = Intent(Intent.ACTION_VIEW)
-                    intent.data = Uri.parse(webView.url)
+                    intent.data = Uri.parse(binding.webView.url)
                     startActivity(intent)
                 }
             }
@@ -71,8 +74,8 @@ class ContentActivity : BaseActivity() {
         val url = intent.getStringExtra(CommonConstants.ACTION_URL)
         Logger.d("url:$url")
 
-        url?.let { webView.loadUrl(it) }
-        val webViewSettings = webView.settings
+        url?.let { binding.webView.loadUrl(it) }
+        val webViewSettings = binding.webView.settings
         webViewSettings.javaScriptEnabled = false
 
         webViewSettings.useWideViewPort = true
@@ -92,38 +95,38 @@ class ContentActivity : BaseActivity() {
         webViewSettings.allowFileAccessFromFileURLs = false
         webViewSettings.allowUniversalAccessFromFileURLs = false
 
-        webView.webViewClient = object : WebViewClient() {
+        binding.webView.webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
                 url?.let { view?.loadUrl(it) }
                 return true
             }
 
             override fun onPageFinished(view: WebView?, url: String?) {
-                progressBar.visibility = View.GONE
+                binding.progressBar.visibility = View.GONE
                 super.onPageFinished(view, url)
             }
 
             override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
-                progressBar.visibility = View.VISIBLE
+                binding.progressBar.visibility = View.VISIBLE
                 super.onPageStarted(view, url, favicon)
             }
         }
-        webView.webChromeClient = object : WebChromeClient() {
+        binding.webView.webChromeClient = object : WebChromeClient() {
             override fun onReceivedTitle(view: WebView?, title: String?) {
-                toolbar.title = title
+                binding.toolbar.title = title
                 Logger.d("title:$title")
             }
 
             override fun onProgressChanged(view: WebView?, newProgress: Int) {
                 Logger.d("progress:$newProgress")
-                progressBar.progress = newProgress
+                binding.progressBar.progress = newProgress
             }
         }
     }
 
     override fun onBackPressed() {
-        if (webView.canGoBack()) {
-            webView.goBack()
+        if (binding.webView.canGoBack()) {
+            binding.webView.goBack()
             return
         }
         super.onBackPressed()
@@ -131,14 +134,14 @@ class ContentActivity : BaseActivity() {
 
     override fun onPause() {
         super.onPause()
-        webView.onPause()
+        binding.webView.onPause()
     }
 
     override fun onDestroy() {
-        webView.loadDataWithBaseURL(null, "", "text/html", "utf-8", null)
-        webView.clearHistory()
-        (webView.parent as ViewGroup).removeView(webView)
-        webView.destroy()
+        binding.webView.loadDataWithBaseURL(null, "", "text/html", "utf-8", null)
+        binding.webView.clearHistory()
+        (binding.webView.parent as ViewGroup).removeView(binding.webView)
+        binding.webView.destroy()
         super.onDestroy()
     }
 }

@@ -18,7 +18,6 @@ import io.github.jixiaoyong.wanandroid.utils.NetUtils
 import io.github.jixiaoyong.wanandroid.utils.Utils
 import io.github.jixiaoyong.wanandroid.view.ProgressDialog
 import io.github.jixiaoyong.wanandroid.viewmodel.LoginAndRegisterViewModel
-import kotlinx.android.synthetic.main.view_input_group.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -67,22 +66,22 @@ class LoginRegisterActivity : BaseActivity() {
             finish()
         }
 
-        userNameEditText.doOnTextChanged { text, start, count, after ->
+        dataBinding.inputGroup.userNameEditText.doOnTextChanged { text, start, count, after ->
             viewModel.nameInputLength.value = text?.length ?: 0
         }
 
-        pwdEditText.doOnTextChanged { text, start, count, after ->
+        dataBinding.inputGroup.pwdEditText.doOnTextChanged { text, start, count, after ->
             viewModel.pwdInputLength.value = text?.length ?: 0
         }
 
-        pwdReEditText.doOnTextChanged { text, start, count, after ->
+        dataBinding.inputGroup.pwdReEditText.doOnTextChanged { text, start, count, after ->
             viewModel.repwdInputLength.value = text?.length ?: 0
         }
 
-        loginRegisterBtn.setOnClickListener {
-            val userName = userNameEditText.text.toString()
-            val userPwd = pwdEditText.text.toString()
-            val userRePwd = pwdReEditText.text.toString()
+        dataBinding.inputGroup.loginRegisterBtn.setOnClickListener {
+            val userName = dataBinding.inputGroup.userNameEditText.text.toString()
+            val userPwd = dataBinding.inputGroup.pwdEditText.text.toString()
+            val userRePwd = dataBinding.inputGroup.pwdReEditText.text.toString()
             if (viewModel.isLogin.value != false) {
                 dealLogin(userName, userPwd)
             } else {
@@ -90,23 +89,23 @@ class LoginRegisterActivity : BaseActivity() {
             }
         }
 
-        pwdIcon.setOnClickListener {
-            pwdEditText.transformationMethod = if (showPwd) {
-                pwdIcon.setBackgroundResource(R.drawable.ic_eye_open)
+        dataBinding.inputGroup.pwdIcon.setOnClickListener {
+            dataBinding.inputGroup.pwdEditText.transformationMethod = if (showPwd) {
+                dataBinding.inputGroup.pwdIcon.setBackgroundResource(R.drawable.ic_eye_open)
                 HideReturnsTransformationMethod.getInstance()
             } else {
-                pwdIcon.setBackgroundResource(R.drawable.ic_eye_close)
+                dataBinding.inputGroup.pwdIcon.setBackgroundResource(R.drawable.ic_eye_close)
                 PasswordTransformationMethod.getInstance()
             }
             showPwd = !showPwd
         }
 
-        pwdReIcon.setOnClickListener {
-            pwdReEditText.transformationMethod = if (showRePwd) {
-                pwdReIcon.setBackgroundResource(R.drawable.ic_eye_open)
+        dataBinding.inputGroup.pwdReIcon.setOnClickListener {
+            dataBinding.inputGroup.pwdReEditText.transformationMethod = if (showRePwd) {
+                dataBinding.inputGroup.pwdReIcon.setBackgroundResource(R.drawable.ic_eye_open)
                 HideReturnsTransformationMethod.getInstance()
             } else {
-                pwdReIcon.setBackgroundResource(R.drawable.ic_eye_close)
+                dataBinding.inputGroup.pwdReIcon.setBackgroundResource(R.drawable.ic_eye_close)
                 PasswordTransformationMethod.getInstance()
             }
             showRePwd = !showRePwd

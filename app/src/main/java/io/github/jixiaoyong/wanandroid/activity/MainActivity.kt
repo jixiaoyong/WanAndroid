@@ -2,15 +2,16 @@ package io.github.jixiaoyong.wanandroid.activity
 
 import android.os.Bundle
 import android.view.View
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import androidx.navigation.ui.setupWithNavController
 import io.github.jixiaoyong.wanandroid.R
 import io.github.jixiaoyong.wanandroid.base.BaseActivity
+import io.github.jixiaoyong.wanandroid.databinding.ActivityMainBinding
 import io.github.jixiaoyong.wanandroid.utils.BottomNabControl
 import io.github.jixiaoyong.wanandroid.utils.InjectUtils
 import io.github.jixiaoyong.wanandroid.viewmodel.MainViewModel
-import kotlinx.android.synthetic.main.activity_main.*
 
 /**
  * author: jixiaoyong
@@ -21,22 +22,24 @@ import kotlinx.android.synthetic.main.activity_main.*
  */
 class MainActivity : BaseActivity(), BottomNabControl {
 
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        binding.lifecycleOwner = this
 
-        val viewModel = ViewModelProviders.of(this,
-                InjectUtils.provideMainViewModelFactory()).get(MainViewModel::class.java)
+        ViewModelProviders.of(
+            this,
+            InjectUtils.provideMainViewModelFactory()
+        ).get(MainViewModel::class.java)
 
-        bottomNavView.setupWithNavController(Navigation.findNavController(this, R.id.fragmentNav))
-
+        binding.bottomNavView.setupWithNavController(Navigation.findNavController(this, R.id.fragmentNav))
     }
-
-
 
     override fun changBottomNavViewVisibility(isVisible: Boolean) {
-        bottomNavView.visibility = if (isVisible) View.VISIBLE else View.GONE
+        binding.bottomNavView.visibility = if (isVisible) View.VISIBLE else View.GONE
     }
 
+    override fun getBottomNavViewHeight() = binding.bottomNavView.height
 }

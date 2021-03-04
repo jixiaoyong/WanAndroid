@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -12,11 +13,11 @@ import com.google.android.material.tabs.TabLayout
 import io.github.jixiaoyong.wanandroid.R
 import io.github.jixiaoyong.wanandroid.adapter.MainProjectPagingAdapter
 import io.github.jixiaoyong.wanandroid.base.BaseFragment
+import io.github.jixiaoyong.wanandroid.databinding.FragmentMainProjectBinding
 import io.github.jixiaoyong.wanandroid.utils.InjectUtils
 import io.github.jixiaoyong.wanandroid.utils.NetUtils
 import io.github.jixiaoyong.wanandroid.viewmodel.MainViewModel
 import io.github.jixiaoyong.wanandroid.viewmodel.ProjectViewModel
-import kotlinx.android.synthetic.main.fragment_main_project.view.*
 
 /**
  * author: jixiaoyong
@@ -29,43 +30,53 @@ class MainProjectFragment : BaseFragment() {
 
     private lateinit var mainViewModel: MainViewModel
     private lateinit var viewModel: ProjectViewModel
+    private lateinit var dataBinding: FragmentMainProjectBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_main_project, container, false)
-        viewModel = ViewModelProviders.of(this,
-                InjectUtils.provideProjectViewModelFactory()).get(ProjectViewModel::class.java)
-        mainViewModel = ViewModelProviders.of(requireActivity(),
-                InjectUtils.provideMainViewModelFactory()).get(MainViewModel::class.java)
+        dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_main_project, container, false)
+        val view = dataBinding.root
 
-        setupFakeStateBar(view.stateBarView)
+        viewModel = ViewModelProviders.of(
+            this,
+            InjectUtils.provideProjectViewModelFactory()
+        ).get(ProjectViewModel::class.java)
+        mainViewModel = ViewModelProviders.of(
+            requireActivity(),
+            InjectUtils.provideMainViewModelFactory()
+        ).get(MainViewModel::class.java)
+
+        setupFakeStateBar(dataBinding.stateBarView)
 
         initView(view)
         return view
     }
 
     private fun initView(view: View) {
-        viewModel.mainTabs.observe(this, Observer {
-            it?.forEachIndexed { index, dataProjectParam ->
-                val tabItem = view.tabLayout.newTab()
-                tabItem.text = dataProjectParam.name
-                tabItem.tag = index
-                view.tabLayout.addTab(tabItem)
+        viewModel.mainTabs.observe(
+            viewLifecycleOwner,
+            Observer {
+                it?.forEachIndexed { index, dataProjectParam ->
+                    val tabItem = dataBinding.tabLayout.newTab()
+                    tabItem.text = dataProjectParam.name
+                    tabItem.tag = index
+                    dataBinding.tabLayout.addTab(tabItem)
+                }
             }
-        })
+        )
 
-        val adapter = MainProjectPagingAdapter(viewModel::updateIndexPostCollectState,
-                isLogin = mainViewModel::isLogin)
-        view.postRecyclerView.adapter = adapter
-        view.postRecyclerView.addItemDecoration(DividerItemDecoration(requireContext(), RecyclerView.VERTICAL))
-        viewModel.allProjectPost.observe(this, Observer(adapter::submitList))
+        val adapter = MainProjectPagingAdapter(
+            viewModel::updateIndexPostCollectState,
+            isLogin = mainViewModel::isLogin
+        )
+        dataBinding.postRecyclerView.adapter = adapter
+        dataBinding.postRecyclerView.addItemDecoration(DividerItemDecoration(requireContext(), RecyclerView.VERTICAL))
+        viewModel.allProjectPost.observe(viewLifecycleOwner, Observer(adapter::submitList))
 
-        view.tabLayout.addOnTabSelectedListener(object : TabLayout.BaseOnTabSelectedListener<TabLayout.Tab> {
+        dataBinding.tabLayout.addOnTabSelectedListener(object : TabLayout.BaseOnTabSelectedListener<TabLayout.Tab> {
             override fun onTabReselected(p0: TabLayout.Tab?) {
-
             }
 
             override fun onTabUnselected(p0: TabLayout.Tab?) {
-
             }
 
             override fun onTabSelected(p0: TabLayout.Tab?) {
@@ -74,16 +85,18 @@ class MainProjectFragment : BaseFragment() {
             }
         })
 
-        view.swipeRefreshLayout.setOnRefreshListener {
+        dataBinding.swipeRefreshLayout.setOnRefreshListener {
             viewModel.refreshProjectList()
         }
 
-        viewModel.netState.observe(this, Observer {
-            view.swipeRefreshLayout.isRefreshing = when (it) {
-                NetUtils.NetworkState.Loading -> true
-                else -> false
+        viewModel.netState.observe(
+            viewLifecycleOwner,
+            Observer {
+                dataBinding.swipeRefreshLayout.isRefreshing = when (it) {
+                    NetUtils.NetworkState.Loading -> true
+                    else -> false
+                }
             }
-        })
+        )
     }
-
 }

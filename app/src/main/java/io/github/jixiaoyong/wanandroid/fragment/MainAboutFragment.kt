@@ -17,7 +17,6 @@ import io.github.jixiaoyong.wanandroid.utils.InjectUtils
 import io.github.jixiaoyong.wanandroid.utils.NetUtils
 import io.github.jixiaoyong.wanandroid.viewmodel.AboutViewModel
 import io.github.jixiaoyong.wanandroid.viewmodel.MainViewModel
-import kotlinx.android.synthetic.main.fragment_main_about.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -39,11 +38,15 @@ class MainAboutFragment : BaseFragment() {
         dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_main_about, container, false)
         val view = dataBinding.root
 
-        mainViewModel = ViewModelProviders.of(requireActivity(),
-                InjectUtils.provideMainViewModelFactory()).get(MainViewModel::class.java)
+        mainViewModel = ViewModelProviders.of(
+            requireActivity(),
+            InjectUtils.provideMainViewModelFactory()
+        ).get(MainViewModel::class.java)
 
-        aboutViewModel = ViewModelProviders.of(requireActivity(),
-                InjectUtils.provideAboutViewModelFactory()).get(AboutViewModel::class.java)
+        aboutViewModel = ViewModelProviders.of(
+            requireActivity(),
+            InjectUtils.provideAboutViewModelFactory()
+        ).get(AboutViewModel::class.java)
 
         dataBinding.viewModel = mainViewModel
         dataBinding.lifecycleOwner = this
@@ -53,26 +56,26 @@ class MainAboutFragment : BaseFragment() {
     }
 
     private fun initView(view: View) {
-        view.versionMore.text = "v${BuildConfig.VERSION_NAME}"
-        view.versionTv.setOnClickListener {
-            toast("${getString(R.string.app_version)}: ${view.versionMore.text}")
+        dataBinding.versionMore.text = "v${BuildConfig.VERSION_NAME}"
+        dataBinding.versionTv.setOnClickListener {
+            toast("${getString(R.string.app_version)}: ${dataBinding.versionMore.text}")
         }
 
-        view.webTv.setOnClickListener {
+        dataBinding.webTv.setOnClickListener {
             goContentActivity(CommonConstants.WebSites.APP_URL)
         }
 
-        view.authorTv.setOnClickListener {
+        dataBinding.authorTv.setOnClickListener {
             goContentActivity(CommonConstants.WebSites.AUTHOR_URL)
         }
 
-        view.shareTv.setOnClickListener {
-            //todo show share dialog
+        dataBinding.shareTv.setOnClickListener {
+            // todo show share dialog
         }
 
-        view.upgradeTv.setOnClickListener {
+        dataBinding.upgradeTv.setOnClickListener {
             launch {
-                //todo show start check upgrade tips
+                // todo show start check upgrade tips
                 toast(getString(R.string.tips_start_check_upgrade))
                 val upgradeInfo = withContext(Dispatchers.IO) {
                     try {
@@ -88,7 +91,7 @@ class MainAboutFragment : BaseFragment() {
                 }
                 upgradeInfo?.let {
                     if (it.versionCode > BuildConfig.VERSION_CODE) {
-                        //todo show upgrade dialog
+                        // todo show upgrade dialog
                         Logger.d("new version comming!\n ${it.summary}")
                     } else {
                         toast(getString(R.string.tips_up_to_date))

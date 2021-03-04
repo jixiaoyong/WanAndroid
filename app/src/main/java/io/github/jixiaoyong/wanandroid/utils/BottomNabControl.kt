@@ -9,4 +9,5 @@ package io.github.jixiaoyong.wanandroid.utils
  */
 interface BottomNabControl {
     fun changBottomNavViewVisibility(isVisible: Boolean = true)
+    fun getBottomNavViewHeight(): Int
 }

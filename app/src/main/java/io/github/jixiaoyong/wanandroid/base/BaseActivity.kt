@@ -11,7 +11,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
 
-
 /**
  * author: jixiaoyong
  * email: jixiaoyong1995@gmail.com
@@ -20,7 +19,6 @@ import kotlinx.coroutines.cancel
  * description: todo
  */
 open class BaseActivity : AppCompatActivity(), CoroutineScope by MainScope() {
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,7 +42,6 @@ open class BaseActivity : AppCompatActivity(), CoroutineScope by MainScope() {
         Logger.d("Activity($this) onDestroy")
         cancel()
     }
-
 
     private fun getStateBarHeight(): Int {
         val resourceId: Int = resources.getIdentifier("status_bar_height", "dimen", "android")
