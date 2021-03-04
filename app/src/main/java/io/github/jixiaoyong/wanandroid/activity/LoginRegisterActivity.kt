@@ -43,14 +43,15 @@ class LoginRegisterActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         dataBinding = DataBindingUtil.setContentView(this, R.layout.activity_login_register)
-        viewModel = ViewModelProviders.of(this,
-                InjectUtils.provideLoginRegisterViewModelFactory()).get(LoginAndRegisterViewModel::class.java)
+        viewModel = ViewModelProviders.of(
+            this,
+            InjectUtils.provideLoginRegisterViewModelFactory()
+        ).get(LoginAndRegisterViewModel::class.java)
 
         dataBinding.viewModel = viewModel
         dataBinding.lifecycleOwner = this
 
         initView()
-
     }
 
     private fun initView() {
@@ -77,7 +78,6 @@ class LoginRegisterActivity : BaseActivity() {
         pwdReEditText.doOnTextChanged { text, start, count, after ->
             viewModel.repwdInputLength.value = text?.length ?: 0
         }
-
 
         loginRegisterBtn.setOnClickListener {
             val userName = userNameEditText.text.toString()
@@ -111,8 +111,6 @@ class LoginRegisterActivity : BaseActivity() {
             }
             showRePwd = !showRePwd
         }
-
-
     }
 
     private fun dealRegister(userName: String, userPwd: String, userRePwd: String) {
@@ -192,5 +190,4 @@ class LoginRegisterActivity : BaseActivity() {
     private fun dealWithErrorCode(result: CookieBean) {
         Logger.e("error code:${result.errorCode}")
     }
-
 }

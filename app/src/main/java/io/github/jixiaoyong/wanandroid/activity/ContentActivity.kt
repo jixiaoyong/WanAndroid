@@ -20,7 +20,6 @@ import io.github.jixiaoyong.wanandroid.base.toast
 import io.github.jixiaoyong.wanandroid.utils.CommonConstants
 import kotlinx.android.synthetic.main.activity_content.*
 
-
 /**
  * author: jixiaoyong
  * email: jixiaoyong1995@gmail.com
@@ -51,7 +50,7 @@ class ContentActivity : BaseActivity() {
                 }
                 R.id.contentCopy -> {
                     val clipData = ClipData.newPlainText("Label", webView.url)
-                    clipboardManager?.primaryClip = clipData
+                    clipboardManager?.setPrimaryClip(clipData)
                     toast(getString(R.string.copy_succeeded))
                 }
                 R.id.contentShare -> {
@@ -72,7 +71,7 @@ class ContentActivity : BaseActivity() {
         val url = intent.getStringExtra(CommonConstants.ACTION_URL)
         Logger.d("url:$url")
 
-        webView.loadUrl(url)
+        url?.let { webView.loadUrl(it) }
         val webViewSettings = webView.settings
         webViewSettings.javaScriptEnabled = false
 
@@ -88,15 +87,14 @@ class ContentActivity : BaseActivity() {
         webViewSettings.javaScriptCanOpenWindowsAutomatically = true
         webViewSettings.loadsImagesAutomatically = true
 
-        //不允许WebView使用File协议，防止隐私泄露
+        // 不允许WebView使用File协议，防止隐私泄露
         webViewSettings.allowFileAccess = false
         webViewSettings.allowFileAccessFromFileURLs = false
         webViewSettings.allowUniversalAccessFromFileURLs = false
 
-
         webView.webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
-                view?.loadUrl(url)
+                url?.let { view?.loadUrl(it) }
                 return true
             }
 

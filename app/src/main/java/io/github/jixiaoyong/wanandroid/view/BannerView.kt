@@ -18,7 +18,6 @@ import cf.android666.applibrary.view.BannerViewHelper
 import io.github.jixiaoyong.wanandroid.R
 import kotlinx.android.synthetic.main.view_banner.view.*
 
-
 /**
  * author: jixiaoyong
  * email: jixiaoyong1995@gmail.com
@@ -33,16 +32,16 @@ class BannerView : RelativeLayout {
     private lateinit var indicatorLayout: FrameLayout
 
     @JvmOverloads
-    constructor (context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0)
-            : super(context, attrs, defStyleAttr) {
-        initView(context, attrs, defStyleAttr)
-    }
+    constructor (context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) :
+        super(context, attrs, defStyleAttr) {
+            initView(context, attrs, defStyleAttr)
+        }
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-    constructor (context: Context, attrs: AttributeSet, defStyleAttr: Int, defStyleRes: Int)
-            : super(context, attrs, defStyleAttr, defStyleRes) {
-        initView(context, attrs, defStyleAttr, defStyleRes)
-    }
+    constructor (context: Context, attrs: AttributeSet, defStyleAttr: Int, defStyleRes: Int) :
+        super(context, attrs, defStyleAttr, defStyleRes) {
+            initView(context, attrs, defStyleAttr, defStyleRes)
+        }
 
     private fun initView(context: Context, attrs: AttributeSet?, defStyleAttr: Int, defStyleRes: Int = 0) {
         val view = LayoutInflater.from(context).inflate(R.layout.view_banner, this, true)
@@ -69,11 +68,9 @@ class BannerView : RelativeLayout {
         viewPager.currentItem = 1
         viewPager.addOnPageChangeListener(object : androidx.viewpager.widget.ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {
-
             }
 
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-
             }
 
             override fun onPageSelected(position: Int) {
@@ -88,7 +85,6 @@ class BannerView : RelativeLayout {
 
                 onIndicatorSelected(viewPager.currentItem - 1, indicatorValue)
             }
-
         })
         viewPager.setOnTouchListener { v, event ->
             when (event.action) {
@@ -110,8 +106,10 @@ class BannerView : RelativeLayout {
             val indicatorView = indicatorLayout.getChildAt(0) as LinearLayout
             for (i in 0 until indicatorView.childCount) {
                 val imgView = indicatorView.getChildAt(i) as ImageView
-                imgView.setBackgroundResource(if (i == position) R.drawable.ic_point_enable
-                else R.drawable.ic_point_disable)
+                imgView.setBackgroundResource(
+                    if (i == position) R.drawable.ic_point_enable
+                    else R.drawable.ic_point_disable
+                )
             }
         } else if (indicatorType == IndicatorType.TEXT) {
             val indicatorView = indicatorLayout.getChildAt(0) as TextView
@@ -119,15 +117,17 @@ class BannerView : RelativeLayout {
         }
     }
 
-
     private fun setupIndicator(size: Int, indicatorValue: List<String>? = null) {
         if (indicatorType == IndicatorType.POINT) {
             val indicatorView = LayoutInflater.from(context).inflate(
-                    R.layout.layout_banner_indicator, indicatorLayout, false) as LinearLayout
+                R.layout.layout_banner_indicator, indicatorLayout, false
+            ) as LinearLayout
             for (i in 0 until size) {
                 val imageView = ImageView(context)
-                imageView.setBackgroundResource(if (i == 0) R.drawable.ic_point_enable
-                else R.drawable.ic_point_disable)
+                imageView.setBackgroundResource(
+                    if (i == 0) R.drawable.ic_point_enable
+                    else R.drawable.ic_point_disable
+                )
                 indicatorView.addView(imageView)
                 val lp = LinearLayout.LayoutParams(imageView.layoutParams)
                 lp.setMargins(15, 15, 15, 15)
@@ -136,13 +136,12 @@ class BannerView : RelativeLayout {
             indicatorLayout.addView(indicatorView)
         } else if (indicatorType == IndicatorType.TEXT) {
             val textView = LayoutInflater.from(context)
-                    .inflate(R.layout.view_banner_indicator_text, indicatorLayout, false)
-                    as TextView
+                .inflate(R.layout.view_banner_indicator_text, indicatorLayout, false)
+                as TextView
             textView.text = indicatorValue?.get(0)
             indicatorLayout.addView(textView)
         }
     }
-
 
     override fun onWindowVisibilityChanged(visibility: Int) {
         super.onWindowVisibilityChanged(visibility)
@@ -157,10 +156,9 @@ class BannerView : RelativeLayout {
         viewPagerHandler.sendEmptyMessageDelayed(WHAT_CHANGE_VIEWPAGE, delayTimeMillis)
     }
 
-
     private val viewPagerHandler = @SuppressLint("HandlerLeak")
     object : Handler() {
-        override fun handleMessage(msg: Message?) {
+        override fun handleMessage(msg: Message) {
             when (msg?.what) {
                 WHAT_CHANGE_VIEWPAGE -> {
                     try {
@@ -171,7 +169,6 @@ class BannerView : RelativeLayout {
                     startChangeViewPagerDelayed(BANNER_DURATION_MILLIS)
                 }
                 else -> {
-
                 }
             }
         }
@@ -188,8 +185,8 @@ class BannerView : RelativeLayout {
         }
     }
 
-    class VpAdapter(fragmentManager: FragmentManager, private val fragments: List<Fragment>)
-        : androidx.fragment.app.FragmentPagerAdapter(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+    class VpAdapter(fragmentManager: FragmentManager, private val fragments: List<Fragment>) :
+        androidx.fragment.app.FragmentPagerAdapter(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
         override fun getItem(position: Int): Fragment {
             return fragments[position]
@@ -198,6 +195,5 @@ class BannerView : RelativeLayout {
         override fun getCount(): Int {
             return fragments.size
         }
-
     }
 }

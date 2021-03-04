@@ -2,28 +2,26 @@
 
 buildscript {
     ext {
-        kotlin_version = '1.3.60'
-        targetSdkVersion = 28
+        kotlin_version = '1.4.31'
+        targetSdkVersion = 30
         minSdkVersion = 21
-        navigation_version = "2.1.0"
-        lifecycle_version = "2.1.0"
-        paging_version = "2.1.0"
-        lifecycle_livedata_ktx_version = "2.2.0-rc02"
-        room_version = "2.2.2"
+        navigation_version = "2.3.3"
+        lifecycle_version = "2.2.0"
+        paging_version = "2.1.2"
+        lifecycle_livedata_ktx_version = "2.3.0"
+        room_version = "2.2.5"
     }
 
     repositories {
         maven { url 'http://maven.aliyun.com/nexus/content/groups/public' }
-        maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
         maven { url 'https://maven.aliyun.com/repository/jcenter' }
         maven { url 'https://maven.aliyun.com/repository/google' }
-        maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
         maven { url 'https://dl.bintray.com/jixiaoyong/maven/' }
         google()
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.5.3'
+        classpath 'com.android.tools.build:gradle:4.1.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
 
         // NOTE: Do not place your application dependencies here; they belong
@@ -34,10 +32,8 @@ buildscript {
 allprojects {
     repositories {
         maven { url 'http://maven.aliyun.com/nexus/content/groups/public' }
-        maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
         maven { url 'https://maven.aliyun.com/repository/jcenter' }
         maven { url 'https://maven.aliyun.com/repository/google' }
-        maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
         maven { url 'https://dl.bintray.com/jixiaoyong/maven/' }
         google()
         jcenter()

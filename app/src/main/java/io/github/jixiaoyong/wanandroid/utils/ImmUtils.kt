@@ -40,7 +40,7 @@ object ImmUtils {
     fun hideImm(activity: Activity, dialog: Dialog) {
         try {
             val manager = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            val result = manager.hideSoftInputFromWindow(dialog.currentFocus.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+            val result = manager.hideSoftInputFromWindow(dialog.currentFocus?.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
         } catch (e: Exception) {
             hideKeyboard(activity)
         }
