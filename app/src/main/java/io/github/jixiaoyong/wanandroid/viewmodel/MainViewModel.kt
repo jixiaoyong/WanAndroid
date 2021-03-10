@@ -4,20 +4,17 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations.map
 import androidx.lifecycle.Transformations.switchMap
 import androidx.lifecycle.liveData
-import androidx.paging.toLiveData
+import androidx.paging.*
 import cf.android666.applibrary.Logger
-import io.github.jixiaoyong.wanandroid.api.ApiCommondConstants
 import io.github.jixiaoyong.wanandroid.api.bean.DataBannerParam
 import io.github.jixiaoyong.wanandroid.api.bean.DataIndexPostParam
 import io.github.jixiaoyong.wanandroid.base.BaseViewModel
 import io.github.jixiaoyong.wanandroid.data.AccountRepository
+import io.github.jixiaoyong.wanandroid.data.IndexPostPagingSource
 import io.github.jixiaoyong.wanandroid.data.NetWorkRepository
-import io.github.jixiaoyong.wanandroid.data.PostBoundaryCallback
 import io.github.jixiaoyong.wanandroid.utils.CommonConstants
-import io.github.jixiaoyong.wanandroid.utils.DatabaseUtils
 import io.github.jixiaoyong.wanandroid.utils.NetUtils
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.Flow
 import kotlin.concurrent.thread
 
 /**
@@ -27,9 +24,10 @@ import kotlin.concurrent.thread
  * date: 2019-11-12
  * description: todo
  */
-class MainViewModel(private val accountRepository: AccountRepository,
-                    private val netWorkRepository: NetWorkRepository) : BaseViewModel() {
-
+class MainViewModel(
+    private val accountRepository: AccountRepository,
+    private val netWorkRepository: NetWorkRepository
+) : BaseViewModel() {
 
     val bannerListLiveData = MutableLiveData<List<DataBannerParam>?>()
     val cookies = accountRepository.getCookieBean()
@@ -49,18 +47,14 @@ class MainViewModel(private val accountRepository: AccountRepository,
                 emit(null)
             }
         }
-
     }
 
-    val allIndexPost = DatabaseUtils.database
-            .baseArticlesDao().queryAllArticles(ApiCommondConstants.PostType.IndexPost).toLiveData(
-                    pageSize = CommonConstants.Paging.PAGE_SIZE,
-                    boundaryCallback = PostBoundaryCallback { currentPage ->
-                        launch(Dispatchers.IO) {
-                            netWorkRepository.getIndexPostOnPage(currentPage).errorCode == NetUtils.ErrorCode.SUCCEEDED
-                        }
-                    }
-            )
+    fun allIndexPost(): Flow<PagingData<DataIndexPostParam>> {
+        return Pager(
+            PagingConfig(CommonConstants.Paging.PAGE_SIZE, enablePlaceholders = false),
+            pagingSourceFactory = { IndexPostPagingSource(netWorkRepository) }
+        ).flow
+    }
 
     init {
 

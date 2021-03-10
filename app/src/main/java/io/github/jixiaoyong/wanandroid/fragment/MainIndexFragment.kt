@@ -7,8 +7,8 @@ import android.view.*
 import androidx.appcompat.widget.SearchView
 import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
@@ -27,6 +27,7 @@ import io.github.jixiaoyong.wanandroid.view.DispatchNestedScrollView
 import io.github.jixiaoyong.wanandroid.viewmodel.MainViewModel
 import io.github.jixiaoyong.wanandroid.viewmodel.SearchViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -74,7 +75,7 @@ class MainIndexFragment : BaseFragment() {
 
         dataBinding.nestedScrollView.isNeedInterceptActionMove = this::isNeedIntercept
         dataBinding.swipeRefreshLayout.setOnRefreshListener {
-            launch {
+            lifecycleScope.launch {
                 withContext(Dispatchers.IO) {
                     mainViewModel.loadIndexPostFromZero()
                 }
@@ -88,11 +89,15 @@ class MainIndexFragment : BaseFragment() {
         )
         dataBinding.postRecyclerView.adapter = postAdapter
         dataBinding.postRecyclerView.addItemDecoration(DividerItemDecoration(requireContext(), RecyclerView.VERTICAL))
-        mainViewModel.allIndexPost.observe(viewLifecycleOwner, Observer(postAdapter::submitList))
+        lifecycleScope.launch {
+            mainViewModel.allIndexPost().collectLatest {
+                postAdapter.submitData(it)
+            }
+        }
 
         mainViewModel.bannerListLiveData.observe(
             viewLifecycleOwner,
-            Observer { list ->
+            { list ->
                 list?.let { dataList ->
                     Logger.d("banner data list $dataList")
                     val fragments = BannerViewHelper.initImageBannerOf(
@@ -140,7 +145,7 @@ class MainIndexFragment : BaseFragment() {
         dataBinding.searchView.setOnQueryTextFocusChangeListener { v, hasFocus ->
             refreshSearchView()
             if (hasFocus) {
-                launch {
+                lifecycleScope.launch {
                     dataBinding.progressBar.visibility = View.VISIBLE
                     val hotKeyWords = withContext(Dispatchers.IO) {
                         searchViewModel.getHotSearchWords()

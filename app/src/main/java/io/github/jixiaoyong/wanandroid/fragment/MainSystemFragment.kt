@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import cf.android666.applibrary.Logger
 import com.google.android.material.tabs.TabLayout
 import io.github.jixiaoyong.wanandroid.R
-import io.github.jixiaoyong.wanandroid.adapter.MainIndexPagingAdapter
+import io.github.jixiaoyong.wanandroid.adapter.MainIndexPagingAdapterOld
 import io.github.jixiaoyong.wanandroid.base.BaseFragment
 import io.github.jixiaoyong.wanandroid.databinding.FragmentMainSystemBinding
 import io.github.jixiaoyong.wanandroid.utils.InjectUtils
@@ -123,7 +123,7 @@ class MainSystemFragment : BaseFragment() {
             }
         })
 
-        val adapter = MainIndexPagingAdapter(
+        val adapter = MainIndexPagingAdapterOld(
             viewModel::updateISystemPostCollectState,
             { itemView, data ->
                 itemView.findViewById<View>(R.id.classTv).visibility = View.GONE
@@ -140,7 +140,7 @@ class MainSystemFragment : BaseFragment() {
 
         viewModel.netState.observe(
             viewLifecycleOwner,
-            Observer {
+            {
                 dataBinding.swipeRefreshLayout.isRefreshing = when (it) {
                     NetUtils.NetworkState.Loading -> true
                     else -> false

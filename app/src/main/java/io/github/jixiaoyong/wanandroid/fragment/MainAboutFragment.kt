@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.lifecycleScope
 import cf.android666.applibrary.Logger
 import io.github.jixiaoyong.wanandroid.BuildConfig
 import io.github.jixiaoyong.wanandroid.R
@@ -74,7 +75,7 @@ class MainAboutFragment : BaseFragment() {
         }
 
         dataBinding.upgradeTv.setOnClickListener {
-            launch {
+            lifecycleScope.launch {
                 // todo show start check upgrade tips
                 toast(getString(R.string.tips_start_check_upgrade))
                 val upgradeInfo = withContext(Dispatchers.IO) {

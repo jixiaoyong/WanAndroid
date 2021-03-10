@@ -7,9 +7,9 @@ buildscript {
         minSdkVersion = 21
         navigation_version = "2.3.3"
         lifecycle_version = "2.2.0"
-        paging_version = "2.1.2"
+        paging_version = "3.0.0-beta01"
         lifecycle_livedata_ktx_version = "2.3.0"
-        room_version = "2.2.5"
+        room_version = "2.3.0-beta02"
     }
 
     repositories {

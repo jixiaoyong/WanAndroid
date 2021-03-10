@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import cf.android666.applibrary.Logger
 import com.google.android.material.tabs.TabLayout
 import io.github.jixiaoyong.wanandroid.R
-import io.github.jixiaoyong.wanandroid.adapter.MainIndexPagingAdapter
+import io.github.jixiaoyong.wanandroid.adapter.MainIndexPagingAdapterOld
 import io.github.jixiaoyong.wanandroid.base.BaseFragment
 import io.github.jixiaoyong.wanandroid.databinding.FragmentMoreBinding
 import io.github.jixiaoyong.wanandroid.utils.BottomNabControl
@@ -80,7 +80,7 @@ class MoreFragment : BaseFragment() {
             }
         )
 
-        val adapter = MainIndexPagingAdapter({}, isLogin = mainViewModel::isLogin)
+        val adapter = MainIndexPagingAdapterOld({}, isLogin = mainViewModel::isLogin)
         dataBinding.postRecyclerView.adapter = adapter
         dataBinding.postRecyclerView.addItemDecoration(DividerItemDecoration(requireContext(), RecyclerView.VERTICAL))
         viewModel.allProjectPost.observe(viewLifecycleOwner, Observer(adapter::submitList))

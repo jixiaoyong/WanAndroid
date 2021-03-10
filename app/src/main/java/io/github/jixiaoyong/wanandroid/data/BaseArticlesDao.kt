@@ -1,6 +1,7 @@
 package io.github.jixiaoyong.wanandroid.data
 
 import androidx.paging.DataSource
+import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
@@ -24,17 +25,17 @@ interface BaseArticlesDao {
     @Query("SELECT * FROM baseArticles WHERE id == :postId")
     fun queryArticlesByPostId(postId: Int): DataIndexPostParam
 
+    @Query("SELECT * FROM baseArticles WHERE _postType == :postType")
+    fun queryAllArticlesPagingSource(postType: Int): PagingSource<Int, DataIndexPostParam>
 
     @Query("SELECT * FROM baseArticles WHERE _postType == :postType")
-    fun queryAllArticles(postType: Int)
-            : DataSource.Factory<Int, DataIndexPostParam>
+    fun queryAllArticles(postType: Int): DataSource.Factory<Int, DataIndexPostParam>
 
     @Query("DELETE  FROM baseArticles WHERE _postType == :postType")
     fun deleteAllArticles(postType: Int = ApiCommondConstants.PostType.IndexPost)
 
     @Insert
     fun insert(baseArticlesBeans: List<DataIndexPostParam>)
-
 
     @Update
     fun update(vararg baseArticlesBeans: DataIndexPostParam)

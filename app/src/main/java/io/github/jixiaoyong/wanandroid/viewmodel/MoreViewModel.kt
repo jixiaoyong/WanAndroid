@@ -5,6 +5,7 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations.map
 import androidx.lifecycle.Transformations.switchMap
+import androidx.lifecycle.viewModelScope
 import androidx.paging.toLiveData
 import cf.android666.applibrary.Logger
 import com.google.gson.Gson
@@ -32,7 +33,7 @@ class MoreViewModel(private val netWorkRepository: NetWorkRepository, action: In
 
     private val mainTabsPreference: LiveData<Preference?> by lazy {
         DatabaseUtils.database
-                .preferenceDao().queryPreferenceByKey(CommonConstants.PreferenceKey.WECHAT_TABS)
+            .preferenceDao().queryPreferenceByKey(CommonConstants.PreferenceKey.WECHAT_TABS)
     }
 
     val mainTabs: LiveData<List<DataProjectParam>?>? = if (action == CommonConstants.Action.WECHAT) {
@@ -50,7 +51,6 @@ class MoreViewModel(private val netWorkRepository: NetWorkRepository, action: In
         mainTabs?.let {
             currentMainTabItem.addSource(it) {
                 updateCurrentTabItem(it, currentMainTabIndex.value ?: 0)
-
             }
             currentMainTabItem.addSource(currentMainTabIndex) {
                 updateCurrentTabItem(mainTabs.value, it)
@@ -66,60 +66,61 @@ class MoreViewModel(private val netWorkRepository: NetWorkRepository, action: In
     }
 
     val allProjectPost =
-            when (action) {
-                CommonConstants.Action.PEOPLE -> {
-                    DatabaseUtils.database
-                            .baseArticlesDao().queryAllArticles(ApiCommondConstants.PostType.PeoplePost).toLiveData(
-                                    pageSize = CommonConstants.Paging.PAGE_SIZE,
-                                    boundaryCallback = PostBoundaryCallback { currentPage ->
-                                        launch(Dispatchers.IO) {
-                                            netWorkRepository.getPeoplePostOnPage(currentPage)
-                                        }
-                                    }
-                            )
-                }
-                CommonConstants.Action.FAVORITE -> {
-                    DatabaseUtils.database
-                            .baseArticlesDao().queryAllArticles(ApiCommondConstants.PostType.FavoritePost).toLiveData(
-                                    pageSize = CommonConstants.Paging.PAGE_SIZE,
-                                    boundaryCallback = PostBoundaryCallback { currentPage ->
-                                        launch(Dispatchers.IO) {
-                                            netWorkRepository.getFavoritePostOnPage(currentPage)
-                                        }
-                                    }
-                            )
-                }
-                CommonConstants.Action.SEARCH -> {
-                    DatabaseUtils.database
-                            .baseArticlesDao().queryAllArticles(ApiCommondConstants.PostType.SearchPost).toLiveData(
-                                    pageSize = CommonConstants.Paging.PAGE_SIZE,
-                                    boundaryCallback = PostBoundaryCallback { currentPage ->
-                                        launch(Dispatchers.IO) {
-                                            netWorkRepository.getSearchPostOnPage(searchArgs
-                                                    ?: "", currentPage)
-                                        }
-                                    }
-                            )
-                }
-                else -> {
-                    switchMap(currentMainTabItem) { tabItem ->
-                        tabItem?.let {
-                            DatabaseUtils.database.baseArticlesDao()
-                                    .queryAllArticles(ApiCommondConstants.PostType.WechatPost).toLiveData(
-                                            pageSize = CommonConstants.Paging.PAGE_SIZE,
-                                            boundaryCallback = PostBoundaryCallback { currentPage ->
-                                                launch(Dispatchers.IO) {
-                                                    //wechat page start from 1
-                                                    netWorkRepository.getWechatPostOnPage(currentPage + 1, it.id)
-                                                }
-                                            }
-                                    )
+        when (action) {
+            CommonConstants.Action.PEOPLE -> {
+                DatabaseUtils.database
+                    .baseArticlesDao().queryAllArticles(ApiCommondConstants.PostType.PeoplePost).toLiveData(
+                        pageSize = CommonConstants.Paging.PAGE_SIZE,
+                        boundaryCallback = PostBoundaryCallback { currentPage ->
+                            viewModelScope.launch(Dispatchers.IO) {
+                                netWorkRepository.getPeoplePostOnPage(currentPage)
+                            }
                         }
-
+                    )
+            }
+            CommonConstants.Action.FAVORITE -> {
+                DatabaseUtils.database
+                    .baseArticlesDao().queryAllArticles(ApiCommondConstants.PostType.FavoritePost).toLiveData(
+                        pageSize = CommonConstants.Paging.PAGE_SIZE,
+                        boundaryCallback = PostBoundaryCallback { currentPage ->
+                            viewModelScope.launch(Dispatchers.IO) {
+                                netWorkRepository.getFavoritePostOnPage(currentPage)
+                            }
+                        }
+                    )
+            }
+            CommonConstants.Action.SEARCH -> {
+                DatabaseUtils.database
+                    .baseArticlesDao().queryAllArticles(ApiCommondConstants.PostType.SearchPost).toLiveData(
+                        pageSize = CommonConstants.Paging.PAGE_SIZE,
+                        boundaryCallback = PostBoundaryCallback { currentPage ->
+                            viewModelScope.launch(Dispatchers.IO) {
+                                netWorkRepository.getSearchPostOnPage(
+                                    searchArgs
+                                        ?: "",
+                                    currentPage
+                                )
+                            }
+                        }
+                    )
+            }
+            else -> {
+                switchMap(currentMainTabItem) { tabItem ->
+                    tabItem?.let {
+                        DatabaseUtils.database.baseArticlesDao()
+                            .queryAllArticles(ApiCommondConstants.PostType.WechatPost).toLiveData(
+                                pageSize = CommonConstants.Paging.PAGE_SIZE,
+                                boundaryCallback = PostBoundaryCallback { currentPage ->
+                                    viewModelScope.launch(Dispatchers.IO) {
+                                        // wechat page start from 1
+                                        netWorkRepository.getWechatPostOnPage(currentPage + 1, it.id)
+                                    }
+                                }
+                            )
                     }
-
                 }
             }
+        }
 
     private fun formatStringToTabs(string: String?): List<DataProjectParam>? {
         return if (!string.isNullOrBlank()) {

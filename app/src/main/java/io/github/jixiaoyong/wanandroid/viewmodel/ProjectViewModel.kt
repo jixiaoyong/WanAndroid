@@ -1,9 +1,6 @@
 package io.github.jixiaoyong.wanandroid.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
+import androidx.lifecycle.*
 import androidx.paging.toLiveData
 import cf.android666.applibrary.Logger
 import com.google.gson.Gson
@@ -11,9 +8,7 @@ import io.github.jixiaoyong.wanandroid.api.ApiCommondConstants
 import io.github.jixiaoyong.wanandroid.api.bean.DataIndexPostParam
 import io.github.jixiaoyong.wanandroid.api.bean.DataProjectParam
 import io.github.jixiaoyong.wanandroid.base.BaseViewModel
-import io.github.jixiaoyong.wanandroid.data.NetWorkRepository
-import io.github.jixiaoyong.wanandroid.data.PostBoundaryCallback
-import io.github.jixiaoyong.wanandroid.data.Preference
+import io.github.jixiaoyong.wanandroid.data.*
 import io.github.jixiaoyong.wanandroid.utils.CommonConstants
 import io.github.jixiaoyong.wanandroid.utils.DatabaseUtils
 import io.github.jixiaoyong.wanandroid.utils.NetUtils
@@ -35,7 +30,7 @@ class ProjectViewModel(private val netWorkRepository: NetWorkRepository) : BaseV
 
     private val mainTabsPreference: LiveData<Preference?> by lazy {
         DatabaseUtils.database
-                .preferenceDao().queryPreferenceByKey(CommonConstants.PreferenceKey.PROJECT_TABS)
+            .preferenceDao().queryPreferenceByKey(CommonConstants.PreferenceKey.PROJECT_TABS)
     }
 
     val mainTabs = Transformations.map(mainTabsPreference) {
@@ -45,16 +40,13 @@ class ProjectViewModel(private val netWorkRepository: NetWorkRepository) : BaseV
     val currentMainTabIndex = MutableLiveData(0)
     private val currentMainTabItem = MediatorLiveData<DataProjectParam?>()
 
-
     init {
         currentMainTabItem.addSource(mainTabs) {
             updateCurrentTabItem(it, currentMainTabIndex.value ?: 0)
-
         }
         currentMainTabItem.addSource(currentMainTabIndex) {
             updateCurrentTabItem(mainTabs.value, it)
         }
-
     }
 
     private fun updateCurrentTabItem(mainTabs: List<DataProjectParam>?, index: Int) {
@@ -68,22 +60,32 @@ class ProjectViewModel(private val netWorkRepository: NetWorkRepository) : BaseV
         Logger.d("currentSubTabItem change${tabItem?.name} ${tabItem?.id}")
         tabItem?.let {
             DatabaseUtils.database.baseArticlesDao()
-                    .queryAllArticles(ApiCommondConstants.PostType.ProjectPost).toLiveData(
-                            pageSize = CommonConstants.Paging.PAGE_SIZE,
-                            boundaryCallback = PostBoundaryCallback { page ->
-                                //project page start from 1
-                                val currentPage = page + 1
-                                launch(Dispatchers.IO) {
-                                    Logger.e("project list : start load $currentPage")
-                                    netState.postValue(NetUtils.NetworkState.Loading)
-                                    netWorkRepository.getProjectPostOnPage(currentPage, it.id)
-                                    netState.postValue(NetUtils.NetworkState.Succeeded)
-                                    Logger.e("project list : finish load $currentPage")
-                                }
-                            }
-                    )
+                .queryAllArticles(ApiCommondConstants.PostType.ProjectPost).toLiveData(
+                    pageSize = CommonConstants.Paging.PAGE_SIZE,
+                    boundaryCallback = PostBoundaryCallback { page ->
+                        // project page start from 1
+                        val currentPage = page + 1
+                        viewModelScope.launch(Dispatchers.IO) {
+                            Logger.e("project list : start load $currentPage")
+                            netState.postValue(NetUtils.NetworkState.Loading)
+                            netWorkRepository.getProjectPostOnPage(currentPage, it.id)
+                            netState.postValue(NetUtils.NetworkState.Succeeded)
+                            Logger.e("project list : finish load $currentPage")
+                        }
+                    }
+                )
         }
     }
+
+//    fun allProjectPost(): Flow<PagingData<DataIndexPostParam>> {
+//        DatabaseUtils.database.baseArticlesDao().queryAllArticles(ApiCommondConstants.PostType.ProjectPost)
+//        return Pager(
+//                PagingConfig(CommonConstants.Paging.PAGE_SIZE, enablePlaceholders = false),
+//                pagingSourceFactory = { PostPagingSource(){page->
+//                    
+//                } }
+//        ).flow
+//    }
 
     fun updateIndexPostCollectState(dataIndexPostParam: DataIndexPostParam) {
         netWorkRepository.updatePostCollectState(dataIndexPostParam)

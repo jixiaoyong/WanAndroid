@@ -4,9 +4,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
+import androidx.activity.viewModels
 import androidx.core.widget.doOnTextChanged
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.lifecycleScope
 import cf.android666.applibrary.Logger
 import io.github.jixiaoyong.wanandroid.R
 import io.github.jixiaoyong.wanandroid.api.bean.CookieBean
@@ -31,7 +32,7 @@ import kotlinx.coroutines.withContext
  */
 class LoginRegisterActivity : BaseActivity() {
 
-    private lateinit var viewModel: LoginAndRegisterViewModel
+    private val viewModel: LoginAndRegisterViewModel by viewModels { InjectUtils.provideLoginRegisterViewModelFactory() }
     private lateinit var dataBinding: ActivityLoginRegisterBinding
 
     private var progressView: ProgressDialog? = null
@@ -42,10 +43,6 @@ class LoginRegisterActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         dataBinding = DataBindingUtil.setContentView(this, R.layout.activity_login_register)
-        viewModel = ViewModelProviders.of(
-            this,
-            InjectUtils.provideLoginRegisterViewModelFactory()
-        ).get(LoginAndRegisterViewModel::class.java)
 
         dataBinding.viewModel = viewModel
         dataBinding.lifecycleOwner = this
@@ -147,7 +144,7 @@ class LoginRegisterActivity : BaseActivity() {
             return
         }
 
-        launch {
+        lifecycleScope.launch {
             showProgress()
             try {
                 val result = withContext(Dispatchers.IO) {

@@ -5,6 +5,7 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations.map
 import androidx.lifecycle.Transformations.switchMap
+import androidx.lifecycle.viewModelScope
 import androidx.paging.toLiveData
 import cf.android666.applibrary.Logger
 import com.google.gson.Gson
@@ -25,7 +26,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlin.concurrent.thread
 
-
 /**
  * author: jixiaoyong
  * email: jixiaoyong1995@gmail.com
@@ -40,7 +40,7 @@ class SystemViewModel(val netWorkRepository: NetWorkRepository) : BaseViewModel(
     private val mainTabsPreference: LiveData<Preference?> by lazy {
         netState.postValue(NetUtils.NetworkState.Loading)
         DatabaseUtils.database
-                .preferenceDao().queryPreferenceByKey(CommonConstants.PreferenceKey.SYSTEM_TABS)
+            .preferenceDao().queryPreferenceByKey(CommonConstants.PreferenceKey.SYSTEM_TABS)
     }
 
     val mainTabs = map(mainTabsPreference) {
@@ -53,7 +53,6 @@ class SystemViewModel(val netWorkRepository: NetWorkRepository) : BaseViewModel(
     private val currentMainTabItem = MediatorLiveData<DataSystemParam<DataSystemParam<Any>>?>()
     private val currentSubTabItem = MediatorLiveData<DataSystemParam<Any>?>()
     val currentSubTabItems = MediatorLiveData<List<DataSystemParam<Any>?>?>()
-
 
     init {
         currentMainTabItem.addSource(mainTabs) {
@@ -76,11 +75,10 @@ class SystemViewModel(val netWorkRepository: NetWorkRepository) : BaseViewModel(
         currentSubTabItem.addSource(currentSubTabIndex) {
             updateCurrentSubTabItem(currentSubTabItems.value, it)
         }
-
     }
 
     private fun updateCurrentSubTabItem(it: List<DataSystemParam<Any>?>?, currentSubTabIndex: Int) {
-        launch {
+        viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 netWorkRepository.cleanMainSystemPostList()
             }
@@ -94,18 +92,18 @@ class SystemViewModel(val netWorkRepository: NetWorkRepository) : BaseViewModel(
         Logger.d("currentSubTabItem change${subTabItem?.name} ${subTabItem?.id}")
         subTabItem?.let {
             DatabaseUtils.database
-                    .baseArticlesDao().queryAllArticles(ApiCommondConstants.PostType.SystemPost).toLiveData(
-                            pageSize = CommonConstants.Paging.PAGE_SIZE,
-                            boundaryCallback = PostBoundaryCallback { currentPage ->
-                                launch(Dispatchers.IO) {
-                                    Logger.e("sys list : start load $currentPage")
-                                    netState.postValue(NetUtils.NetworkState.Loading)
-                                    netWorkRepository.getSystemPostOnPage(currentPage, it.id)
-                                    netState.postValue(NetUtils.NetworkState.Succeeded)
-                                    Logger.e("sys list : finish load $currentPage")
-                                }
-                            }
-                    )
+                .baseArticlesDao().queryAllArticles(ApiCommondConstants.PostType.SystemPost).toLiveData(
+                    pageSize = CommonConstants.Paging.PAGE_SIZE,
+                    boundaryCallback = PostBoundaryCallback { currentPage ->
+                        viewModelScope.launch(Dispatchers.IO) {
+                            Logger.e("sys list : start load $currentPage")
+                            netState.postValue(NetUtils.NetworkState.Loading)
+                            netWorkRepository.getSystemPostOnPage(currentPage, it.id)
+                            netState.postValue(NetUtils.NetworkState.Succeeded)
+                            Logger.e("sys list : finish load $currentPage")
+                        }
+                    }
+                )
         }
     }
 

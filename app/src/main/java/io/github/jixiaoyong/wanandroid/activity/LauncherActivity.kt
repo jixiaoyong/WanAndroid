@@ -1,11 +1,11 @@
 package io.github.jixiaoyong.wanandroid.activity
 
-import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
-import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.lifecycleScope
 import cf.android666.applibrary.Logger
 import io.github.jixiaoyong.wanandroid.R
 import io.github.jixiaoyong.wanandroid.base.BaseActivity
@@ -27,24 +27,20 @@ import kotlinx.coroutines.withContext
 class LauncherActivity : BaseActivity() {
 
     private lateinit var binding: ActivityLauncherBinding
-    private lateinit var context: Context
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         }
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_launcher)
-        binding.lifecycleOwner = this
-
-        context = this
+        binding = ActivityLauncherBinding.inflate(LayoutInflater.from(this))
     }
 
     override fun onResume() {
         super.onResume()
         Logger.d("try in launch")
 
-        launch {
+        lifecycleScope.launch {
             Logger.d("start in launch")
 
             val isLogin = withContext(Dispatchers.IO) {
@@ -52,9 +48,9 @@ class LauncherActivity : BaseActivity() {
             }
 
             val intent = if (isLogin) {
-                Intent(context, MainActivity::class.java)
+                Intent(this@LauncherActivity, MainActivity::class.java)
             } else {
-                Intent(context, LoginRegisterActivity::class.java)
+                Intent(this@LauncherActivity, LoginRegisterActivity::class.java)
             }
             startActivity(intent)
             finish()

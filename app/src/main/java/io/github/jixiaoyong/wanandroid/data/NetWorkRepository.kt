@@ -31,7 +31,7 @@ class NetWorkRepository {
         DatabaseUtils.database.baseArticlesDao().update(dataIndexPostParam)
         Logger.d("update zan state database:${DatabaseUtils.database.baseArticlesDao().queryArticlesByPostId(dataIndexPostParam.id)}")
 
-        //todo refresh collect state if network result filed
+        // todo refresh collect state if network result filed
         val call = if (dataIndexPostParam.collect) {
             NetUtils.wanAndroidApi.collectPostById(dataIndexPostParam.id)
         } else {
@@ -168,7 +168,6 @@ class NetWorkRepository {
         }
         return respone?.body()?.data
     }
-
 
     /**
      * get hot search key list
