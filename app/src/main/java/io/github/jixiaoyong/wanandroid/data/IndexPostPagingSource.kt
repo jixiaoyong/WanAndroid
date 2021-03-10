@@ -2,6 +2,7 @@ package io.github.jixiaoyong.wanandroid.data
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import cf.android666.applibrary.Logger
 import io.github.jixiaoyong.wanandroid.api.bean.DataIndexPostParam
 import io.github.jixiaoyong.wanandroid.api.bean.DataPageOf
 import io.github.jixiaoyong.wanandroid.api.bean.RemoteDataBean
@@ -29,19 +30,24 @@ class IndexPostPagingSource(private val netWorkRepository: NetWorkRepository) : 
      */
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, DataIndexPostParam> {
         val currentPage = params.key ?: 0
-        val result = withContext(Dispatchers.IO) {
-            netWorkRepository.getIndexPostOnPage(currentPage).data?.datas ?: arrayListOf()
+        try {
+            val result = withContext(Dispatchers.IO) {
+                netWorkRepository.getIndexPostOnPage(currentPage).data?.datas ?: arrayListOf()
+            }
+            val nextKey = if (result.isNullOrEmpty()) {
+                null
+            } else {
+                currentPage + (params.loadSize / CommonConstants.Paging.PAGE_SIZE)
+            }
+            return LoadResult.Page(
+                data = result,
+                prevKey = if (currentPage == 0) null else currentPage - 1,
+                nextKey = nextKey
+            )
+        } catch (e: Exception) {
+            Logger.e(e)
+            return LoadResult.Error(e)
         }
-        val nextKey = if (result.isNullOrEmpty()) {
-            null
-        } else {
-            currentPage + (params.loadSize / CommonConstants.Paging.PAGE_SIZE)
-        }
-        return LoadResult.Page(
-            data = result,
-            prevKey = if (currentPage == 0) null else currentPage - 1,
-            nextKey = nextKey
-        )
     }
 }
 

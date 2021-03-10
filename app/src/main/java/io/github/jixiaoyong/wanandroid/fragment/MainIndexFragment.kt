@@ -6,16 +6,20 @@ import android.os.Bundle
 import android.view.*
 import androidx.appcompat.widget.SearchView
 import androidx.core.os.bundleOf
-import androidx.databinding.DataBindingUtil
+import androidx.core.view.isVisible
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import cf.android666.applibrary.Logger
+import cf.android666.applibrary.view.Toast
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import io.github.jixiaoyong.wanandroid.R
+import io.github.jixiaoyong.wanandroid.adapter.LoadMoreAdapter
 import io.github.jixiaoyong.wanandroid.adapter.MainIndexPagingAdapter
 import io.github.jixiaoyong.wanandroid.adapter.SearchAdapter
 import io.github.jixiaoyong.wanandroid.base.BaseFragment
@@ -42,28 +46,20 @@ class MainIndexFragment : BaseFragment() {
 
     private lateinit var dataBinding: FragmentMainIndexBinding
     private lateinit var mainViewModel: MainViewModel
-    private lateinit var searchViewModel: SearchViewModel
+    private val searchViewModel: SearchViewModel by viewModels { InjectUtils.provideSearchModelFactory() }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_main_index, container, false)
-        val view = dataBinding.root
-
+        dataBinding = FragmentMainIndexBinding.inflate(layoutInflater)
+        setupFakeStateBar(dataBinding.stateBarView)
         mainViewModel = ViewModelProviders.of(
             requireActivity(),
             InjectUtils.provideMainViewModelFactory()
         ).get(MainViewModel::class.java)
-        searchViewModel = ViewModelProviders.of(
-            requireActivity(),
-            InjectUtils.provideSearchModelFactory()
-        ).get(SearchViewModel::class.java)
-
-        setupFakeStateBar(dataBinding.stateBarView)
-
-        initView(view)
-        return view
+        initView()
+        return dataBinding.root
     }
 
-    private fun initView(view: View) {
+    private fun initView() {
         // 在这里初始化recycleView的高度 = 屏幕高度 - bottomNavView
         val rootView = requireActivity().window.decorView.rootView
         rootView.post {
@@ -73,27 +69,41 @@ class MainIndexFragment : BaseFragment() {
             dataBinding.postRecyclerView.layoutParams = listParams
         }
 
-        dataBinding.nestedScrollView.isNeedInterceptActionMove = this::isNeedIntercept
-        dataBinding.swipeRefreshLayout.setOnRefreshListener {
-            lifecycleScope.launch {
-                withContext(Dispatchers.IO) {
-                    mainViewModel.loadIndexPostFromZero()
-                }
-                dataBinding.swipeRefreshLayout.isRefreshing = false
-            }
-        }
-
         val postAdapter = MainIndexPagingAdapter(
             mainViewModel::updateIndexPostCollectState,
             isLogin = mainViewModel::isLogin
         )
-        dataBinding.postRecyclerView.adapter = postAdapter
-        dataBinding.postRecyclerView.addItemDecoration(DividerItemDecoration(requireContext(), RecyclerView.VERTICAL))
-        lifecycleScope.launch {
-            mainViewModel.allIndexPost().collectLatest {
-                postAdapter.submitData(it)
+        postAdapter.addLoadStateListener { loadState ->
+            dataBinding.postRecyclerView.isVisible = loadState.source.refresh is LoadState.NotLoading
+            dataBinding.retryButton.isVisible = loadState.source.refresh is LoadState.Error
+            dataBinding.progressBar.isVisible = loadState.source.refresh is LoadState.Loading
+            dataBinding.swipeRefreshLayout.isRefreshing = loadState.source.refresh is LoadState.Loading
+
+            val errorState = loadState.refresh as? LoadState.Error
+                ?: loadState.source.append as? LoadState.Error
+                ?: loadState.source.prepend as? LoadState.Error
+                ?: loadState.append as? LoadState.Error
+                ?: loadState.prepend as? LoadState.Error
+            errorState?.let {
+                Toast.show("\uD83D\uDE28 Wooops ${it.error}")
             }
         }
+
+        dataBinding.nestedScrollView.isNeedInterceptActionMove = this::isNeedIntercept
+        dataBinding.swipeRefreshLayout.setOnRefreshListener {
+            postAdapter.refresh()
+            mainViewModel.getBanner()
+        }
+        dataBinding.retryButton.setOnClickListener { postAdapter.refresh() }
+        // 注意withLoadStateHeaderAndFooter()会产生一个新的[ConcatAdapter],所以需要按照下面方式设置；
+        // 或者需要保存其返回值，然后设置给postRecyclerView
+        dataBinding.postRecyclerView.adapter = postAdapter.withLoadStateFooter(
+            LoadMoreAdapter { postAdapter.retry() }
+        )
+        dataBinding.postRecyclerView.addItemDecoration(DividerItemDecoration(requireContext(), RecyclerView.VERTICAL))
+
+        lifecycleScope.launch { mainViewModel.allIndexPost.collectLatest { postAdapter.submitData(it) } }
+        lifecycleScope.launch { mainViewModel.getBanner() }
 
         mainViewModel.bannerListLiveData.observe(
             viewLifecycleOwner,
@@ -129,17 +139,17 @@ class MainIndexFragment : BaseFragment() {
         )
 
         dataBinding.weChatBtn.setOnClickListener {
-            goMoreFragment(view, CommonConstants.Action.WECHAT)
+            goMoreFragment(CommonConstants.Action.WECHAT)
         }
         dataBinding.favoriteBtn.setOnClickListener {
             if (mainViewModel.isLogin.value == true) {
-                goMoreFragment(view, CommonConstants.Action.FAVORITE)
+                goMoreFragment(CommonConstants.Action.FAVORITE)
             } else {
                 toast(getString(R.string.tips_plz_login))
             }
         }
         dataBinding.peopleBtn.setOnClickListener {
-            goMoreFragment(view, CommonConstants.Action.PEOPLE)
+            goMoreFragment(CommonConstants.Action.PEOPLE)
         }
 
         dataBinding.searchView.setOnQueryTextFocusChangeListener { v, hasFocus ->
@@ -187,19 +197,19 @@ class MainIndexFragment : BaseFragment() {
         query?.run {
             ImmUtils.hideImm(requireActivity())
             val bundle = bundleOf(Pair(CommonConstants.KEYS.SEARCH_ARGS, this))
-            goMoreFragment(requireView(), CommonConstants.Action.SEARCH, bundle)
+            goMoreFragment(CommonConstants.Action.SEARCH, bundle)
             dataBinding.searchList.visibility = View.GONE
         }
     }
 
     @Synchronized
-    private fun goMoreFragment(view: View, action: Int, bundle: Bundle? = null) {
+    private fun goMoreFragment(action: Int, bundle: Bundle? = null) {
         val args = Bundle()
         args.putInt(CommonConstants.Action.KEY, action)
         bundle?.let {
             args.putAll(it)
         }
-        view.findNavController().navigate(R.id.action_mainIndexFragment_to_moreFragment, args)
+        dataBinding.root.findNavController().navigate(R.id.action_mainIndexFragment_to_moreFragment, args)
     }
 
     // DispatchNestedScrollView是否需要拦截子View的滑动事件

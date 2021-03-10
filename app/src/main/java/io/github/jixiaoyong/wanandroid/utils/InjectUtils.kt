@@ -17,7 +17,6 @@ object InjectUtils {
         return LoginRegisterViewModelFactory(AccountRepository())
     }
 
-
     fun provideMainViewModelFactory(): MainViewModelFactory {
         return MainViewModelFactory(AccountRepository(), NetWorkRepository())
     }

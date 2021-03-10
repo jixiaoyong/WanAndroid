@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations.map
 import androidx.lifecycle.Transformations.switchMap
 import androidx.lifecycle.liveData
+import androidx.lifecycle.viewModelScope
 import androidx.paging.*
 import cf.android666.applibrary.Logger
 import io.github.jixiaoyong.wanandroid.api.bean.DataBannerParam
@@ -13,9 +14,8 @@ import io.github.jixiaoyong.wanandroid.data.AccountRepository
 import io.github.jixiaoyong.wanandroid.data.IndexPostPagingSource
 import io.github.jixiaoyong.wanandroid.data.NetWorkRepository
 import io.github.jixiaoyong.wanandroid.utils.CommonConstants
-import io.github.jixiaoyong.wanandroid.utils.NetUtils
-import kotlinx.coroutines.flow.Flow
-import kotlin.concurrent.thread
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 /**
  * author: jixiaoyong
@@ -31,7 +31,6 @@ class MainViewModel(
 
     val bannerListLiveData = MutableLiveData<List<DataBannerParam>?>()
     val cookies = accountRepository.getCookieBean()
-    val networkStateLiveData = MutableLiveData<NetUtils.NetworkState>(NetUtils.NetworkState.Normal)
 
     val isLogin = map(cookies) {
         val cookie = it?.getOrNull(0)
@@ -49,24 +48,17 @@ class MainViewModel(
         }
     }
 
-    fun allIndexPost(): Flow<PagingData<DataIndexPostParam>> {
-        return Pager(
-            PagingConfig(CommonConstants.Paging.PAGE_SIZE, enablePlaceholders = false),
-            pagingSourceFactory = { IndexPostPagingSource(netWorkRepository) }
-        ).flow
-    }
+    val allIndexPost = Pager(
+        PagingConfig(CommonConstants.Paging.PAGE_SIZE, enablePlaceholders = false),
+        pagingSourceFactory = { IndexPostPagingSource(netWorkRepository) }
+    ).flow.cachedIn(this)
 
-    init {
-
-        thread {
+    fun getBanner() {
+        viewModelScope.launch(Dispatchers.IO) {
             Logger.d("开始请求BannerView 数据")
             val bannerList = netWorkRepository.getBannerListSync()
             bannerListLiveData.postValue(bannerList)
         }
-    }
-
-    suspend fun loadIndexPostFromZero() {
-        netWorkRepository.getIndexPostOnPage(0)
     }
 
     fun updateIndexPostCollectState(dataIndexPostParam: DataIndexPostParam) {
