@@ -11,7 +11,6 @@ import io.github.jixiaoyong.wanandroid.base.BasePagingAdapter
 import io.github.jixiaoyong.wanandroid.base.BaseViewHolder
 import io.github.jixiaoyong.wanandroid.databinding.ItemMainProjectBinding
 import io.github.jixiaoyong.wanandroid.utils.NetUtils
-import kotlin.concurrent.thread
 
 /**
  * author: jixiaoyong
@@ -47,10 +46,8 @@ class MainProjectPagingAdapter(
         }
         holder.dataBinding.favoriteTv.setOnClickListener {
             if (isLogin?.invoke() == true) {
-                thread {
-                    val newData = data.copy(collect = !data.collect)
-                    updateIndexPostCollectState(newData)
-                }
+                val newData = data.copy(collect = !data.collect)
+                updateIndexPostCollectState(newData)
             } else {
                 Toast.show(it.context.getString(R.string.tips_plz_login))
             }

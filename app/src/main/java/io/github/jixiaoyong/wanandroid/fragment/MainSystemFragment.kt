@@ -6,9 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import cf.android666.applibrary.Logger
@@ -32,48 +31,39 @@ import kotlin.random.Random
  */
 class MainSystemFragment : BaseFragment() {
 
-    private lateinit var mainViewModel: MainViewModel
-    private lateinit var viewModel: SystemViewModel
-    private lateinit var dataBinding: FragmentMainSystemBinding
+    private lateinit var viewBinding: FragmentMainSystemBinding
+
+    private val viewModel: SystemViewModel by viewModels { InjectUtils.provideSystemViewModelFactory() }
+    private val mainViewModel: MainViewModel by viewModels({ requireActivity() }) { InjectUtils.provideMainViewModelFactory() }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_main_system, container, false)
-        val view = dataBinding.root
+        viewBinding = FragmentMainSystemBinding.inflate(inflater)
 
-        viewModel = ViewModelProviders.of(
-            this,
-            InjectUtils.provideSystemViewModelFactory()
-        ).get(SystemViewModel::class.java)
-        mainViewModel = ViewModelProviders.of(
-            requireActivity(),
-            InjectUtils.provideMainViewModelFactory()
-        ).get(MainViewModel::class.java)
-        setupFakeStateBar(dataBinding.stateBarView)
+        setupFakeStateBar(viewBinding.stateBarView)
 
-        initView(view)
-        return view
+        initView()
+        return viewBinding.root
     }
 
-    private fun initView(view: View) {
-
+    private fun initView() {
         viewModel.mainTabs.observe(
             viewLifecycleOwner,
-            Observer {
+            {
                 it?.forEachIndexed { index, dataSystemParam ->
-                    val tabItem = dataBinding.tabLayout.newTab()
+                    val tabItem = viewBinding.tabLayout.newTab()
                     tabItem.text = dataSystemParam.name
                     tabItem.tag = index
-                    dataBinding.tabLayout.addTab(tabItem)
+                    viewBinding.tabLayout.addTab(tabItem)
                 }
             }
         )
 
         viewModel.currentSubTabItems.observe(
             viewLifecycleOwner,
-            Observer {
-                dataBinding.subTabLayout.removeAllTabs()
+            {
+                viewBinding.subTabLayout.removeAllTabs()
                 it?.filterNotNull()?.forEachIndexed { index, dataSystemParam ->
-                    val tabItem = dataBinding.subTabLayout.newTab()
+                    val tabItem = viewBinding.subTabLayout.newTab()
                     val text = layoutInflater.inflate(R.layout.item_textview, null, false) as TextView
                     text.text = dataSystemParam.name
                     tabItem.tag = index
@@ -85,12 +75,12 @@ class MainSystemFragment : BaseFragment() {
                         tabItem.select()
                     }
 
-                    dataBinding.subTabLayout.addTab(tabItem)
+                    viewBinding.subTabLayout.addTab(tabItem)
                 }
             }
         )
 
-        dataBinding.tabLayout.addOnTabSelectedListener(object : TabLayout.BaseOnTabSelectedListener<TabLayout.Tab> {
+        viewBinding.tabLayout.addOnTabSelectedListener(object : TabLayout.BaseOnTabSelectedListener<TabLayout.Tab> {
             override fun onTabReselected(p0: TabLayout.Tab?) {
             }
 
@@ -104,7 +94,7 @@ class MainSystemFragment : BaseFragment() {
                 viewModel.currentMainTabIndex.value = index ?: 0
             }
         })
-        dataBinding.subTabLayout.addOnTabSelectedListener(object : TabLayout.BaseOnTabSelectedListener<TabLayout.Tab> {
+        viewBinding.subTabLayout.addOnTabSelectedListener(object : TabLayout.BaseOnTabSelectedListener<TabLayout.Tab> {
             override fun onTabReselected(p0: TabLayout.Tab?) {
             }
 
@@ -125,23 +115,23 @@ class MainSystemFragment : BaseFragment() {
 
         val adapter = MainIndexPagingAdapterOld(
             viewModel::updateISystemPostCollectState,
-            { itemView, data ->
+            { itemView, _ ->
                 itemView.findViewById<View>(R.id.classTv).visibility = View.GONE
             },
             mainViewModel::isLogin
         )
-        dataBinding.postRecyclerView.adapter = adapter
-        dataBinding.postRecyclerView.addItemDecoration(DividerItemDecoration(requireContext(), RecyclerView.VERTICAL))
+        viewBinding.postRecyclerView.adapter = adapter
+        viewBinding.postRecyclerView.addItemDecoration(DividerItemDecoration(requireContext(), RecyclerView.VERTICAL))
         viewModel.allSystemPost.observe(viewLifecycleOwner, Observer(adapter::submitList))
 
-        dataBinding.swipeRefreshLayout.setOnRefreshListener {
+        viewBinding.swipeRefreshLayout.setOnRefreshListener {
             viewModel.refreshSubTabsData()
         }
 
         viewModel.netState.observe(
             viewLifecycleOwner,
             {
-                dataBinding.swipeRefreshLayout.isRefreshing = when (it) {
+                viewBinding.swipeRefreshLayout.isRefreshing = when (it) {
                     NetUtils.NetworkState.Loading -> true
                     else -> false
                 }
@@ -157,10 +147,10 @@ class MainSystemFragment : BaseFragment() {
     }
 
     private fun refreshSubTab(view: View, random: Random) {
-        dataBinding.subTabLayout.removeAllTabs()
+        viewBinding.subTabLayout.removeAllTabs()
         val randomCount = random.nextInt(15)
         for (i in 0..randomCount) {
-            val tabItem = dataBinding.subTabLayout.newTab()
+            val tabItem = viewBinding.subTabLayout.newTab()
             val text = layoutInflater.inflate(R.layout.item_textview, null, false) as TextView
             text.text = "subTab $i"
             tabItem.customView = text
@@ -168,7 +158,7 @@ class MainSystemFragment : BaseFragment() {
                 tabItem.select()
                 updateSubTabItemStatus(tabItem.customView as TextView)
             }
-            dataBinding.subTabLayout.addTab(tabItem)
+            viewBinding.subTabLayout.addTab(tabItem)
         }
     }
 }

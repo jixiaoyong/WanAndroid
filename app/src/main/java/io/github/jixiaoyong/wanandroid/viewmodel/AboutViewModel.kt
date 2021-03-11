@@ -14,5 +14,4 @@ class AboutViewModel(private val netWorkRepository: NetWorkRepository) : BaseVie
     suspend fun checkUpgrade(): AppUpgradeBean {
         return netWorkRepository.checkUpdate()
     }
-
 }

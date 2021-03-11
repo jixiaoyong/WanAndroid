@@ -16,5 +16,4 @@ class SearchViewModel(private val netWorkRepository: NetWorkRepository) : BaseVi
     fun getHotSearchWords(): List<DataHotKeyParam> {
         return netWorkRepository.getHotSearchKeyList() ?: arrayListOf()
     }
-
 }

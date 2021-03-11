@@ -7,13 +7,13 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebChromeClient
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import androidx.databinding.DataBindingUtil
 import cf.android666.applibrary.Logger
 import io.github.jixiaoyong.wanandroid.R
 import io.github.jixiaoyong.wanandroid.base.BaseActivity
@@ -35,8 +35,8 @@ class ContentActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_content)
-        binding.lifecycleOwner = this
+        binding = ActivityContentBinding.inflate(LayoutInflater.from(this))
+        setContentView(binding.root)
 
         clipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager?
 

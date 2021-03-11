@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.lifecycleScope
 import cf.android666.applibrary.Logger
 import io.github.jixiaoyong.wanandroid.BuildConfig
@@ -33,17 +32,12 @@ import kotlinx.coroutines.withContext
 class MainAboutFragment : BaseFragment() {
 
     private lateinit var dataBinding: FragmentMainAboutBinding
-    private lateinit var mainViewModel: MainViewModel
+    private val mainViewModel: MainViewModel by viewModels({ requireActivity() }) { InjectUtils.provideMainViewModelFactory() }
     private val aboutViewModel: AboutViewModel by viewModels { InjectUtils.provideAboutViewModelFactory() }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_main_about, container, false)
         val view = dataBinding.root
-
-        mainViewModel = ViewModelProviders.of(
-            requireActivity(),
-            InjectUtils.provideMainViewModelFactory()
-        ).get(MainViewModel::class.java)
 
         dataBinding.viewModel = mainViewModel
         dataBinding.lifecycleOwner = this

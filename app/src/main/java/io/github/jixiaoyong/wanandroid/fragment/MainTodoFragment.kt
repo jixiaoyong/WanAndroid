@@ -4,8 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
-import io.github.jixiaoyong.wanandroid.R
 import io.github.jixiaoyong.wanandroid.base.BaseFragment
 import io.github.jixiaoyong.wanandroid.databinding.FragmentMainTodoBinding
 
@@ -21,7 +19,7 @@ class MainTodoFragment : BaseFragment() {
     private lateinit var dataBinding: FragmentMainTodoBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_main_todo, container, false)
+        dataBinding = FragmentMainTodoBinding.inflate(inflater)
         val view = dataBinding.root
         setupFakeStateBar(dataBinding.stateBarView)
 

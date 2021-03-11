@@ -29,6 +29,10 @@ class MainViewModel(
     private val netWorkRepository: NetWorkRepository
 ) : BaseViewModel() {
 
+    init {
+        Logger.e("this should be call just once")
+    }
+
     val bannerListLiveData = MutableLiveData<List<DataBannerParam>?>()
     val cookies = accountRepository.getCookieBean()
 

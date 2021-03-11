@@ -24,7 +24,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import kotlin.concurrent.thread
 
 /**
  * author: jixiaoyong
@@ -33,7 +32,7 @@ import kotlin.concurrent.thread
  * date: 2019-11-16
  * description: 体系页面
  */
-class SystemViewModel(val netWorkRepository: NetWorkRepository) : BaseViewModel() {
+class SystemViewModel(private val netWorkRepository: NetWorkRepository) : BaseViewModel() {
 
     val netState = MutableLiveData<NetUtils.NetworkState>(NetUtils.NetworkState.Normal)
 
@@ -112,7 +111,7 @@ class SystemViewModel(val netWorkRepository: NetWorkRepository) : BaseViewModel(
     }
 
     fun refreshSubTabsData() {
-        thread {
+        viewModelScope.launch(Dispatchers.IO) {
             DatabaseUtils.database.baseArticlesDao().deleteAllArticles(ApiCommondConstants.PostType.SystemPost)
         }
     }
@@ -123,7 +122,7 @@ class SystemViewModel(val netWorkRepository: NetWorkRepository) : BaseViewModel(
             netState.postValue(NetUtils.NetworkState.Succeeded)
             result
         } else {
-            thread {
+            viewModelScope.launch(Dispatchers.IO) {
                 try {
                     val result = netWorkRepository.getMainSystemList().execute().body()?.data
                     val jsonString = Gson().toJson(result)

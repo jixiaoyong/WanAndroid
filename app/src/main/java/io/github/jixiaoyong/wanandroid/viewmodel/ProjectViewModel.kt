@@ -15,7 +15,6 @@ import io.github.jixiaoyong.wanandroid.utils.NetUtils
 import io.github.jixiaoyong.wanandroid.utils.jsonToListOf
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlin.concurrent.thread
 
 /**
  * author: jixiaoyong
@@ -50,7 +49,7 @@ class ProjectViewModel(private val netWorkRepository: NetWorkRepository) : BaseV
     }
 
     private fun updateCurrentTabItem(mainTabs: List<DataProjectParam>?, index: Int) {
-        thread {
+        viewModelScope.launch(Dispatchers.IO) {
             DatabaseUtils.database.baseArticlesDao().deleteAllArticles(ApiCommondConstants.PostType.ProjectPost)
             currentMainTabItem.postValue(mainTabs?.getOrNull(index))
         }
@@ -88,14 +87,14 @@ class ProjectViewModel(private val netWorkRepository: NetWorkRepository) : BaseV
 //    }
 
     fun updateIndexPostCollectState(dataIndexPostParam: DataIndexPostParam) {
-        netWorkRepository.updatePostCollectState(dataIndexPostParam)
+        viewModelScope.launch(Dispatchers.IO) { netWorkRepository.updatePostCollectState(dataIndexPostParam) }
     }
 
     private fun formatStringToTabs(string: String?): List<DataProjectParam>? {
         return if (!string.isNullOrBlank()) {
             string.jsonToListOf()
         } else {
-            thread {
+            viewModelScope.launch(Dispatchers.IO) {
                 try {
                     val result = netWorkRepository.getMainProjectList().execute().body()?.data
                     val jsonString = Gson().toJson(result)
@@ -110,7 +109,7 @@ class ProjectViewModel(private val netWorkRepository: NetWorkRepository) : BaseV
     }
 
     fun refreshProjectList() {
-        thread {
+        viewModelScope.launch(Dispatchers.IO) {
             DatabaseUtils.database.baseArticlesDao().deleteAllArticles(ApiCommondConstants.PostType.ProjectPost)
         }
     }

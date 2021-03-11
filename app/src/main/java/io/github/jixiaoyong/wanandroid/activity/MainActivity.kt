@@ -1,17 +1,15 @@
 package io.github.jixiaoyong.wanandroid.activity
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
-import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.Navigation
-import androidx.navigation.ui.setupWithNavController
+import androidx.viewpager2.widget.ViewPager2
 import io.github.jixiaoyong.wanandroid.R
+import io.github.jixiaoyong.wanandroid.adapter.MainFragmentAdapter
 import io.github.jixiaoyong.wanandroid.base.BaseActivity
 import io.github.jixiaoyong.wanandroid.databinding.ActivityMainBinding
+import io.github.jixiaoyong.wanandroid.fragment.*
 import io.github.jixiaoyong.wanandroid.utils.BottomNabControl
-import io.github.jixiaoyong.wanandroid.utils.InjectUtils
-import io.github.jixiaoyong.wanandroid.viewmodel.MainViewModel
 
 /**
  * author: jixiaoyong
@@ -23,18 +21,37 @@ import io.github.jixiaoyong.wanandroid.viewmodel.MainViewModel
 class MainActivity : BaseActivity(), BottomNabControl {
 
     private lateinit var binding: ActivityMainBinding
+    private val menuIds = arrayOf(
+        R.id.mainIndexFragment, R.id.mainSystemFragment,
+        R.id.mainTodoFragment, R.id.mainProjectFragment, R.id.mainAboutFragment
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        binding.lifecycleOwner = this
+        binding = ActivityMainBinding.inflate(LayoutInflater.from(this))
+        setContentView(binding.root)
 
-        ViewModelProviders.of(
-            this,
-            InjectUtils.provideMainViewModelFactory()
-        ).get(MainViewModel::class.java)
-
-        binding.bottomNavView.setupWithNavController(Navigation.findNavController(this, R.id.fragmentNav))
+        binding.pager.adapter = MainFragmentAdapter(
+            this@MainActivity,
+            arrayListOf(
+                MainIndexFragment(),
+                MainSystemFragment(),
+                MainTodoFragment(),
+                MainProjectFragment(),
+                MainAboutFragment()
+            )
+        )
+        binding.pager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                binding.bottomNavView.selectedItemId = position
+            }
+        })
+        binding.bottomNavView.setOnNavigationItemSelectedListener { menu ->
+            val pageId = menuIds.indexOf(menu.itemId)
+            binding.pager.setCurrentItem(pageId, false)
+            true
+        }
     }
 
     override fun changBottomNavViewVisibility(isVisible: Boolean) {

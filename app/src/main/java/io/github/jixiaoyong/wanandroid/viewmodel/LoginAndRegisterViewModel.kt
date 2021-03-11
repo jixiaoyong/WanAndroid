@@ -36,7 +36,6 @@ class LoginAndRegisterViewModel(private val accountRepository: AccountRepository
         canButtonEnable.addSource(isLogin) {
             checkCanButtonEnable(nameInputLength.value, pwdInputLength.value, it, repwdInputLength.value)
         }
-
     }
 
     private fun checkCanButtonEnable(nameLength: Int?, pwdInputLength: Int?, isLogin: Boolean? = true, repwdInputLength: Int? = 6) {

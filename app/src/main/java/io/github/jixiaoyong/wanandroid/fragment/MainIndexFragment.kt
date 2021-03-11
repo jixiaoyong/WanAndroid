@@ -8,9 +8,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.findNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
@@ -21,6 +19,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.android.material.snackbar.Snackbar
 import io.github.jixiaoyong.wanandroid.R
 import io.github.jixiaoyong.wanandroid.activity.LoginRegisterActivity
+import io.github.jixiaoyong.wanandroid.activity.MoreActivity
 import io.github.jixiaoyong.wanandroid.adapter.LoadMoreAdapter
 import io.github.jixiaoyong.wanandroid.adapter.MainIndexPagingAdapter
 import io.github.jixiaoyong.wanandroid.adapter.SearchAdapter
@@ -46,16 +45,13 @@ import kotlinx.coroutines.withContext
 class MainIndexFragment : BaseFragment() {
 
     private lateinit var dataBinding: FragmentMainIndexBinding
-    private lateinit var mainViewModel: MainViewModel
+    private val mainViewModel: MainViewModel by viewModels({ requireActivity() }) { InjectUtils.provideMainViewModelFactory() }
     private val searchViewModel: SearchViewModel by viewModels { InjectUtils.provideSearchModelFactory() }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         dataBinding = FragmentMainIndexBinding.inflate(layoutInflater)
         setupFakeStateBar(dataBinding.stateBarView)
-        mainViewModel = ViewModelProviders.of(
-            requireActivity(),
-            InjectUtils.provideMainViewModelFactory()
-        ).get(MainViewModel::class.java)
+
         initView()
         return dataBinding.root
     }
@@ -218,12 +214,7 @@ class MainIndexFragment : BaseFragment() {
 
     @Synchronized
     private fun goMoreFragment(action: Int, bundle: Bundle? = null) {
-        val args = Bundle()
-        args.putInt(CommonConstants.Action.KEY, action)
-        bundle?.let {
-            args.putAll(it)
-        }
-        dataBinding.root.findNavController().navigate(R.id.action_mainIndexFragment_to_moreFragment, args)
+        MoreActivity.start(requireContext(), action, bundle)
     }
 
     // DispatchNestedScrollView是否需要拦截子View的滑动事件

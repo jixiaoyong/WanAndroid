@@ -20,7 +20,6 @@ import io.github.jixiaoyong.wanandroid.utils.DatabaseUtils
 import io.github.jixiaoyong.wanandroid.utils.jsonToListOf
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlin.concurrent.thread
 
 /**
  * author: jixiaoyong
@@ -59,7 +58,7 @@ class MoreViewModel(private val netWorkRepository: NetWorkRepository, action: In
     }
 
     private fun updateCurrentTabItem(mainTabs: List<DataProjectParam>?, index: Int) {
-        thread {
+        viewModelScope.launch(Dispatchers.IO) {
             DatabaseUtils.database.baseArticlesDao().deleteAllArticles(ApiCommondConstants.PostType.WechatPost)
             currentMainTabItem.postValue(mainTabs?.getOrNull(index))
         }
@@ -126,7 +125,7 @@ class MoreViewModel(private val netWorkRepository: NetWorkRepository, action: In
         return if (!string.isNullOrBlank()) {
             string.jsonToListOf()
         } else {
-            thread {
+            viewModelScope.launch(Dispatchers.IO) {
                 try {
                     val result = netWorkRepository.getWechatList().execute().body()?.data
                     val jsonString = Gson().toJson(result)
@@ -141,7 +140,7 @@ class MoreViewModel(private val netWorkRepository: NetWorkRepository, action: In
     }
 
     fun refreshWechatList() {
-        thread {
+        viewModelScope.launch(Dispatchers.IO) {
             DatabaseUtils.database.baseArticlesDao().deleteAllArticles(ApiCommondConstants.PostType.WechatPost)
         }
     }
