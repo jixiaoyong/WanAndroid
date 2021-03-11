@@ -42,4 +42,7 @@
         <item name="overlapAnchor">false</item>
     </style>
 
+    <style name="navTextActive">
+        <item name="android:textSize">14sp</item>
+    </style>
 </resources>
