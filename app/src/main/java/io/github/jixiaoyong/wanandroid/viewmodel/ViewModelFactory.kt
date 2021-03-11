@@ -49,6 +49,13 @@ class SystemViewModelFactory(private val netWorkRepository: NetWorkRepository) :
 }
 
 @Suppress("UNCHECKED_CAST")
+class ListViewModelFactory(private val netWorkRepository: NetWorkRepository) : ViewModelProvider.Factory {
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        return ListViewModel(netWorkRepository) as T
+    }
+}
+
+@Suppress("UNCHECKED_CAST")
 class ProjectViewModelFactory(private val netWorkRepository: NetWorkRepository) : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         return ProjectViewModel(netWorkRepository) as T

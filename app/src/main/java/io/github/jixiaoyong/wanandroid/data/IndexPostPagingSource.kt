@@ -52,7 +52,7 @@ class IndexPostPagingSource(private val netWorkRepository: NetWorkRepository) : 
 }
 
 class PostPagingSource<T : Any>(
-    private val netFunc: (page: Int) -> RemoteDataBean<DataPageOf<T>>
+    private val netFunc: suspend (page: Int) -> RemoteDataBean<DataPageOf<T>>
 ) : PagingSource<Int, T>() {
 
     override fun getRefreshKey(state: PagingState<Int, T>): Int? {
@@ -64,8 +64,13 @@ class PostPagingSource<T : Any>(
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, T> {
         val currentPage = params.key ?: 0
-        val result = withContext(Dispatchers.IO) {
-            netFunc(currentPage).data?.datas ?: arrayListOf()
+        val result = try {
+            withContext(Dispatchers.IO) {
+                netFunc(currentPage).data?.datas ?: arrayListOf()
+            }
+        } catch (e: Exception) {
+            Logger.e(e)
+            return LoadResult.Error(e)
         }
         val nextKey = if (result.isNullOrEmpty()) {
             null

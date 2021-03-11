@@ -33,6 +33,10 @@ object InjectUtils {
         return SystemViewModelFactory(NetWorkRepository())
     }
 
+    fun provideListViewModelFactory(): ListViewModelFactory {
+        return ListViewModelFactory(NetWorkRepository())
+    }
+
     fun provideProjectViewModelFactory(): ProjectViewModelFactory {
         return ProjectViewModelFactory(NetWorkRepository())
     }

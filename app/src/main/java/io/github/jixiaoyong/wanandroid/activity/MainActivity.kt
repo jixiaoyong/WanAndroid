@@ -23,7 +23,7 @@ class MainActivity : BaseActivity(), BottomNabControl {
     private lateinit var binding: ActivityMainBinding
     private val menuIds = arrayOf(
         R.id.mainIndexFragment, R.id.mainSystemFragment,
-        R.id.mainTodoFragment, R.id.mainProjectFragment, R.id.mainAboutFragment
+        /* R.id.mainTodoFragment,*/ R.id.mainProjectFragment, R.id.mainAboutFragment
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,7 +36,7 @@ class MainActivity : BaseActivity(), BottomNabControl {
             arrayListOf(
                 MainIndexFragment(),
                 MainSystemFragment(),
-                MainTodoFragment(),
+//                MainTodoFragment(),
                 MainProjectFragment(),
                 MainAboutFragment()
             )
@@ -47,6 +47,7 @@ class MainActivity : BaseActivity(), BottomNabControl {
                 binding.bottomNavView.selectedItemId = menuIds.get(position)
             }
         })
+        binding.pager.isUserInputEnabled = false
         binding.bottomNavView.setOnNavigationItemSelectedListener { menu ->
             val pageId = menuIds.indexOf(menu.itemId)
             binding.pager.setCurrentItem(pageId, false)
