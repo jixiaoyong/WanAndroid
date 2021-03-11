@@ -44,7 +44,7 @@ class MainActivity : BaseActivity(), BottomNabControl {
         binding.pager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-                binding.bottomNavView.selectedItemId = position
+                binding.bottomNavView.selectedItemId = menuIds.get(position)
             }
         })
         binding.bottomNavView.setOnNavigationItemSelectedListener { menu ->
