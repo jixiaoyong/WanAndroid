@@ -30,27 +30,25 @@ object NetUtils {
 
     fun init(applicationContext: Context) {
         val httpClient = OkHttpClient.Builder()
-                .readTimeout(TIME_OUT_DURATION, TimeUnit.SECONDS)
-                .writeTimeout(TIME_OUT_DURATION, TimeUnit.SECONDS)
-                .cookieJar(CookieManager().cookieJar)
-                .build()
+            .readTimeout(TIME_OUT_DURATION, TimeUnit.SECONDS)
+            .writeTimeout(TIME_OUT_DURATION, TimeUnit.SECONDS)
+            .cookieJar(CookieManager().cookieJar)
+            .build()
 
         val retrofit = Retrofit.Builder()
-                .client(httpClient)
-                .baseUrl(CommonConstants.WebSites.BASE_URL_WANANDROID)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-
+            .client(httpClient)
+            .baseUrl(CommonConstants.WebSites.BASE_URL_WANANDROID)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
 
         val upgradeRetrofit = Retrofit.Builder()
-                .client(httpClient)
-                .baseUrl(CommonConstants.WebSites.BASE_URL_UPGRADE)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
+            .client(httpClient)
+            .baseUrl(CommonConstants.WebSites.BASE_URL_UPGRADE)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
 
         wanAndroidApi = retrofit.create(WanAndroidService::class.java)
         appUpgradeApi = upgradeRetrofit.create(AppUpgradeApi::class.java)
-
     }
 
     object ErrorCode {
@@ -62,7 +60,6 @@ object NetUtils {
         object Normal : NetworkState()
         object Loading : NetworkState()
         object Error : NetworkState()
-
     }
 
     /**
@@ -71,7 +68,8 @@ object NetUtils {
     fun loadUrl(context: Context, urlStr: String) {
         val url = Uri.parse(urlStr)
         if (TwaProviderPicker.pickProvider(context.packageManager).launchMode
-                == TwaProviderPicker.LaunchMode.BROWSER) {
+            == TwaProviderPicker.LaunchMode.BROWSER
+        ) {
             val twaLauncher = TwaLauncher(context)
             twaLauncher.launch(url)
         } else {

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.lifecycleScope
 import cf.android666.applibrary.Logger
@@ -33,7 +34,7 @@ class MainAboutFragment : BaseFragment() {
 
     private lateinit var dataBinding: FragmentMainAboutBinding
     private lateinit var mainViewModel: MainViewModel
-    private lateinit var aboutViewModel: AboutViewModel
+    private val aboutViewModel: AboutViewModel by viewModels { InjectUtils.provideAboutViewModelFactory() }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_main_about, container, false)
@@ -44,19 +45,14 @@ class MainAboutFragment : BaseFragment() {
             InjectUtils.provideMainViewModelFactory()
         ).get(MainViewModel::class.java)
 
-        aboutViewModel = ViewModelProviders.of(
-            requireActivity(),
-            InjectUtils.provideAboutViewModelFactory()
-        ).get(AboutViewModel::class.java)
-
         dataBinding.viewModel = mainViewModel
         dataBinding.lifecycleOwner = this
 
-        initView(view)
+        initView()
         return view
     }
 
-    private fun initView(view: View) {
+    private fun initView() {
         dataBinding.versionMore.text = "v${BuildConfig.VERSION_NAME}"
         dataBinding.versionTv.setOnClickListener {
             toast("${getString(R.string.app_version)}: ${dataBinding.versionMore.text}")

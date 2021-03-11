@@ -1,5 +1,6 @@
 package io.github.jixiaoyong.wanandroid.activity
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.method.HideReturnsTransformationMethod
@@ -185,5 +186,11 @@ class LoginRegisterActivity : BaseActivity() {
 
     private fun dealWithErrorCode(result: CookieBean) {
         Logger.e("error code:${result.errorCode}")
+    }
+
+    companion object {
+        fun start(context: Context) {
+            context.startActivity(Intent(context, LoginRegisterActivity::class.java))
+        }
     }
 }

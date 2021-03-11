@@ -25,7 +25,8 @@ import kotlin.concurrent.thread
 class MainIndexPagingAdapter(
     private val updateIndexPostCollectState: (DataIndexPostParam) -> Unit,
     private val onViewHolder: ((View, DataIndexPostParam) -> Unit)? = null,
-    private val isLogin: (() -> Boolean)? = null
+    private val isLogin: (() -> Boolean)? = null,
+    private val notLoginFunc: (() -> Unit)? = null
 ) :
     BasePagingDataAdapter<DataIndexPostParam, ViewHolder>(Diff()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -54,7 +55,7 @@ class MainIndexPagingAdapter(
                     updateIndexPostCollectState(newData)
                 }
             } else {
-                Toast.show(it.context.getString(R.string.tips_plz_login))
+                notLoginFunc?.invoke() ?: Toast.show(it.context.getString(R.string.tips_plz_login))
             }
         }
     }

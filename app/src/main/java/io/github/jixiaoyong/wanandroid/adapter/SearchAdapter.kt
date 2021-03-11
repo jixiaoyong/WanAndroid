@@ -15,9 +15,8 @@ import io.github.jixiaoyong.wanandroid.api.bean.DataHotKeyParam
  * date: 2019-12-14
  * description: todo
  */
-class SearchAdapter(private val data: List<DataHotKeyParam>, private val onClickListener: ((text: String) -> Unit)?)
-    : RecyclerView.Adapter<SearchAdapter.VH>() {
-
+class SearchAdapter(private val data: List<DataHotKeyParam>, private val onClickListener: ((text: String) -> Unit)?) :
+    RecyclerView.Adapter<SearchAdapter.VH>() {
 
     class VH(view: View) : RecyclerView.ViewHolder(view) {
         val textView: TextView = view.findViewById(R.id.searchItem)

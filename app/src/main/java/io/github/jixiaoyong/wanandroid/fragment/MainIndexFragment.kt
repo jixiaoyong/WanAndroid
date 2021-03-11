@@ -18,12 +18,13 @@ import cf.android666.applibrary.Logger
 import cf.android666.applibrary.view.Toast
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.google.android.material.snackbar.Snackbar
 import io.github.jixiaoyong.wanandroid.R
+import io.github.jixiaoyong.wanandroid.activity.LoginRegisterActivity
 import io.github.jixiaoyong.wanandroid.adapter.LoadMoreAdapter
 import io.github.jixiaoyong.wanandroid.adapter.MainIndexPagingAdapter
 import io.github.jixiaoyong.wanandroid.adapter.SearchAdapter
 import io.github.jixiaoyong.wanandroid.base.BaseFragment
-import io.github.jixiaoyong.wanandroid.base.toast
 import io.github.jixiaoyong.wanandroid.databinding.FragmentMainIndexBinding
 import io.github.jixiaoyong.wanandroid.utils.*
 import io.github.jixiaoyong.wanandroid.view.BannerViewHelper
@@ -69,25 +70,7 @@ class MainIndexFragment : BaseFragment() {
             dataBinding.postRecyclerView.layoutParams = listParams
         }
 
-        val postAdapter = MainIndexPagingAdapter(
-            mainViewModel::updateIndexPostCollectState,
-            isLogin = mainViewModel::isLogin
-        )
-        postAdapter.addLoadStateListener { loadState ->
-            dataBinding.postRecyclerView.isVisible = loadState.source.refresh is LoadState.NotLoading
-            dataBinding.retryButton.isVisible = loadState.source.refresh is LoadState.Error
-            dataBinding.progressBar.isVisible = loadState.source.refresh is LoadState.Loading
-            dataBinding.swipeRefreshLayout.isRefreshing = loadState.source.refresh is LoadState.Loading
-
-            val errorState = loadState.refresh as? LoadState.Error
-                ?: loadState.source.append as? LoadState.Error
-                ?: loadState.source.prepend as? LoadState.Error
-                ?: loadState.append as? LoadState.Error
-                ?: loadState.prepend as? LoadState.Error
-            errorState?.let {
-                Toast.show("\uD83D\uDE28 Wooops ${it.error}")
-            }
-        }
+        val postAdapter = initAdapter()
 
         dataBinding.nestedScrollView.isNeedInterceptActionMove = this::isNeedIntercept
         dataBinding.swipeRefreshLayout.setOnRefreshListener {
@@ -145,7 +128,7 @@ class MainIndexFragment : BaseFragment() {
             if (mainViewModel.isLogin.value == true) {
                 goMoreFragment(CommonConstants.Action.FAVORITE)
             } else {
-                toast(getString(R.string.tips_plz_login))
+                showNotLoginSnackBar()
             }
         }
         dataBinding.peopleBtn.setOnClickListener {
@@ -178,6 +161,37 @@ class MainIndexFragment : BaseFragment() {
                 return false
             }
         })
+    }
+
+    private fun initAdapter(): MainIndexPagingAdapter {
+        val postAdapter = MainIndexPagingAdapter(
+            mainViewModel::updateIndexPostCollectState,
+            isLogin = mainViewModel::isLogin,
+            notLoginFunc = this::showNotLoginSnackBar
+        )
+        postAdapter.addLoadStateListener { loadState ->
+            dataBinding.postRecyclerView.isVisible = loadState.source.refresh is LoadState.NotLoading
+            dataBinding.retryButton.isVisible = loadState.source.refresh is LoadState.Error
+            dataBinding.progressBar.isVisible = loadState.source.refresh is LoadState.Loading
+            dataBinding.swipeRefreshLayout.isRefreshing = loadState.source.refresh is LoadState.Loading
+
+            val errorState = loadState.refresh as? LoadState.Error
+                ?: loadState.source.append as? LoadState.Error
+                ?: loadState.source.prepend as? LoadState.Error
+                ?: loadState.append as? LoadState.Error
+                ?: loadState.prepend as? LoadState.Error
+            errorState?.let {
+                Toast.show("\uD83D\uDE28 Wooops ${it.error}")
+            }
+        }
+        return postAdapter
+    }
+
+    private fun showNotLoginSnackBar() {
+        Snackbar.make(dataBinding.swipeRefreshLayout, R.string.tips_plz_login, Snackbar.LENGTH_SHORT)
+            .setAction("登录") {
+                LoginRegisterActivity.start(requireContext())
+            }.show()
     }
 
     override fun onResume() {
@@ -215,15 +229,15 @@ class MainIndexFragment : BaseFragment() {
     // DispatchNestedScrollView是否需要拦截子View的滑动事件
     private fun isNeedIntercept(ev: MotionEvent?, direction: Int): Boolean {
         ev?.let {
-            dataBinding?.postRecyclerView?.let {
+            dataBinding.postRecyclerView.let {
                 if (Utils.isInViewScope(it, ev.rawX, ev.rawY) &&
-                    (0 >= (dataBinding!!.dividerAfterHotImg!!.y - dataBinding!!.nestedScrollView!!.scrollY)) &&
+                    (0 >= (dataBinding.dividerAfterHotImg.y - dataBinding.nestedScrollView.scrollY)) &&
                     direction == DispatchNestedScrollView.Companion.Direction.VERTICAL
                 ) {
                     return false
                 }
             }
-            dataBinding?.banner?.let {
+            dataBinding.banner.let {
                 if (Utils.isInViewScope(it, ev.rawX, ev.rawY) &&
                     direction == DispatchNestedScrollView.Companion.Direction.HORIZONTAL
                 ) {
