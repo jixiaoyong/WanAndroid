@@ -50,10 +50,8 @@ class MainIndexPagingAdapter(
         }
         holder.dataBinding.favoriteTv.setOnClickListener {
             if (isLogin?.invoke() == true) {
-                thread {
-                    val newData = data.copy(collect = !data.collect)
-                    updateIndexPostCollectState(newData)
-                }
+                val newData = data.copy(collect = !data.collect)
+                updateIndexPostCollectState(newData)
             } else {
                 notLoginFunc?.invoke() ?: Toast.show(it.context.getString(R.string.tips_plz_login))
             }

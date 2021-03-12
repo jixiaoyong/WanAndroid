@@ -15,15 +15,20 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import cf.android666.applibrary.Logger
 import cf.android666.applibrary.view.Toast
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import io.github.jixiaoyong.wanandroid.R
+import io.github.jixiaoyong.wanandroid.activity.LoginRegisterActivity
 import io.github.jixiaoyong.wanandroid.adapter.MainIndexPagingAdapter
 import io.github.jixiaoyong.wanandroid.api.bean.DataSystemParam
 import io.github.jixiaoyong.wanandroid.databinding.FragmentListBinding
 import io.github.jixiaoyong.wanandroid.utils.InjectUtils
 import io.github.jixiaoyong.wanandroid.viewmodel.ListViewModel
 import io.github.jixiaoyong.wanandroid.viewmodel.MainViewModel
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChangedBy
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 import java.util.ArrayList
 
@@ -34,7 +39,7 @@ import java.util.ArrayList
  * date: 2019-11-06
  * description:
  */
-class ListFragment : Fragment() {
+class SystemListFragment : Fragment() {
 
     private lateinit var viewBinding: FragmentListBinding
     private val viewModel: ListViewModel by viewModels { InjectUtils.provideListViewModelFactory() }
@@ -54,7 +59,8 @@ class ListFragment : Fragment() {
             { itemView, _ ->
                 itemView.findViewById<View>(R.id.classTv).visibility = View.GONE
             },
-            mainViewModel::isLogin
+            mainViewModel::isLogin,
+            notLoginFunc = this::showNotLoginSnackBar
         )
         viewBinding.postRecyclerView.adapter = adapter
         viewBinding.postRecyclerView.addItemDecoration(DividerItemDecoration(requireContext(), RecyclerView.VERTICAL))
@@ -80,8 +86,7 @@ class ListFragment : Fragment() {
         }
 
         viewBinding.subTabLayout.addOnTabSelectedListener(object : TabLayout.BaseOnTabSelectedListener<TabLayout.Tab> {
-            override fun onTabReselected(p0: TabLayout.Tab?) {
-            }
+            override fun onTabReselected(p0: TabLayout.Tab?) {}
 
             override fun onTabUnselected(p0: TabLayout.Tab?) {
                 (p0?.customView as? TextView)?.let {
@@ -120,6 +125,20 @@ class ListFragment : Fragment() {
                 Toast.show("\uD83D\uDE28 Wooops ${it.error}")
             }
         }
+        lifecycleScope.launchWhenCreated {
+            adapter.loadStateFlow.distinctUntilChangedBy { it.refresh }
+                .filter { it.refresh is LoadState.NotLoading }
+                .collect {
+                    viewBinding.postRecyclerView.scrollToPosition(0)
+                }
+        }
+    }
+
+    private fun showNotLoginSnackBar() {
+        Snackbar.make(viewBinding.swipeRefreshLayout, R.string.tips_plz_login, Snackbar.LENGTH_SHORT)
+            .setAction("登录") {
+                LoginRegisterActivity.start(requireContext())
+            }.show()
     }
 
     private fun getSubTabData(cid: Int, adapter: MainIndexPagingAdapter) {
@@ -138,11 +157,10 @@ class ListFragment : Fragment() {
     }
 
     companion object {
-
         const val KEY_CHILDREN = "KEY_CHILDREN"
 
-        fun getInstance(children: ArrayList<DataSystemParam<Any>?>): ListFragment {
-            val fragment = ListFragment()
+        fun getInstance(children: ArrayList<DataSystemParam<Any>?>): SystemListFragment {
+            val fragment = SystemListFragment()
             fragment.arguments = Bundle().also {
                 it.putParcelableArrayList(KEY_CHILDREN, children)
             }

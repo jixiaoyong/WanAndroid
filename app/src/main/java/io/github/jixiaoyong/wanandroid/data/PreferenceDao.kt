@@ -19,12 +19,14 @@ interface PreferenceDao {
     @Query("SELECT * FROM preference WHERE `key` == :key")
     fun queryPreferenceByKey(key: String): LiveData<Preference?>
 
+    @Query("SELECT * FROM preference WHERE `key` == :key")
+    fun queryPreferenceByKeySync(key: String): Preference?
+
     @Query("DELETE  FROM preference")
     fun deleteAllArticles()
 
     @Insert
     fun insert(vararg preference: Preference)
-
 
     @Update
     fun update(vararg preference: Preference)

@@ -1,5 +1,6 @@
 package io.github.jixiaoyong.wanandroid.viewmodel
 
+import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
@@ -9,7 +10,9 @@ import io.github.jixiaoyong.wanandroid.base.BaseViewModel
 import io.github.jixiaoyong.wanandroid.data.NetWorkRepository
 import io.github.jixiaoyong.wanandroid.data.PostPagingSource
 import io.github.jixiaoyong.wanandroid.utils.CommonConstants
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
 
 /**
  * author: jixiaoyong
@@ -32,6 +35,6 @@ class ListViewModel(private val netWorkRepository: NetWorkRepository) : BaseView
     }
 
     fun updateISystemPostCollectState(systemPostParam: DataIndexPostParam) {
-        netWorkRepository.updatePostCollectState(systemPostParam)
+        viewModelScope.launch(Dispatchers.IO) { netWorkRepository.updatePostCollectState(systemPostParam) }
     }
 }

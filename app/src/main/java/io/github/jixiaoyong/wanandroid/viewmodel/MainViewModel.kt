@@ -66,7 +66,9 @@ class MainViewModel(
     }
 
     fun updateIndexPostCollectState(dataIndexPostParam: DataIndexPostParam) {
-        netWorkRepository.updatePostCollectState(dataIndexPostParam)
+        viewModelScope.launch(Dispatchers.IO) {
+            netWorkRepository.updatePostCollectState(dataIndexPostParam)
+        }
     }
 
     fun isLogin(): Boolean {

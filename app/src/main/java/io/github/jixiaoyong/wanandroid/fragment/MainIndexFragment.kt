@@ -73,7 +73,7 @@ class MainIndexFragment : BaseFragment() {
             postAdapter.refresh()
             mainViewModel.getBanner()
         }
-        dataBinding.retryButton.setOnClickListener { postAdapter.refresh() }
+        dataBinding.retryButton.setOnClickListener { postAdapter.retry() }
         // 注意withLoadStateHeaderAndFooter()会产生一个新的[ConcatAdapter],所以需要按照下面方式设置；
         // 或者需要保存其返回值，然后设置给postRecyclerView
         dataBinding.postRecyclerView.adapter = postAdapter.withLoadStateFooter(
