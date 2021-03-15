@@ -19,10 +19,7 @@ import kotlinx.coroutines.withContext
 class IndexPostPagingSource(private val netWorkRepository: NetWorkRepository) : PagingSource<Int, DataIndexPostParam>() {
 
     override fun getRefreshKey(state: PagingState<Int, DataIndexPostParam>): Int? {
-        return state.anchorPosition?.let { anchorPosition ->
-            val anchorPage = state.closestPageToPosition(anchorPosition)
-            anchorPage?.prevKey?.plus(1) ?: anchorPage?.nextKey?.minus(1)
-        }
+        return null
     }
 
     /**
@@ -39,6 +36,7 @@ class IndexPostPagingSource(private val netWorkRepository: NetWorkRepository) : 
             } else {
                 currentPage + (params.loadSize / CommonConstants.Paging.PAGE_SIZE)
             }
+            Logger.d("result  (currentPage$currentPage)" + result.joinToString())
             return LoadResult.Page(
                 data = result,
                 prevKey = if (currentPage == 0) null else currentPage - 1,
@@ -56,10 +54,7 @@ class PostPagingSource<T : Any>(
 ) : PagingSource<Int, T>() {
 
     override fun getRefreshKey(state: PagingState<Int, T>): Int? {
-        return state.anchorPosition?.let { anchorPosition ->
-            val anchorPage = state.closestPageToPosition(anchorPosition)
-            anchorPage?.prevKey?.plus(1) ?: anchorPage?.nextKey?.minus(1)
-        }
+        return null
     }
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, T> {
@@ -77,6 +72,7 @@ class PostPagingSource<T : Any>(
         } else {
             currentPage + (params.loadSize / CommonConstants.Paging.PAGE_SIZE)
         }
+        Logger.d("result (currentPage$currentPage)" + result.joinToString())
         return LoadResult.Page(
             data = result,
             prevKey = if (currentPage == 0) null else currentPage - 1,
