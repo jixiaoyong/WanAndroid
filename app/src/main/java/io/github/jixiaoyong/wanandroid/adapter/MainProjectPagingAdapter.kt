@@ -7,7 +7,7 @@ import androidx.databinding.DataBindingUtil
 import cf.android666.applibrary.view.Toast
 import io.github.jixiaoyong.wanandroid.R
 import io.github.jixiaoyong.wanandroid.api.bean.DataIndexPostParam
-import io.github.jixiaoyong.wanandroid.base.BasePagingAdapter
+import io.github.jixiaoyong.wanandroid.base.BasePagingDataAdapter
 import io.github.jixiaoyong.wanandroid.base.BaseViewHolder
 import io.github.jixiaoyong.wanandroid.databinding.ItemMainProjectBinding
 import io.github.jixiaoyong.wanandroid.utils.NetUtils
@@ -23,8 +23,7 @@ class MainProjectPagingAdapter(
     private val updateIndexPostCollectState: (DataIndexPostParam) -> Unit,
     private val onViewHolder: ((View, DataIndexPostParam) -> Unit)? = null,
     private val isLogin: (() -> Boolean)? = null
-) :
-    BasePagingAdapter<DataIndexPostParam, MainProjectPagingAdapter.ViewHolder>(Diff()) {
+) : BasePagingDataAdapter<DataIndexPostParam, MainProjectPagingAdapter.ViewHolder>(Diff()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
             DataBindingUtil.inflate(

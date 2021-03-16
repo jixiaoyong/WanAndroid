@@ -31,11 +31,11 @@ fun String.jsonToListOfDataSys(): List<DataSystemParam<DataSystemParam<Any>>>? {
     val data = this.jsonToListOf<DataSystemParam<LinkedTreeMap<String, Any>>?>()
     return data?.filterNotNull()?.map { main ->
         val children = Gson().toJson(main.children).toString().jsonToListOf<DataSystemParam<Any>>()
-                ?: arrayListOf()
+            ?: arrayListOf()
         val item = DataSystemParam(
-                children,
-                main.courseId, main.id, main.name, main.order, main.parentChapterId,
-                main.userControlSetTop, main.visible
+            children,
+            main.courseId, main.id, main.name, main.order, main.parentChapterId,
+            main.userControlSetTop, main.visible
         )
         item
     }
@@ -43,21 +43,21 @@ fun String.jsonToListOfDataSys(): List<DataSystemParam<DataSystemParam<Any>>>? {
 
 fun main() {
     val preList = arrayListOf(
-            DataSystemParam(
-                    children = arrayListOf(DataSystemParam(name = "sub1"), DataSystemParam(name = "sub2")),
-                    name = "main1"
-            ), DataSystemParam(
+        DataSystemParam(
+            children = arrayListOf(DataSystemParam(name = "sub1"), DataSystemParam(name = "sub2")),
+            name = "main1"
+        ),
+        DataSystemParam(
             children = arrayListOf(DataSystemParam(name = "sub1"), DataSystemParam<Any>(name = "sub2")),
-            name = "main2")
+            name = "main2"
+        )
     )
 
     val jsonStr = Gson().toJson(preList)
-
 
     val obj = jsonStr.jsonToListOfDataSys()
 
     obj?.forEach {
         println("tab:${it.name} ${it.children.getOrNull(0)?.name}")
     }
-
 }

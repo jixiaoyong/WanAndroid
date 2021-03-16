@@ -3,7 +3,9 @@ package io.github.jixiaoyong.wanandroid.adapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import io.github.jixiaoyong.wanandroid.api.bean.DataProjectParam
 import io.github.jixiaoyong.wanandroid.api.bean.DataSystemParam
+import io.github.jixiaoyong.wanandroid.fragment.ProjectListFragment
 import io.github.jixiaoyong.wanandroid.fragment.SystemListFragment
 
 /**
@@ -28,4 +30,13 @@ class ListFragmentAdapter(
     override fun getItemCount() = mainTabs.size
 
     override fun createFragment(position: Int) = SystemListFragment.getInstance(ArrayList(mainTabs.get(position).children))
+}
+
+class ProjectFragmentAdapter(
+    private val mainTabs: List<DataProjectParam>,
+    fragmentActivity: FragmentActivity
+) : FragmentStateAdapter(fragmentActivity) {
+    override fun getItemCount() = mainTabs.size
+
+    override fun createFragment(position: Int) = ProjectListFragment.getInstance(mainTabs.get(position).id)
 }

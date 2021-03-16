@@ -17,11 +17,11 @@ package io.github.jixiaoyong.wanandroid.api.bean
 }
  */
 data class DataProjectParam(
-        var children: List<Any> = listOf(),
-        var courseId: Int = 0, // 13
-        var id: Int = 0, // 294
-        var name: String = "", // 完整项目
-        var order: Int = 0, // 145000
-        var parentChapterId: Int = 0, // 293
-        var visible: Int = 0 // 0
+    var children: List<Any> = listOf(),
+    var courseId: Int = 0, // 13
+    var id: Int = 0, // 294
+    var name: String = "", // 完整项目
+    var order: Int = 0, // 145000
+    var parentChapterId: Int = 0, // 293
+    var visible: Int = 0 // 0
 )

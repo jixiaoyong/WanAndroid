@@ -6,18 +6,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.RecyclerView
+import androidx.lifecycle.lifecycleScope
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import io.github.jixiaoyong.wanandroid.R
-import io.github.jixiaoyong.wanandroid.adapter.MainProjectPagingAdapter
+import io.github.jixiaoyong.wanandroid.adapter.ProjectFragmentAdapter
 import io.github.jixiaoyong.wanandroid.base.BaseFragment
 import io.github.jixiaoyong.wanandroid.databinding.FragmentMainProjectBinding
 import io.github.jixiaoyong.wanandroid.utils.InjectUtils
-import io.github.jixiaoyong.wanandroid.utils.NetUtils
-import io.github.jixiaoyong.wanandroid.viewmodel.MainViewModel
 import io.github.jixiaoyong.wanandroid.viewmodel.ProjectViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 /**
  * author: jixiaoyong
@@ -28,7 +27,6 @@ import io.github.jixiaoyong.wanandroid.viewmodel.ProjectViewModel
  */
 class MainProjectFragment : BaseFragment() {
 
-    private val mainViewModel: MainViewModel by viewModels({ requireActivity() }) { InjectUtils.provideMainViewModelFactory() }
     private val viewModel: ProjectViewModel by viewModels { InjectUtils.provideProjectViewModelFactory() }
     private lateinit var dataBinding: FragmentMainProjectBinding
 
@@ -41,24 +39,24 @@ class MainProjectFragment : BaseFragment() {
     }
 
     private fun initView() {
-        viewModel.mainTabs.observe(
-            viewLifecycleOwner,
-            {
-                it?.forEachIndexed { index, dataProjectParam ->
-                    val tabItem = dataBinding.tabLayout.newTab()
-                    tabItem.text = dataProjectParam.name
-                    tabItem.tag = index
-                    dataBinding.tabLayout.addTab(tabItem)
-                }
+        lifecycleScope.launchWhenCreated {
+            val data = withContext(Dispatchers.IO) { viewModel.mainTabs() }
+            data?.forEachIndexed { index, dataProjectParam ->
+                val tabItem = dataBinding.tabLayout.newTab()
+                tabItem.text = dataProjectParam.name
+                tabItem.tag = index
+                dataBinding.tabLayout.addTab(tabItem)
             }
-        )
-
-        val adapter = MainProjectPagingAdapter(
-            viewModel::updateIndexPostCollectState, isLogin = mainViewModel::isLogin
-        )
-        dataBinding.postRecyclerView.adapter = adapter
-        dataBinding.postRecyclerView.addItemDecoration(DividerItemDecoration(requireContext(), RecyclerView.VERTICAL))
-        viewModel.allProjectPost.observe(viewLifecycleOwner, Observer(adapter::submitList))
+            dataBinding.viewPager.adapter = data?.let { it1 ->
+                ProjectFragmentAdapter(it1, requireActivity())
+            }
+            dataBinding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+                override fun onPageSelected(position: Int) {
+                    super.onPageSelected(position)
+                    dataBinding.tabLayout.getTabAt(position)?.select()
+                }
+            })
+        }
 
         dataBinding.tabLayout.addOnTabSelectedListener(object : TabLayout.BaseOnTabSelectedListener<TabLayout.Tab> {
             override fun onTabReselected(p0: TabLayout.Tab?) {}
@@ -67,22 +65,8 @@ class MainProjectFragment : BaseFragment() {
 
             override fun onTabSelected(p0: TabLayout.Tab?) {
                 val index = p0?.tag as Int?
-                viewModel.currentMainTabIndex.value = index ?: 0
+                dataBinding.viewPager.currentItem = index ?: 0
             }
         })
-
-        dataBinding.swipeRefreshLayout.setOnRefreshListener {
-            viewModel.refreshProjectList()
-        }
-
-        viewModel.netState.observe(
-            viewLifecycleOwner,
-            {
-                dataBinding.swipeRefreshLayout.isRefreshing = when (it) {
-                    NetUtils.NetworkState.Loading -> true
-                    else -> false
-                }
-            }
-        )
     }
 }
