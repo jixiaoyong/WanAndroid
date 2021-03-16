@@ -10,6 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import cf.android666.applibrary.Logger
 import io.github.jixiaoyong.wanandroid.BuildConfig
 import io.github.jixiaoyong.wanandroid.R
+import io.github.jixiaoyong.wanandroid.activity.LoginRegisterActivity
 import io.github.jixiaoyong.wanandroid.base.BaseFragment
 import io.github.jixiaoyong.wanandroid.base.toast
 import io.github.jixiaoyong.wanandroid.databinding.FragmentMainAboutBinding
@@ -62,6 +63,9 @@ class MainAboutFragment : BaseFragment() {
 
         dataBinding.shareTv.setOnClickListener {
             // todo show share dialog
+        }
+        dataBinding.loginBtn.setOnClickListener {
+            LoginRegisterActivity.start(requireContext())
         }
 
         dataBinding.upgradeTv.setOnClickListener {

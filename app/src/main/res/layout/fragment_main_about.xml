@@ -218,6 +218,20 @@
                 app:layout_constraintStart_toStartOf="@id/versionTv"
                 app:layout_constraintTop_toTopOf="@id/authorIcon" />
 
+            <TextView
+                android:id="@+id/authorWebTv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:maxLines="1"
+                android:text="https://jixiaoyong.github.io"
+                android:textAlignment="textEnd"
+                android:textColor="#959595"
+                app:layout_constraintBottom_toBottomOf="@id/authorIcon"
+                app:layout_constraintEnd_toStartOf="@id/authorMore"
+                app:layout_constraintStart_toStartOf="@id/versionTv"
+                app:layout_constraintTop_toTopOf="@id/authorIcon" />
+
             <ImageView
                 android:id="@+id/authorMore"
                 android:layout_width="wrap_content"
