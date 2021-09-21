@@ -121,7 +121,7 @@ class MainIndexFragment : BaseFragment() {
             goMoreFragment(CommonConstants.Action.WECHAT)
         }
         dataBinding.favoriteBtn.setOnClickListener {
-            if (mainViewModel.isLogin.value == true) {
+            if (mainViewModel.isLogin()) {
                 goMoreFragment(CommonConstants.Action.FAVORITE)
             } else {
                 showNotLoginSnackBar()

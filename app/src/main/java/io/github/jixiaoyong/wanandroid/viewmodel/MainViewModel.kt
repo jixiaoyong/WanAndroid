@@ -36,12 +36,13 @@ class MainViewModel(
     val bannerListLiveData = MutableLiveData<List<DataBannerParam>?>()
     val cookies = accountRepository.getCookieBean()
 
-    val isLogin = map(cookies) {
+    fun isLoginFunc() = map(cookies) {
         val cookie = it?.getOrNull(0)
         cookie != null && cookie.expirationDate >= System.currentTimeMillis()
     }
 
-    val coinInfo = switchMap(isLogin) {
+
+    val coinInfo = switchMap(isLoginFunc()) {
         liveData {
             if (it) {
                 val result = accountRepository.getCoinInfo().data
@@ -72,6 +73,6 @@ class MainViewModel(
     }
 
     fun isLogin(): Boolean {
-        return isLogin.value == true
+        return isLoginFunc().value == true
     }
 }
