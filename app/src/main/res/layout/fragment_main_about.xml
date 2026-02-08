@@ -40,7 +40,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="50dp"
                 android:layout_marginEnd="10dp"
-                android:background="@drawable/ic_backgroud_round"
+                android:background="@drawable/ic_background_round"
                 app:layout_constraintBottom_toBottomOf="@id/bottomView"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
