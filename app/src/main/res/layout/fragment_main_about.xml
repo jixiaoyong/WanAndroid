@@ -27,7 +27,7 @@
                 android:paddingBottom="5dp"
                 android:text="@string/btn_login_register"
                 android:textColor="#B4FFFFFF"
-                app:isShow="@{!viewModel.isLogin()}"
+                app:isShow="@{!viewModel.checkUserLoginState()}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -109,7 +109,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:constraint_referenced_ids="userNameTv,scoreTv,scoreIv"
-                app:isShow="@{viewModel.isLogin()}" />
+                app:isShow="@{viewModel.checkUserLoginState()}" />
 
 
             <ImageView

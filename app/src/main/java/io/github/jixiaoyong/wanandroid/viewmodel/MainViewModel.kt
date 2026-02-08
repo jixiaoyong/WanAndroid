@@ -71,7 +71,7 @@ class MainViewModel(
         }
     }
 
-    fun isLogin(): Boolean {
+    fun checkUserLoginState(): Boolean {
         return isLogin.value == true
     }
 }

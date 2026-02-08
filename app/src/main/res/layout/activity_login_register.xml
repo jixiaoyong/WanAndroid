@@ -48,7 +48,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/title"
             bind:canButtonEnable="@{viewModel.canButtonEnable}"
-            bind:isLogin="@{viewModel.isLogin()}" />
+            bind:isLogin="@{viewModel.isLogin}" />
 
         <View
             android:id="@+id/hintLineRight"
@@ -81,7 +81,7 @@
             android:layout_marginBottom="20dp"
             android:text="@string/tip_no_account"
             android:textColor="@color/colorGrey"
-            app:hintText="@{viewModel.isLogin()}"
+            app:hintText="@{viewModel.isLogin}"
             app:layout_constraintBottom_toTopOf="@id/changeStateBtn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -93,7 +93,7 @@
             android:layout_marginBottom="25dp"
             android:text="@string/create_account"
             android:textColor="@color/colorPrimary"
-            app:changeStateText="@{viewModel.isLogin()}"
+            app:changeStateText="@{viewModel.isLogin}"
             app:layout_constraintBottom_toTopOf="@id/skipBtn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
