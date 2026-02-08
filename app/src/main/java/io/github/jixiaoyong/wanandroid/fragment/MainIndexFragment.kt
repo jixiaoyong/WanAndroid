@@ -162,7 +162,7 @@ class MainIndexFragment : BaseFragment() {
     private fun initAdapter(): MainIndexPagingAdapter {
         val postAdapter = MainIndexPagingAdapter(
             mainViewModel::updateIndexPostCollectState,
-            isLogin = mainViewModel::isLogin,
+            isLogin = mainViewModel::checkUserLoginState,
             notLoginFunc = this::showNotLoginSnackBar
         )
         postAdapter.addLoadStateListener { loadState ->

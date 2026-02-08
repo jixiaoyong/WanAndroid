@@ -68,7 +68,7 @@ class MoreActivity : BaseActivity() {
             onBackPressed()
         }
 
-        val adapter = MainIndexPagingAdapterOld({}, isLogin = mainViewModel::isLogin)
+        val adapter = MainIndexPagingAdapterOld({}, isLogin = mainViewModel::checkUserLoginState)
         viewBinding.postRecyclerView.adapter = adapter
         viewBinding.postRecyclerView.addItemDecoration(DividerItemDecoration(this, RecyclerView.VERTICAL))
         viewModel.allProjectPost.observe(this, Observer(adapter::submitList))

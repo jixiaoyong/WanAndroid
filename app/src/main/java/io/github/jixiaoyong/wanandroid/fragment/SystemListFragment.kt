@@ -59,7 +59,7 @@ class SystemListFragment : Fragment() {
             { itemView, _ ->
                 itemView.findViewById<View>(R.id.classTv).visibility = View.GONE
             },
-            mainViewModel::isLogin,
+            mainViewModel::checkUserLoginState,
             notLoginFunc = this::showNotLoginSnackBar
         )
         viewBinding.postRecyclerView.adapter = adapter

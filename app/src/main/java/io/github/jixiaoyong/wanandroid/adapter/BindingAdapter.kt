@@ -121,15 +121,6 @@ fun bindChapterName(view: TextView, chapterName: String?, superChapterName: Stri
     }
 }
 
-@BindingAdapter("app:isShow")
-fun bindIsVisible(view: Group, isShow: Boolean) {
-    view.visibility = if (isShow) {
-        View.VISIBLE
-    } else {
-        View.GONE
-    }
-}
-
 @BindingAdapter("imgUrl")
 fun bindIsVisible(view: ImageView, imgUrl: String) {
     view.visibility = if (imgUrl.isNotBlank()) {

@@ -52,7 +52,7 @@ class ProjectListFragment : Fragment() {
 
     private fun initView() {
         val adapter = MainProjectPagingAdapter(
-            viewModel::updateIndexPostCollectState, isLogin = mainViewModel::isLogin
+            viewModel::updateIndexPostCollectState, isLogin = mainViewModel::checkUserLoginState
         )
         viewBinding.postRecyclerView.adapter = adapter
         viewBinding.postRecyclerView.addItemDecoration(DividerItemDecoration(requireContext(), RecyclerView.VERTICAL))
