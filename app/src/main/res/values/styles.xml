@@ -16,7 +16,7 @@
         <item name="color_post_item_background">#f2f2f2</item>
         <item name="color_bottom_background">#e7ececec</item>
         <item name="color_bottom_tint">#e8303030</item>
-        <item name="preferenceTheme"> @style/PreferenceThemeOverlay.v14.Material</item>
+        <item name="colorControlNormal">@color/colorWhite</item>
 
     </style>
 
@@ -28,7 +28,21 @@
         <item name="color_post_item_background">#262626</item>
         <item name="color_bottom_background">#e8303030</item>
         <item name="color_bottom_tint">#6b6b6b</item>
-        <item name="preferenceTheme"> @style/PreferenceThemeOverlay.v14.Material</item>
     </style>
 
+    <style name="EditTextStyle">
+        <!--表示控件默认的颜色-->
+        <item name="android:colorControlNormal">#E6E6E6</item>
+        <!--表示控件被激活时的颜色-->
+        <item name="android:colorControlActivated">@color/colorPrimary</item>
+    </style>
+
+    <style name="OverflowMenuStyle" parent="Widget.AppCompat.Light.PopupMenu.Overflow">
+        <!--把该属性改为false即可使menu位置位于toolbar之下-->
+        <item name="overlapAnchor">false</item>
+    </style>
+
+    <style name="navTextActive">
+        <item name="android:textSize">14sp</item>
+    </style>
 </resources>

@@ -1,37 +1,49 @@
 <resources>
     <string name="app_name">WanAndroid</string>
-    <string name="index">主页</string>
-    <string name="discover">发现</string>
-    <string name="about">关于</string>
-
-    <string name="about_summary">一个用kotlin语言编写的www.wanandroid.com的客户端，支持Android 5.0及以上版本。
-        \n在@七棵树建议下增加分享、放大缩小功能
-        \n本项目还在持续编写中。。。
-        \n我的邮箱: jixiaoyong1995@gmail.com ,有任何问题都可以email我或者在issues 提出。</string>
-    <string name="tips_username_pwd_null">账号或密码不能为空</string>
-    <string name="tips_username_pwd_error">登录失败，请检查账号/密码或者网络</string>
-    <string name="tips_login_succeeded">登录成功</string>
-    <string name="tips_reigster_succeeded">注册成功</string>
-    <string name="register">注册</string>
+    <string name="plz_entry_email">请输入邮箱地址</string>
+    <string name="plz_entry_pwd">请输入密码</string>
+    <string name="plz_reentry_pwd">请再次输入密码</string>
     <string name="login">登录</string>
+    <string name="register">注册</string>
+    <string name="tip_no_account">还没有账号</string>
+    <string name="tip_already_account">已有账号</string>
+    <string name="create_account">注册账号</string>
+    <string name="go_login">我要登录</string>
+    <string name="skip_it">以后再说</string>
+    <string name="tips_pwd_not_correct">密码不符合规范，请重新输入</string>
+    <string name="tips_name_not_correct">用户名不符合规范，请重新输入</string>
+    <string name="tips_repwd_not_match">两次输入的密码不一致，请重新输入</string>
+    <string name="tips_network_error">网络错误，请稍后重试</string>
+    <string name="tips_cookies_expire">登录信息过期，请重新登录</string>
+    <string name="tips_login_succeeded">登录成功</string>
+    <string name="tips_register_succeeded">注册成功</string>
+    <string name="btn_login_register">登录/注册</string>
+    <string name="coin">积分</string>
+    <string name="app_version">应用版本</string>
+    <string name="app_website">应用在线地址</string>
+    <string name="author_website">作者网站</string>
+    <string name="try_upgrade">检查更新</string>
+    <string name="share_app">分享此应用</string>
+    <string name="this_is_bottom_line">这是底线啦</string>
+    <string name="tips_start_check_upgrade">开始检测更新，请稍候</string>
+    <string name="tips_up_to_date">已经是最新的版本啦</string>
+    <string name="collected_yes">已收藏</string>
+    <string name="collected_no">未收藏</string>
+    <string name="label_wechat">公众号</string>
+    <string name="label_question">问答</string>
+    <string name="label_new">NEW</string>
+    <string name="label_top">TOP</string>
+    <string name="edit_to_search">点击搜索文章</string>
+    <string name="favortie">收藏</string>
+    <string name="wechat">微信</string>
+    <string name="square">广场</string>
+    <string name="hot_post">热门文章</string>
+    <string name="tips_plz_login">请先登录</string>
+    <string name="refresh">刷新</string>
+    <string name="copy">复制</string>
     <string name="share">分享</string>
-    <string name="tips_share_look_at_this">这篇文章不错，快来看看。</string>
-    <string name="tips_share_from">分享自【WanAndroid】</string>
-    <string name="current_version">当前版本是</string>
-    <string name="tips_cannot_find">未找到</string>
-    <string name="author">作者</string>
-    <string name="date">时间</string>
-    <string name="classify">分类</string>
-    <string name="click_icon_to_login">请点击头像登录</string>
-    <string name="title_sure_to_unlogin">确定注销登录吗？</string>
-    <string name="unlogin_tips">注销后将无法收藏、查看已经收藏的文章，其他功能不受影响。您仍然可以再次登录查看这些信息</string>
-    <string name="sure_to_leave">去意已决</string>
-    <string name="unlogin_succeeded">注销成功</string>
-    <string name="wait_a_moment">再玩会儿</string>
-    <string name="tips_update_data">更新数据中...</string>
-    <string name="tips_failed_to_check_upgrade">检查更新失败，请稍后重试~</string>
-    <string name="tips_alreadl_laster">已经是最新啦</string>
-    <string name="title_upgrade_app">更新程序</string>
-    <string name="sure_upgrade">更新</string>
-    <string name="cancel_update">取消</string>
+    <string name="copy_succeeded">复制成功</string>
+    <string name="open_in_browser">在浏览器打开</string>
+    <string name="search">搜索</string>
+
 </resources>

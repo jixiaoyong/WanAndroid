@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="data"
+            type="io.github.jixiaoyong.wanandroid.api.bean.DataIndexPostParam" />
+
+        <variable
+            name="superId"
+            type="io.github.jixiaoyong.wanandroid.api.ApiCommondConstants.SuperChapterId" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp">
+
+        <TextView
+            android:id="@+id/userNameTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:maxLength="10"
+            android:padding="5dp"
+            android:text='@{(!"".equals(data.author))?data.author:data.shareUser}'
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="ShaynJ" />
+
+        <TextView
+            android:id="@+id/weChatTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/background_round_line"
+            android:backgroundTint="@color/colorGreenText"
+            android:gravity="center"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            android:text="@string/label_wechat"
+            android:textColor="@color/colorGreenText"
+            android:textSize="12sp"
+            app:isWechat="@{data.superChapterId}"
+            app:layout_constraintBottom_toBottomOf="@id/userNameTv"
+            app:layout_constraintStart_toEndOf="@id/userNameTv"
+            app:layout_constraintTop_toTopOf="@id/userNameTv" />
+
+        <TextView
+            android:id="@+id/pinTopTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/background_round_line"
+            android:backgroundTint="#FF4B3F"
+            android:gravity="center"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            android:text="@string/label_top"
+            android:textColor="#FF4B3F"
+            android:textSize="12sp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/userNameTv"
+            app:layout_constraintStart_toEndOf="@id/weChatTv"
+            app:layout_constraintTop_toTopOf="@id/userNameTv" />
+
+
+        <TextView
+            android:id="@+id/newTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/background_round_line"
+            android:backgroundTint="#FF4B3F"
+            android:gravity="center"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            android:text="@string/label_new"
+            android:textColor="#FF4B3F"
+            android:textSize="12sp"
+            app:isNew="@{data.fresh}"
+            app:layout_constraintBottom_toBottomOf="@id/userNameTv"
+            app:layout_constraintStart_toEndOf="@id/pinTopTv"
+            app:layout_constraintTop_toTopOf="@id/userNameTv" />
+
+        <TextView
+            android:id="@+id/questionTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/background_round_line"
+            android:backgroundTint="#007AFF"
+            android:gravity="center"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            android:text="@string/label_question"
+            android:textColor="#007AFF"
+            android:textSize="12sp"
+            app:isQuestion="@{data.superChapterId}"
+            app:layout_constraintBottom_toBottomOf="@id/userNameTv"
+            app:layout_constraintStart_toEndOf="@id/newTv"
+            app:layout_constraintTop_toTopOf="@id/userNameTv" />
+
+        <TextView
+            android:id="@+id/favoriteTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:gravity="center"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            android:textColor="#FFBF00"
+            android:textSize="12sp"
+            app:isFavorite="@{data.collect}"
+            app:layout_constraintBottom_toBottomOf="@id/userNameTv"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/userNameTv"
+            tools:text="收藏" />
+
+        <ImageView
+            android:id="@+id/descImgIv"
+            android:layout_width="100dp"
+            android:layout_height="0dp"
+            android:scaleType="fitXY"
+            app:imgUrl="@{data.envelopePic}"
+            app:layout_constraintBottom_toBottomOf="@id/descTv"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/titleTv"
+            tools:background="@tools:sample/avatars" />
+
+        <TextView
+            android:id="@+id/titleTv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:paddingTop="5dp"
+            android:paddingEnd="5dp"
+            android:paddingBottom="5dp"
+            android:text="@{data.title}"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@id/descImgIv"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/userNameTv"
+            tools:text='面试官："准备用HashMap存1w条数据，构造时传10000还会触发扩容吗？"' />
+
+        <TextView
+            android:id="@+id/descTv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:ellipsize="end"
+            android:maxLines="3"
+            android:paddingEnd="5dp"
+            android:text="@{data.desc}"
+            app:layout_constraintEnd_toStartOf="@id/descImgIv"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/titleTv"
+            tools:text='欢迎访问我的Github获取APP源码：https://github.com/jixiaoyong/WanAndroid。扫描右侧二维码立即访问。' />
+
+        <TextView
+            android:id="@+id/timeTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:maxLines="2"
+            android:text="@{data.niceDate}"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="@id/titleTv"
+            app:layout_constraintTop_toBottomOf="@id/descTv"
+            tools:text='时间：2天前' />
+
+        <TextView
+            android:id="@+id/classTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:maxLines="2"
+            android:textSize="12sp"
+            app:chapterName="@{data.chapterName}"
+            app:layout_constraintBottom_toBottomOf="@id/timeTv"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/timeTv"
+            app:superChapterName="@{data.superChapterName}"
+            tools:text='Android / Kotlin' />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -1,38 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="cf.android666.wanandroid.MainActivity">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/pager"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/nav_height"
-        app:title="@string/app_name"
-        app:titleTextColor="#fff"
-        android:background="@color/colorPrimary"
-        >
-
-    </androidx.appcompat.widget.Toolbar>
-
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/viewpager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/toolbar">
-
-    </androidx.viewpager.widget.ViewPager>
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/bottomNavView"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_nav"
+        android:id="@+id/bottomNavView"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/nav_height"
-        android:layout_alignParentBottom="true"
-        android:background="?attr/color_bottom_background"
-        app:menu="@menu/menu_nav"
-        app:itemIconTint="?attr/color_bottom_tint"
-        app:itemTextColor="?attr/color_bottom_tint"/>
-
-</RelativeLayout>
+        android:layout_height="60dp"
+        android:background="#FFF"
+        app:itemHorizontalTranslationEnabled="false"
+        app:itemTextAppearanceActive="@style/navTextActive"
+        app:itemTextAppearanceInactive="@style/navTextActive"
+        app:labelVisibilityMode="labeled"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/menu_bottom_nav_main" />
+</androidx.constraintlayout.widget.ConstraintLayout>
